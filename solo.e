@@ -10,4 +10,7 @@ class
 inherit
 	BOUTONS
 
+create
+	make
+	
 end

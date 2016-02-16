@@ -25,7 +25,7 @@ feature {NONE} -- Initialization
 			e: ROI
 			f: TOUR
 			g: SERVEUR
-			menu: detachable GAME_ENGINE
+			menu: detachable MENU_ENGINE
 
 		do
 			game_library.enable_video -- Enable video functinalities
