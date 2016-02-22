@@ -37,7 +37,7 @@ feature{NONE} -- Constructor
 			l_multijoueur.set_positions(320, 350)
 			l_solo.set_positions(320, 250)
 			l_sprites.do_all (agent draw_button(window.renderer, ?))
---			window.mouse_button_pressed_actions.extend(agent mouse_pressed(?, ?, ?, window, l_sprites))
+			window.mouse_button_pressed_actions.extend(agent mouse_pressed(?, ?, ?, window, l_sprites))
 			set_agents
 			window.update
 			game_library.launch
@@ -51,25 +51,36 @@ feature {NONE}
 			game_library.quit_signal_actions.extend(agent (a_timestamp:NATURAL_32) do game_library.stop end)
 		end
 
---	mouse_pressed (timestamp: NATURAL_32; mouse_state: GAME_MOUSE_BUTTON_PRESSED_STATE; nb_clicks: NATURAL_8; a_window:GAME_WINDOW_RENDERED; a_sprites:ARRAYED_LIST[DRAWABLE])
---		do
---			if a_sprites.for_all(not agent cursor_over_sprite(mouse_state, ?))  then
+	mouse_pressed (timestamp: NATURAL_32; mouse_state: GAME_MOUSE_BUTTON_PRESSED_STATE; nb_clicks: NATURAL_8; a_window:GAME_WINDOW_RENDERED; a_sprites:ARRAYED_LIST[DRAWABLE])
+		local i:INTEGER
+		do
+			from
+				i:=1
+			until
+				i>a_sprites.count
+			loop
+				io.put_integer(a_sprites.count)
+				if cursor_over_sprite(mouse_state, a_sprites.at(i)) then
+					io.put_string ("Button pressed!")
+				end
+				i:=i+1
+--			if a_sprites.do_all(agent cursor_over_sprite(mouse_state, ?))  then
 --				io.put_string ("Button appuyé!")
---			end
---		end
+			end
+		end
 
---	cursor_over_sprite(a_mouse_stat: GAME_MOUSE_BUTTON_PRESSED_STATE; a_sprite:DRAWABLE)
---		local
---			l_over:BOOLEAN
---		do
---			l_over:= False
---			if (a_mouse_stat.x > a_sprite.position_x) and (a_mouse_stat < a_sprite.position_x + a_sprite.dimension_x) then
---				if (a_mouse_stat.y > a_sprite.position_y) and (a_mouse_stat < a_sprite.position_y + a_sprite.dimension_y) then
---					l_over := True
---				end
---			end
---			Result := l_over
---		end
+	cursor_over_sprite(a_mouse_stat: GAME_MOUSE_BUTTON_PRESSED_STATE; a_sprite:DRAWABLE):BOOLEAN
+		local
+			l_over:BOOLEAN
+		do
+			l_over:= False
+			if (a_mouse_stat.x > a_sprite.position_x) and (a_mouse_stat.x < a_sprite.position_x + a_sprite.dimension_x) then
+				if (a_mouse_stat.y > a_sprite.position_y) and (a_mouse_stat.y < a_sprite.position_y + a_sprite.dimension_y) then
+					l_over := True
+				end
+			end
+			Result := l_over
+		end
 
 	draw(renderer: GAME_RENDERER)
 		do
