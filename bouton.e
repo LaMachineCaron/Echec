@@ -13,4 +13,11 @@ inherit
 create
 	make
 
+feature
+
+	on_click(a_window:GAME_WINDOW_RENDERED)
+		do
+			print("Multijoueur")
+		end
+
 end

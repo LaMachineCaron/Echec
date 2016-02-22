@@ -53,20 +53,32 @@ feature {NONE}
 
 	mouse_pressed (timestamp: NATURAL_32; mouse_state: GAME_MOUSE_BUTTON_PRESSED_STATE; nb_clicks: NATURAL_8; a_window:GAME_WINDOW_RENDERED; a_sprites:ARRAYED_LIST[DRAWABLE])
 		local
-		i:INTEGER
-		l_game_engine:GAME_ENGINE
+			l_game_engine:GAME_ENGINE
 		do
-			from
-				i:=1
-			until
-				i>a_sprites.count
-			loop
-				if cursor_over_sprite(mouse_state, a_sprites.at(i)) then
-					a_window.clear_events
-					create l_game_engine.make(a_window)
+			across a_sprites as la_sprites loop
+				if cursor_over_sprite(mouse_state, la_sprites.item) then
+					if attached {BOUTONS} la_sprites.item as la_bouton then
+						la_bouton.on_click(a_window)
+					end
 				end
-				i:=i+1
 			end
+
+--			from
+--				i:=1
+--			until
+--				i>a_sprites.count
+--			loop
+--				if cursor_over_sprite(mouse_state, a_sprites.at(i)) then
+----					if a_sprites.at(i)== then
+----						io.put_string ("Solo Button")
+----					elseif a_sprites.at (i) ==  then
+----						io.put_string ("Multiplayer Button")
+----					end
+----					a_window.clear_events
+----					create l_game_engine.make(a_window)
+--				end
+--				i:=i+1
+--			end
 		end
 
 	cursor_over_sprite(a_mouse_stat: GAME_MOUSE_BUTTON_PRESSED_STATE; a_sprite:DRAWABLE):BOOLEAN

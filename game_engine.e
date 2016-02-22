@@ -22,6 +22,7 @@ feature{NONE}
 			l_background:BACKGROUND
 			l_sprites:ARRAYED_LIST[DRAWABLE]
 		do
+			a_window.clear_events
 			a_window.renderer.clear
 			create l_sprites.make (1)
 			create l_background.make(a_window.renderer, "./Ressources/chessboard.png", 600, 600)
