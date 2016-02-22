@@ -10,4 +10,8 @@ class
 inherit
 	PIECE
 
+create
+	make
+
+
 end
