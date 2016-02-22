@@ -52,20 +52,20 @@ feature {NONE}
 		end
 
 	mouse_pressed (timestamp: NATURAL_32; mouse_state: GAME_MOUSE_BUTTON_PRESSED_STATE; nb_clicks: NATURAL_8; a_window:GAME_WINDOW_RENDERED; a_sprites:ARRAYED_LIST[DRAWABLE])
-		local i:INTEGER
+		local
+		i:INTEGER
+		l_game_engine:GAME_ENGINE
 		do
 			from
 				i:=1
 			until
 				i>a_sprites.count
 			loop
-				io.put_integer(a_sprites.count)
 				if cursor_over_sprite(mouse_state, a_sprites.at(i)) then
-					io.put_string ("Button pressed!")
+					a_window.clear_events
+					create l_game_engine.make(a_window)
 				end
 				i:=i+1
---			if a_sprites.do_all(agent cursor_over_sprite(mouse_state, ?))  then
---				io.put_string ("Button appuyé!")
 			end
 		end
 
