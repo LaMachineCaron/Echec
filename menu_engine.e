@@ -21,13 +21,16 @@ feature{NONE} -- Constructor
 		local
 			window_builder:GAME_WINDOW_RENDERED_BUILDER
 			window:GAME_WINDOW_RENDERED
+			l_icon_image:GAME_IMAGE_BMP_FILE
 			l_multijoueur:MULTIJOUEUR
 			l_solo:SOLO
 			l_sprites: ARRAYED_LIST[DRAWABLE]
+			l_music:MUSIC
 		do
 			create window_builder
 			window_builder.set_dimension(800, 600)
 			window_builder.set_title("Jeu Échec")
+			create l_icon_image.make("./Ressources/icon.bmp")
 			window := window_builder.generate_window
 			create l_sprites.make(1)
 			create l_multijoueur.make(window.renderer, "./Ressources/multiplayer_button.png", 180, 43)
@@ -38,12 +41,20 @@ feature{NONE} -- Constructor
 			l_solo.set_positions(320, 250)
 			l_sprites.do_all (agent draw_button(window.renderer, ?))
 			window.mouse_button_pressed_actions.extend(agent mouse_pressed(?, ?, ?, window, l_sprites))
+			create l_music.make
+			game_library.iteration_actions.extend (agent on_iteration(?, window, l_music))
 			set_agents
 			window.update
 			game_library.launch
 		end
 
 feature {NONE}
+
+	on_iteration(a_timestamp:NATURAL; a_window:GAME_WINDOW; a_music:MUSIC)
+		do
+			a_music.audio_library.update
+			a_window.update
+		end
 
 	set_agents
 
@@ -63,22 +74,6 @@ feature {NONE}
 				end
 			end
 
---			from
---				i:=1
---			until
---				i>a_sprites.count
---			loop
---				if cursor_over_sprite(mouse_state, a_sprites.at(i)) then
-----					if a_sprites.at(i)== then
-----						io.put_string ("Solo Button")
-----					elseif a_sprites.at (i) ==  then
-----						io.put_string ("Multiplayer Button")
-----					end
-----					a_window.clear_events
-----					create l_game_engine.make(a_window)
---				end
---				i:=i+1
---			end
 		end
 
 	cursor_over_sprite(a_mouse_stat: GAME_MOUSE_BUTTON_PRESSED_STATE; a_sprite:DRAWABLE):BOOLEAN

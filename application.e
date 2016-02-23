@@ -7,8 +7,9 @@ class
 	APPLICATION
 
 inherit
-	ARGUMENTS
+	AUDIO_LIBRARY_SHARED
 	GAME_LIBRARY_SHARED
+	IMG_LIBRARY_SHARED
 
 create
 	make
@@ -18,20 +19,18 @@ feature {NONE} -- Initialization
 	make
 			-- Run application.
 		local
-			a: CAVALIER
-			b: FOU
-			c: PION
-			d: REINE
-			e: ROI
-			f: TOUR
-			g: SERVEUR
-			menu: detachable MENU_ENGINE
+			l_menu: detachable MENU_ENGINE
 
 		do
 			game_library.enable_video -- Enable video functinalities
-			create menu.make -- Launch the main loop
-			menu := Void
+			audio_library.enable_sound
+--			audio_library.launch_in_thread
+
+			create l_menu.make -- Launch the main loop
+			l_menu := Void
+
 			game_library.quit_library -- Clear the library before quiting
+			audio_library.quit_library
 		end
 
 feature -- Access
