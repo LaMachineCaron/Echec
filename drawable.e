@@ -15,7 +15,7 @@ inherit
 
 feature {NONE}
 
-	make(a_window: GAME_RENDERER; a_image_file: STRING; a_dimension_x: INTEGER; a_dimension_y: INTEGER)
+	make(a_renderer: GAME_RENDERER; a_image_file: STRING; a_dimension_x: INTEGER; a_dimension_y: INTEGER)
 		local
 			l_image:IMG_IMAGE_FILE
 		do
@@ -24,7 +24,7 @@ feature {NONE}
 			if l_image.is_openable then
 				l_image.open
 				if l_image.is_open then
-					make_from_image(a_window, l_image)
+					make_from_image(a_renderer, l_image)
 					set_dimensions(a_dimension_x, a_dimension_y)
 				else
 					has_error := True

@@ -13,5 +13,4 @@ inherit
 create
 	make
 
-
 end
