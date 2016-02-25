@@ -30,7 +30,7 @@ feature{NONE} -- Constructor
 			create window_builder
 			window_builder.set_dimension(800, 600)
 			window_builder.set_title("Jeu Échec")
-			create l_icon_image.make("./Ressources/icon.bmp")
+			create l_icon_image.make("./Ressources/icon.bmp")-- Ne fonctionne pas.
 			window := window_builder.generate_window
 			create l_sprites.make(1)
 			create l_multijoueur.make(window.renderer, "./Ressources/multiplayer_button.png", 180, 43)
@@ -63,8 +63,6 @@ feature {NONE}
 		end
 
 	mouse_pressed (timestamp: NATURAL_32; mouse_state: GAME_MOUSE_BUTTON_PRESSED_STATE; nb_clicks: NATURAL_8; a_window:GAME_WINDOW_RENDERED; a_sprites:ARRAYED_LIST[DRAWABLE])
-		local
-			l_game_engine:GAME_ENGINE
 		do
 			across a_sprites as la_sprites loop
 				if cursor_over_sprite(mouse_state, la_sprites.item) then
@@ -81,8 +79,8 @@ feature {NONE}
 			l_over:BOOLEAN
 		do
 			l_over:= False
-			if (a_mouse_stat.x > a_sprite.position_x) and (a_mouse_stat.x < a_sprite.position_x + a_sprite.dimension_x) then
-				if (a_mouse_stat.y > a_sprite.position_y) and (a_mouse_stat.y < a_sprite.position_y + a_sprite.dimension_y) then
+			if (a_mouse_stat.x > a_sprite.x) and (a_mouse_stat.x < a_sprite.x + a_sprite.dimension_x) then
+				if (a_mouse_stat.y > a_sprite.y) and (a_mouse_stat.y < a_sprite.y + a_sprite.dimension_y) then
 					l_over := True
 				end
 			end
@@ -97,7 +95,7 @@ feature {NONE}
 
 	draw_button(a_window:GAME_RENDERER; a_sprites:DRAWABLE)
 		do
-			a_window.draw_texture (a_sprites, a_sprites.position_x, a_sprites.position_y)
+			a_window.draw_texture (a_sprites, a_sprites.x, a_sprites.y)
 		end
 
 feature

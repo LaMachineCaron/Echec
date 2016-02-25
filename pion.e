@@ -13,4 +13,15 @@ inherit
 create
 	make
 
+feature
+
+	movement
+	local
+		deplacement:TUPLE[INTEGER]
+	do
+		if first_move then
+			
+		end
+	end
+
 end
