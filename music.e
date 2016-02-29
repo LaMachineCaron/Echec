@@ -28,7 +28,6 @@ feature{NONE}
 			if l_music.is_open then
 				l_source.queue_sound_infinite_loop (l_music)
 				l_source.play
-				audio_library.update
 			end
 		end
 end

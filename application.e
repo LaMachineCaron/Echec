@@ -24,12 +24,13 @@ feature {NONE} -- Initialization
 		do
 			game_library.enable_video -- Enable video functinalities
 			audio_library.enable_sound
---			audio_library.launch_in_thread
+			audio_library.launch_in_thread
 
 			create l_menu.make -- Launch the main loop
 			l_menu := Void
 
 			game_library.quit_library -- Clear the library before quiting
+			audio_library.stop_thread
 			audio_library.quit_library
 		end
 

@@ -1,16 +1,16 @@
 note
-	description: "Summary description for {FOU}."
+	description: "Summary description for {BACKGROUND}."
 	author: ""
 	date: "$Date$"
 	revision: "$Revision$"
 
 class
-	FOU
+	BACKGROUND
 
 inherit
-	PIECE
+	DRAWABLE
 
 create
 	make
-
+	
 end

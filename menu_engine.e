@@ -42,7 +42,6 @@ feature{NONE} -- Constructor
 			l_sprites.do_all (agent draw_button(window.renderer, ?))
 			window.mouse_button_pressed_actions.extend(agent mouse_pressed(?, ?, ?, window, l_sprites))
 			create l_music.make
-			game_library.iteration_actions.extend (agent on_iteration(?, window, l_music))
 			set_agents
 			window.update
 			game_library.launch
@@ -95,7 +94,7 @@ feature {NONE}
 
 	draw_button(a_window:GAME_RENDERER; a_sprites:DRAWABLE)
 		do
-			a_window.draw_texture (a_sprites, a_sprites.x, a_sprites.y)
+			a_window.draw_texture (a_sprites.texture, a_sprites.x, a_sprites.y)
 		end
 
 feature
