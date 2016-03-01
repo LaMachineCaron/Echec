@@ -1,8 +1,7 @@
 note
-	description: "Summary description for {PION}."
-	author: ""
-	date: "$Date$"
-	revision: "$Revision$"
+	description: "Classe qui gère la pièce pion (Pawn)."
+	author: "Alexandre Caron"
+	date: "02 février 2016"
 
 class
 	PAWN

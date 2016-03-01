@@ -1,8 +1,7 @@
 note
-	description: "Summary description for {FOU}."
-	author: ""
-	date: "$Date$"
-	revision: "$Revision$"
+	description: "Classe qui gère la pièce fou (Bishop)."
+	author: "Alexandre Caron"
+	date: "02 février 2016"
 
 class
 	BISHOP

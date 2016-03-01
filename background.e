@@ -1,8 +1,7 @@
 note
-	description: "Summary description for {BACKGROUND}."
-	author: ""
-	date: "$Date$"
-	revision: "$Revision$"
+	description: "Classe qui gère les arrière-plans."
+	author: "Alexandre Caron"
+	date: "02 février 2016"
 
 class
 	BACKGROUND
@@ -12,5 +11,5 @@ inherit
 
 create
 	make
-	
+
 end

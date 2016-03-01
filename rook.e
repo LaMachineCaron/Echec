@@ -1,8 +1,7 @@
 note
-	description: "Summary description for {TOUR}."
-	author: ""
-	date: "$Date$"
-	revision: "$Revision$"
+	description: "Classe qui gère la pièce tour (Rook)."
+	author: "Alexandre Caron"
+	date: "$02 février 2016"
 
 class
 	ROOK

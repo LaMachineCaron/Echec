@@ -1,13 +1,12 @@
 note
-	description: "Summary description for {DRAWABLE}."
-	author: ""
-	date: "$Date$"
-	revision: "$Revision$"
+	description: "Classe abstraite pour les objets qui on une texture."
+	author: "Alexandre Caron"
+	date: "02 février 2016"
 
 deferred class
 	DRAWABLE
 
-feature {NONE}
+feature {NONE} -- Initialization
 
 	make(a_renderer: GAME_RENDERER; a_image_file: STRING; a_dimension_x: INTEGER; a_dimension_y: INTEGER)
 		local
@@ -36,8 +35,7 @@ feature {NONE}
 			create {GAME_TEXTURE_TARGET}texture.make (a_renderer, l_pixel_format, 0, 0)
 		end
 
-feature
-	-- Variables
+feature -- Attributs
 
 	texture: GAME_TEXTURE
 	x: INTEGER
@@ -45,21 +43,12 @@ feature
 	dimension_x: INTEGER
 	dimension_y: INTEGER
 
+feature -- Methods
+
 	set_positions (a_x, a_y:INTEGER)
 		do
 			x:= a_x
 			y:= a_y
-		end
-
-	set_position_pieces (a_x, a_y:INTEGER)
-		local
-			l_case:INTEGER -- Taille des cases
-			l_border:INTEGER --Taille du rebord
-		do
-			l_case:=69
-			l_border:=24
-			x:=l_border + (a_x * l_case)
-			y:=l_border + (a_y * l_case)
 		end
 
 	set_dimensions (a_dimension_x:INTEGER; a_dimension_y:INTEGER)

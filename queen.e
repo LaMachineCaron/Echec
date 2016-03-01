@@ -1,8 +1,7 @@
 note
-	description: "Summary description for {REINE}."
-	author: ""
-	date: "$Date$"
-	revision: "$Revision$"
+	description: "Classe pour la pièce reine (Queen)."
+	author: "Alexandre Caron"
+	date: "02 février 2016"
 
 class
 	QUEEN

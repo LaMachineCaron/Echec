@@ -1,8 +1,7 @@
 note
-	description: "Summary description for {ROI}."
-	author: ""
-	date: "$Date$"
-	revision: "$Revision$"
+	description: "Classe qui gère la pièce roi (King)."
+	author: "Alexandre Caron"
+	date: "02 février 2016"
 
 class
 	KING

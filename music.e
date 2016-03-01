@@ -1,18 +1,18 @@
 note
-	description: "Summary description for {MUSIC}."
-	author: ""
-	date: "$Date$"
-	revision: "$Revision$"
+	description: "Classe qui gère la musique durant le jeu."
+	author: "Alexandre Caron"
+	date: "02 février 2016"
 
 class
 	MUSIC
+	
 inherit
 	AUDIO_LIBRARY_SHARED
 
 create
 	make
 
-feature{NONE}
+feature{NONE} -- Initialization
 
 	make
 		local

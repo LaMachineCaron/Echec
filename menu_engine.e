@@ -1,8 +1,7 @@
 note
-	description: "Summary description for {GAME_ENGINE}."
-	author: ""
-	date: "$Date$"
-	revision: "$Revision$"
+	description: "Classe qui gère les fonctionnalités du menu."
+	author: "Alexandre Caron"
+	date: "02 février 2016"
 
 class
 	MENU_ENGINE
@@ -14,10 +13,9 @@ inherit
 create
 	make
 
-feature{NONE} -- Constructor
+feature{NONE} -- Initialization
 
 	make
-
 		local
 			window_builder:GAME_WINDOW_RENDERED_BUILDER
 			window:GAME_WINDOW_RENDERED
@@ -56,7 +54,6 @@ feature {NONE}
 		end
 
 	set_agents
-
 		do
 			game_library.quit_signal_actions.extend(agent (a_timestamp:NATURAL_32) do game_library.stop end)
 		end
@@ -96,10 +93,5 @@ feature {NONE}
 		do
 			a_window.draw_texture (a_sprites.texture, a_sprites.x, a_sprites.y)
 		end
-
-feature
-	--Variables
-
-
 
 end

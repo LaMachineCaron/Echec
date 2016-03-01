@@ -9,7 +9,7 @@ deferred class
 inherit
 	DRAWABLE
 
-feature
+feature -- Methods
 
 	on_click(a_window:GAME_WINDOW_RENDERED)
 		deferred

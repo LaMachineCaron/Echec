@@ -1,7 +1,6 @@
 note
 	description : "Echec application root class"
-	date        : "$Date$"
-	revision    : "$Revision$"
+	date        : "02 février 2016"
 
 class
 	APPLICATION
@@ -17,7 +16,6 @@ create
 feature {NONE} -- Initialization
 
 	make
-			-- Run application.
 		local
 			l_menu: detachable MENU_ENGINE
 
@@ -33,9 +31,5 @@ feature {NONE} -- Initialization
 			audio_library.stop_thread
 			audio_library.quit_library
 		end
-
-feature -- Access
-
-
 
 end

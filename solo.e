@@ -1,8 +1,7 @@
 note
-	description: "Summary description for {SOLO}."
-	author: ""
-	date: "$Date$"
-	revision: "$Revision$"
+	description: "Classe qui gère le bouton solo."
+	author: "Alexandre Caron"
+	date: "02 février 2016"
 
 class
 	SOLO
@@ -13,7 +12,7 @@ inherit
 create
 	make
 
-feature
+feature -- Methods
 
 	on_click(a_window:GAME_WINDOW_RENDERED)
 		local

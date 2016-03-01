@@ -1,8 +1,7 @@
 note
-	description: "Summary description for {PIECE}."
-	author: ""
-	date: "$Date$"
-	revision: "$Revision$"
+	description: "Classe abstraite pour les pièces"
+	author: "Alexandre Caron"
+	date: "02 février 2016"
 
 deferred class
 	PIECE
@@ -13,10 +12,9 @@ inherit
 			make_drawable
 		end
 
-feature {NONE}
+feature {NONE} -- Initialization
 
 	make(a_renderer:GAME_RENDERER; a_image_file:STRING; a_white_team:BOOLEAN)
-
 		local
 			l_image:IMG_IMAGE_FILE
 		do
@@ -36,34 +34,34 @@ feature {NONE}
 			end
 		end
 
-feature -- Routine
-
-	on_click
-		do
-			io.put_string ("Default")
-		end
-
 feature -- Attributs
 
 	first_move: BOOLEAN
 	is_white: BOOLEAN -- l'équipe
 	is_black: BOOLEAN -- l'équipe
 
+feature -- Methods
+
+	on_click
+		do
+			io.put_string ("Default")
+		end
+
 	set_first_move
-	do
-		first_move:=True
-	end
+		do
+			first_move:=True
+		end
 
 	set_team(a_white_team:BOOLEAN)
-	do
-		if a_white_team then
-			is_white:=True
-			is_black:=False
-		else
-			is_white:=False
-			is_black:=True
+		do
+			if a_white_team then
+				is_white:=True
+				is_black:=False
+			else
+				is_white:=False
+				is_black:=True
+			end
 		end
-	end
 
 
 end

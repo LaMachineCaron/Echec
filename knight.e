@@ -1,8 +1,7 @@
 note
-	description: "Summary description for {CAVALIER}."
-	author: ""
-	date: "$Date$"
-	revision: "$Revision$"
+	description: "Classe qui gère la pièce cavalier (Knight)."
+	author: "Alexandre Caron"
+	date: "02 février 2016"
 
 class
 	KNIGHT

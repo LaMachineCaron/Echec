@@ -1,14 +1,11 @@
 note
-	description: "Summary description for {CLIENT}."
-	author: ""
-	date: "$Date$"
-	revision: "$Revision$"
+	description: "Classe qui va gérer le client."
+	author: "Alexandre Caron"
+	date: "02 février 2016"
 
 class
 	CLIENT
 
 feature -- Access
-
-	 --| Remove line when `dessinateur' is initialized in creation procedure.
 
 end

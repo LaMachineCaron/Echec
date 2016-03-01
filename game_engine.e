@@ -1,8 +1,7 @@
 note
-	description: "Summary description for {GAME_ENGINE}."
-	author: ""
-	date: "$Date$"
-	revision: "$Revision$"
+	description: "Classe qui gère les fonctionnalités du jeu."
+	author: "Alexandre Caron"
+	date: "02 février 2016"
 
 class
 	GAME_ENGINE
@@ -14,7 +13,7 @@ inherit
 create
 	make
 
-feature{NONE}
+feature{NONE} -- Initialization
 
 	make(a_window:GAME_WINDOW_RENDERED)
 
@@ -33,7 +32,7 @@ feature{NONE}
 			a_window.update
 		end
 
-feature
+feature -- Methods
 
 	draw_piece(a_renderer:GAME_RENDERER; a_grid:GRID)
 		local
