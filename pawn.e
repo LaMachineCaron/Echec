@@ -5,23 +5,22 @@ note
 	revision: "$Revision$"
 
 class
-	PION
+	PAWN
 
 inherit
 	PIECE
+		redefine
+			on_click
+		end
 
 create
 	make
 
-feature
+feature -- Methods
 
-	movement
-	local
-		deplacement:TUPLE[INTEGER]
-	do
-		if first_move then
-			
-		end
-	end
+	on_click
+			do
+				io.put_string ("Pawn!")
+			end
 
 end

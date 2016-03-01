@@ -5,12 +5,22 @@ note
 	revision: "$Revision$"
 
 class
-	FOU
+	BISHOP
 
 inherit
 	PIECE
+		redefine
+			on_click
+		end
 
 create
 	make
+
+feature -- Methods
+
+	on_click
+			do
+				io.put_string ("Bishop!")
+			end
 
 end

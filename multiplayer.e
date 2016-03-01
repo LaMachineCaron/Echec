@@ -5,10 +5,10 @@ note
 	revision: "$Revision$"
 
 class
-	MULTIJOUEUR
+	MULTIPLAYER
 
 inherit
-	BOUTONS
+	BUTTONS
 
 create
 	make
@@ -17,7 +17,7 @@ feature
 
 	on_click(a_window:GAME_WINDOW_RENDERED)
 		do
-			print("Multijoueur")
+			print("Multiplayer")
 		end
 
 end

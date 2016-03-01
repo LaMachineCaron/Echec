@@ -41,7 +41,6 @@ feature
 			l_y:INTEGER
 			l_border:INTEGER
 			l_case:INTEGER
-			l_i:INTEGER
 		do
 			l_case := 69
 			l_border := 24

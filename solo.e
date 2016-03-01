@@ -8,7 +8,7 @@ class
 	SOLO
 
 inherit
-	BOUTONS
+	BUTTONS
 
 create
 	make

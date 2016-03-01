@@ -22,7 +22,7 @@ feature{NONE} -- Constructor
 			window_builder:GAME_WINDOW_RENDERED_BUILDER
 			window:GAME_WINDOW_RENDERED
 			l_icon_image:GAME_IMAGE_BMP_FILE
-			l_multijoueur:MULTIJOUEUR
+			l_multijoueur:MULTIPLAYER
 			l_solo:SOLO
 			l_sprites: ARRAYED_LIST[DRAWABLE]
 			l_music:MUSIC
@@ -65,7 +65,7 @@ feature {NONE}
 		do
 			across a_sprites as la_sprites loop
 				if cursor_over_sprite(mouse_state, la_sprites.item) then
-					if attached {BOUTONS} la_sprites.item as la_bouton then
+					if attached {BUTTONS} la_sprites.item as la_bouton then
 						la_bouton.on_click(a_window)
 					end
 				end

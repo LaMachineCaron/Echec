@@ -4,7 +4,7 @@ note
 	date: "02 février 2016"
 
 deferred class
-	BOUTONS
+	BUTTONS
 
 inherit
 	DRAWABLE

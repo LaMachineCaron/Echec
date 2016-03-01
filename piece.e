@@ -40,7 +40,7 @@ feature -- Routine
 
 	on_click
 		do
-			io.put_string ("Woo!")
+			io.put_string ("Default")
 		end
 
 feature -- Attributs
