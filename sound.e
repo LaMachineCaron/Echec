@@ -16,18 +16,26 @@ feature{NONE} -- Initialize
 
 	make
 		local
-			l_source:AUDIO_SOURCE
-			l_sound:AUDIO_SOUND_FILE
 			l_environment:EXECUTION_ENVIRONMENT
 		do
 			create l_environment
 			audio_library.sources_add
-			l_source:=audio_library.last_source_added
-			create l_sound.make("./Ressources/click.ogg")
-			l_sound.open
-			if l_sound.is_open then
-				l_source.queue_sound (l_sound)
-				l_source.play
+			source:=audio_library.last_source_added
+			create sound.make("./Ressources/click.ogg")
+			sound.open
+		end
+feature -- Attributs
+
+	sound: AUDIO_SOUND_FILE
+	source: AUDIO_SOURCE
+
+feature -- Methods
+
+	play
+		do
+			if sound.is_open then
+				source.queue_sound (sound)
+				source.play
 			end
 		end
 end

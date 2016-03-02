@@ -21,6 +21,7 @@ feature{NONE} -- Initialization
 			l_grid:GRID
 			l_background:BACKGROUND
 			l_game_images:GAME_IMAGES_FACTORY
+			l_sound:SOUND
 		do
 			a_window.clear_events
 			a_window.renderer.clear
@@ -28,8 +29,9 @@ feature{NONE} -- Initialization
 			create l_background.make(l_game_images.game_background, 600, 600)
 			a_window.renderer.draw_texture (l_background.texture, l_background.x, l_background.y)
 			create l_grid.make(a_window.renderer, l_game_images)
+			create l_sound.make
 			draw_piece(a_window.renderer, l_grid)
-			a_window.mouse_button_pressed_actions.extend(agent mouse_pressed(?, ?, ?, a_window, l_grid))
+			a_window.mouse_button_pressed_actions.extend(agent mouse_pressed(?, ?, ?, a_window, l_grid, l_sound))
 			a_window.update
 		end
 
@@ -56,11 +58,9 @@ feature -- Methods
 			end
 		end
 
-	mouse_pressed (timestamp: NATURAL_32; mouse_state: GAME_MOUSE_BUTTON_PRESSED_STATE; nb_clicks: NATURAL_8; a_window:GAME_WINDOW_RENDERED; a_grid:GRID)
-		local
-			l_sound:SOUND
+	mouse_pressed (timestamp: NATURAL_32; mouse_state: GAME_MOUSE_BUTTON_PRESSED_STATE; nb_clicks: NATURAL_8; a_window:GAME_WINDOW_RENDERED; a_grid:GRID; a_sound:SOUND)
 		do
-			create l_sound.make
+			a_sound.play
 			across a_grid.grid as la_line loop
 				across la_line.item as la_column loop
 					if cursor_over_sprite(mouse_state, la_column.item) then

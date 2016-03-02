@@ -24,6 +24,7 @@ feature{NONE} -- Initialization
 			l_solo:SOLO
 			l_sprites: ARRAYED_LIST[DRAWABLE]
 			l_music:MUSIC
+			l_sound:SOUND
 			l_menu_images:MENU_IMAGES_FACTORY
 		do
 			create l_window_builder
@@ -40,8 +41,9 @@ feature{NONE} -- Initialization
 			l_multijoueur.set_positions(320, 350)
 			l_solo.set_positions(320, 250)
 			l_sprites.do_all (agent draw_button(l_window.renderer, ?))
-			l_window.mouse_button_pressed_actions.extend(agent mouse_pressed(?, ?, ?, l_window, l_sprites))
 			create l_music.make
+			create l_sound.make
+			l_window.mouse_button_pressed_actions.extend(agent mouse_pressed(?, ?, ?, l_window, l_sprites, l_sound))
 			set_agents
 			l_window.update
 			game_library.launch
@@ -60,11 +62,9 @@ feature {NONE}
 			game_library.quit_signal_actions.extend(agent (a_timestamp:NATURAL_32) do game_library.stop end)
 		end
 
-	mouse_pressed (timestamp: NATURAL_32; mouse_state: GAME_MOUSE_BUTTON_PRESSED_STATE; nb_clicks: NATURAL_8; a_window:GAME_WINDOW_RENDERED; a_sprites:ARRAYED_LIST[DRAWABLE])
-		local
-			l_sound:SOUND
+	mouse_pressed (timestamp: NATURAL_32; mouse_state: GAME_MOUSE_BUTTON_PRESSED_STATE; nb_clicks: NATURAL_8; a_window:GAME_WINDOW_RENDERED; a_sprites:ARRAYED_LIST[DRAWABLE]; a_sound:SOUND)
 		do
-			create l_sound.make
+			a_sound.play
 			across a_sprites as la_sprites loop
 				if cursor_over_sprite(mouse_state, la_sprites.item) then
 					if attached {BUTTONS} la_sprites.item as la_bouton then
