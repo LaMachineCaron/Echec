@@ -14,24 +14,12 @@ inherit
 
 feature {NONE} -- Initialization
 
-	make(a_renderer:GAME_RENDERER; a_image_file:STRING; a_white_team:BOOLEAN)
-		local
-			l_image:IMG_IMAGE_FILE
+	make(a_texture:GAME_TEXTURE; a_white_team:BOOLEAN)
 		do
-			create l_image.make (a_image_file)
-			if l_image.is_openable then
-				l_image.open
-				if l_image.is_open then
-					create texture.make_from_image (a_renderer, l_image)
-					set_dimensions(68,68)
-					set_first_move
-					set_team(a_white_team)
-				else
-					default_image(a_renderer)
-				end
-			else
-				default_image(a_renderer)
-			end
+			texture := a_texture
+			set_dimensions(68,68)
+			set_first_move
+			set_team(a_white_team)
 		end
 
 feature -- Attributs

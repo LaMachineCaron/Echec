@@ -17,31 +17,33 @@ feature{NONE} -- Initialization
 
 	make
 		local
-			window_builder:GAME_WINDOW_RENDERED_BUILDER
-			window:GAME_WINDOW_RENDERED
+			l_window_builder:GAME_WINDOW_RENDERED_BUILDER
+			l_window:GAME_WINDOW_RENDERED
 			l_icon_image:GAME_IMAGE_BMP_FILE
 			l_multijoueur:MULTIPLAYER
 			l_solo:SOLO
 			l_sprites: ARRAYED_LIST[DRAWABLE]
 			l_music:MUSIC
+			l_menu_images:MENU_IMAGES_FACTORY
 		do
-			create window_builder
-			window_builder.set_dimension(800, 600)
-			window_builder.set_title("Jeu Échec")
+			create l_window_builder
+			l_window_builder.set_dimension(800, 600)
+			l_window_builder.set_title("Jeu Échec")
 			create l_icon_image.make("./Ressources/icon.bmp")-- Ne fonctionne pas.
-			window := window_builder.generate_window
+			l_window := l_window_builder.generate_window
+			create l_menu_images.make (l_window.renderer)
 			create l_sprites.make(1)
-			create l_multijoueur.make(window.renderer, "./Ressources/multiplayer_button.png", 180, 43)
+			create l_multijoueur.make(l_menu_images.multiplayer_button, 180, 43)
 			l_sprites.extend (l_multijoueur)
-			create l_solo.make(window.renderer, "./Ressources/button_solo.png", 180, 43)
+			create l_solo.make(l_menu_images.solo_button, 180, 43)
 			l_sprites.extend (l_solo)
 			l_multijoueur.set_positions(320, 350)
 			l_solo.set_positions(320, 250)
-			l_sprites.do_all (agent draw_button(window.renderer, ?))
-			window.mouse_button_pressed_actions.extend(agent mouse_pressed(?, ?, ?, window, l_sprites))
+			l_sprites.do_all (agent draw_button(l_window.renderer, ?))
+			l_window.mouse_button_pressed_actions.extend(agent mouse_pressed(?, ?, ?, l_window, l_sprites))
 			create l_music.make
 			set_agents
-			window.update
+			l_window.update
 			game_library.launch
 		end
 
@@ -59,7 +61,10 @@ feature {NONE}
 		end
 
 	mouse_pressed (timestamp: NATURAL_32; mouse_state: GAME_MOUSE_BUTTON_PRESSED_STATE; nb_clicks: NATURAL_8; a_window:GAME_WINDOW_RENDERED; a_sprites:ARRAYED_LIST[DRAWABLE])
+		local
+			l_sound:SOUND
 		do
+			create l_sound.make
 			across a_sprites as la_sprites loop
 				if cursor_over_sprite(mouse_state, la_sprites.item) then
 					if attached {BUTTONS} la_sprites.item as la_bouton then

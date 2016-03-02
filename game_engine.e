@@ -20,13 +20,14 @@ feature{NONE} -- Initialization
 		local
 			l_grid:GRID
 			l_background:BACKGROUND
+			l_game_images:GAME_IMAGES_FACTORY
 		do
 			a_window.clear_events
 			a_window.renderer.clear
-			create l_background.make(a_window.renderer, "./Ressources/chessboard.png", 600, 600)
-			l_background.set_positions(0,0)
+			create l_game_images.make (a_window.renderer)
+			create l_background.make(l_game_images.game_background, 600, 600)
 			a_window.renderer.draw_texture (l_background.texture, l_background.x, l_background.y)
-			create l_grid.make(a_window.renderer)
+			create l_grid.make(a_window.renderer, l_game_images)
 			draw_piece(a_window.renderer, l_grid)
 			a_window.mouse_button_pressed_actions.extend(agent mouse_pressed(?, ?, ?, a_window, l_grid))
 			a_window.update
@@ -56,7 +57,10 @@ feature -- Methods
 		end
 
 	mouse_pressed (timestamp: NATURAL_32; mouse_state: GAME_MOUSE_BUTTON_PRESSED_STATE; nb_clicks: NATURAL_8; a_window:GAME_WINDOW_RENDERED; a_grid:GRID)
+		local
+			l_sound:SOUND
 		do
+			create l_sound.make
 			across a_grid.grid as la_line loop
 				across la_line.item as la_column loop
 					if cursor_over_sprite(mouse_state, la_column.item) then

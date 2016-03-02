@@ -5,7 +5,7 @@ note
 
 class
 	MUSIC
-	
+
 inherit
 	AUDIO_LIBRARY_SHARED
 
@@ -23,7 +23,7 @@ feature{NONE} -- Initialization
 			create l_environment
 			audio_library.sources_add
 			l_source:=audio_library.last_source_added
-			create l_music.make("./Ressources/music.wav")
+			create l_music.make("./Ressources/music.ogg")
 			l_music.open
 			if l_music.is_open then
 				l_source.queue_sound_infinite_loop (l_music)
