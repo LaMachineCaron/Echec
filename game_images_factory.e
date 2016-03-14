@@ -1,8 +1,7 @@
 note
-	description: "Summary description for {GAME_IMAGES_FACTORY}."
-	author: ""
-	date: "$Date$"
-	revision: "$Revision$"
+	description: "Create all the texture for the game."
+	author: "Alexandre Caron"
+	date: "01 March 2016"
 
 class
 	GAME_IMAGES_FACTORY

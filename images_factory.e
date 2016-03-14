@@ -1,13 +1,10 @@
 note
-	description: "Summary description for {FACTORY}."
-	author: ""
-	date: "$Date$"
-	revision: "$Revision$"
+	description: "Abstract class for images facotries."
+	author: "Alexandre Caron"
+	date: "01 March 2016"
 
 deferred class
 	IMAGES_FACTORY
-
-feature -- Methods
 
 feature -- Methods
 
@@ -40,5 +37,5 @@ feature -- Methods
 			create {GAME_TEXTURE_TARGET}l_texture.make (a_renderer, l_pixel_format, 0, 0)
 			result := l_texture
 		end
-		
+
 end

@@ -1,7 +1,7 @@
 note
-	description: "Classe contenant le tableau 2 dimensions du jeu."
+	description: "Class containing a 2 dimension list. Used for piece's position."
 	author: "Alexandre Caron"
-	date: "02 février 2016"
+	date: "02 february 2016"
 
 class
 	GRID
@@ -14,6 +14,8 @@ feature{NONE} -- Initialization
 	make(a_renderer:GAME_RENDERER; a_game_images:GAME_IMAGES_FACTORY)
 		do
 			init_grid(a_renderer, a_game_images)
+			init_white_team(a_game_images)
+			init_black_team(a_game_images)
 		end
 
 feature -- Attributs
@@ -23,13 +25,17 @@ feature -- Attributs
 feature -- Methods
 
 	init_grid(a_renderer:GAME_RENDERER; a_game_images:GAME_IMAGES_FACTORY)
+	-- Create the grid
 		do
 			create grid.make(8)
 			across 1 |..| 8 as it loop
 				grid.extend (create {ARRAYED_LIST[detachable PIECE]}.make_filled (8))
 			end
+		end
 
-			-- Initialize white team
+	init_white_team(a_game_images:GAME_IMAGES_FACTORY)
+	-- Initialize white team
+		do
 			grid.at (1).at (1) := create {ROOK}.make (a_game_images.white_rook_texture, True)
 			grid.at (1).at (2) := create {KNIGHT}.make (a_game_images.white_knight_texture, True)
 			grid.at (1).at (3) := create {BISHOP}.make (a_game_images.white_bishop_texture, True)
@@ -46,8 +52,12 @@ feature -- Methods
 			grid.at (2).at (6) := create {PAWN}.make (a_game_images.white_pawn_texture, True)
 			grid.at (2).at (7) := create {PAWN}.make (a_game_images.white_pawn_texture, True)
 			grid.at (2).at (8) := create {PAWN}.make (a_game_images.white_pawn_texture, True)
+		end
 
-			-- Initialize black team
+
+	init_black_team(a_game_images:GAME_IMAGES_FACTORY)
+	-- Initialize black team
+		do
 			grid.at (7).at (1) := create {PAWN}.make (a_game_images.black_pawn_texture, False)
 			grid.at (7).at (2) := create {PAWN}.make (a_game_images.black_pawn_texture, False)
 			grid.at (7).at (3) := create {PAWN}.make (a_game_images.black_pawn_texture, False)
@@ -64,6 +74,5 @@ feature -- Methods
 			grid.at (8).at (6) := create {BISHOP}.make (a_game_images.black_bishop_texture, False)
 			grid.at (8).at (7) := create {KNIGHT}.make (a_game_images.black_knight_texture, False)
 			grid.at (8).at (8) := create {ROOK}.make (a_game_images.black_rook_texture, False)
-
 		end
 end

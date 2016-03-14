@@ -1,7 +1,7 @@
 note
-	description: "Classe qui gère les fonctionnalités du jeu."
+	description: "Class managing the game."
 	author: "Alexandre Caron"
-	date: "02 février 2016"
+	date: "02 february 2016"
 
 class
 	GAME_ENGINE
@@ -16,6 +16,7 @@ create
 feature{NONE} -- Initialization
 
 	make(a_window:GAME_WINDOW_RENDERED)
+	-- Create the engine using a window_rendered.
 
 		local
 			l_grid:GRID
@@ -38,6 +39,7 @@ feature{NONE} -- Initialization
 feature -- Methods
 
 	draw_piece(a_renderer:GAME_RENDERER; a_grid:GRID)
+	-- Draw every pieces contained in the grid.
 		local
 			l_x:INTEGER
 			l_y:INTEGER
@@ -59,6 +61,7 @@ feature -- Methods
 		end
 
 	mouse_pressed (timestamp: NATURAL_32; mouse_state: GAME_MOUSE_BUTTON_PRESSED_STATE; nb_clicks: NATURAL_8; a_window:GAME_WINDOW_RENDERED; a_grid:GRID; a_sound:SOUND)
+	-- When mouse is pressed, look if a sprite as been pressed and if so, execute is on_click method.
 		do
 			a_sound.play
 			across a_grid.grid as la_line loop
@@ -69,25 +72,23 @@ feature -- Methods
 						end
 					end
 				end
-
 			end
 		end
 
 	cursor_over_sprite(a_mouse_stat: GAME_MOUSE_BUTTON_PRESSED_STATE; a_sprite:detachable PIECE):BOOLEAN
+	-- Check if there's a sprite under the cursor.
 		local
 			l_over:BOOLEAN
 		do
 			l_over:= False
 			if attached a_sprite as la_piece then
-				if (a_mouse_stat.x > la_piece.x) and (a_mouse_stat.x < la_piece.x + la_piece.dimension_x) then
-					if (a_mouse_stat.y > la_piece.y) and (a_mouse_stat.y < la_piece.y + la_piece.dimension_y) then
+				if (a_mouse_stat.x > la_piece.x) and (a_mouse_stat.x < la_piece.x + la_piece.width) then
+					if (a_mouse_stat.y > la_piece.y) and (a_mouse_stat.y < la_piece.y + la_piece.height) then
 						l_over := True
 					end
 				end
 				Result := l_over
 			end
-
 		end
-
 
 end

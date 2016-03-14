@@ -1,7 +1,7 @@
 note
-	description: "Classe abstraite pour les pièces"
+	description: "Abstract class for pieces"
 	author: "Alexandre Caron"
-	date: "02 février 2016"
+	date: "02 february 2016"
 
 deferred class
 	PIECE
@@ -42,13 +42,8 @@ feature -- Methods
 
 	set_team(a_white_team:BOOLEAN)
 		do
-			if a_white_team then
-				is_white:=True
-				is_black:=False
-			else
-				is_white:=False
-				is_black:=True
-			end
+			is_white:=a_white_team
+			is_black:=not a_white_team
 		end
 
 

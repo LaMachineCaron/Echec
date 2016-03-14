@@ -1,2 +1,4 @@
 EIFGENs
 *.log
+*.dll
+*.rc

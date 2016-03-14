@@ -1,7 +1,7 @@
 note
-	description: "Classe qui gère la pièce pion (Pawn)."
+	description: "Class managing the pawn."
 	author: "Alexandre Caron"
-	date: "02 février 2016"
+	date: "02 february 2016"
 
 class
 	PAWN

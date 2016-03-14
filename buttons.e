@@ -1,7 +1,7 @@
 note
-	description: "Classe abstraite pour les boutons."
+	description: "Abstract class for buttons."
 	author: "Alexandre Caron"
-	date: "02 février 2016"
+	date: "02 february 2016"
 
 deferred class
 	BUTTONS

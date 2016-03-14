@@ -1,7 +1,7 @@
 note
-	description: "Classe qui gère les fonctionnalités du menu."
+	description: "Class that manage menus functionalities."
 	author: "Alexandre Caron"
-	date: "02 février 2016"
+	date: "02 february 2016"
 
 class
 	MENU_ENGINE
@@ -19,7 +19,7 @@ feature{NONE} -- Initialization
 		local
 			l_window_builder:GAME_WINDOW_RENDERED_BUILDER
 			l_window:GAME_WINDOW_RENDERED
-			l_icon_image:GAME_IMAGE_BMP_FILE
+			--l_icon_image:GAME_IMAGE_BMP_FILE
 			l_multijoueur:MULTIPLAYER
 			l_solo:SOLO
 			l_sprites: ARRAYED_LIST[DRAWABLE]
@@ -30,8 +30,9 @@ feature{NONE} -- Initialization
 			create l_window_builder
 			l_window_builder.set_dimension(800, 600)
 			l_window_builder.set_title("Jeu Échec")
-			create l_icon_image.make("./Ressources/icon.bmp")-- Ne fonctionne pas.
+			--create l_icon_image.make("./Ressources/icon.bmp")-- Ne fonctionne pas.
 			l_window := l_window_builder.generate_window
+			--l_window.set_icon(l_icon_image)
 			create l_menu_images.make (l_window.renderer)
 			create l_sprites.make(1)
 			create l_multijoueur.make(l_menu_images.multiplayer_button, 180, 43)
@@ -40,6 +41,7 @@ feature{NONE} -- Initialization
 			l_sprites.extend (l_solo)
 			l_multijoueur.set_positions(320, 350)
 			l_solo.set_positions(320, 250)
+			l_window.renderer.clear
 			l_sprites.do_all (agent draw_button(l_window.renderer, ?))
 			create l_music.make
 			create l_sound.make
@@ -50,12 +52,6 @@ feature{NONE} -- Initialization
 		end
 
 feature {NONE}
-
-	on_iteration(a_timestamp:NATURAL; a_window:GAME_WINDOW; a_music:MUSIC)
-		do
-			a_music.audio_library.update
-			a_window.update
-		end
 
 	set_agents
 		do
@@ -80,8 +76,8 @@ feature {NONE}
 			l_over:BOOLEAN
 		do
 			l_over:= False
-			if (a_mouse_stat.x > a_sprite.x) and (a_mouse_stat.x < a_sprite.x + a_sprite.dimension_x) then
-				if (a_mouse_stat.y > a_sprite.y) and (a_mouse_stat.y < a_sprite.y + a_sprite.dimension_y) then
+			if (a_mouse_stat.x > a_sprite.x) and (a_mouse_stat.x < a_sprite.x + a_sprite.width) then
+				if (a_mouse_stat.y > a_sprite.y) and (a_mouse_stat.y < a_sprite.y + a_sprite.height) then
 					l_over := True
 				end
 			end

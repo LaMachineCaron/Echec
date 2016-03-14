@@ -1,7 +1,7 @@
 note
-	description: "Classe qui gère les arrière-plans."
+	description: "Manage backgrounds for menus and game."
 	author: "Alexandre Caron"
-	date: "02 février 2016"
+	date: "02 february 2016"
 
 class
 	BACKGROUND

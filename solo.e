@@ -1,7 +1,7 @@
 note
-	description: "Classe qui gère le bouton solo."
+	description: "Class managing solo button."
 	author: "Alexandre Caron"
-	date: "02 février 2016"
+	date: "02 february 2016"
 
 class
 	SOLO

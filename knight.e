@@ -1,7 +1,7 @@
 note
-	description: "Classe qui gère la pièce cavalier (Knight)."
+	description: "Class managing the knight."
 	author: "Alexandre Caron"
-	date: "02 février 2016"
+	date: "02 february 2016"
 
 class
 	KNIGHT

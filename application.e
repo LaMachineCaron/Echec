@@ -1,6 +1,7 @@
 note
 	description : "Echec application root class"
-	date        : "02 février 2016"
+	author		: "Alexandre Caron"
+	date        : "02 february 2016"
 
 class
 	APPLICATION

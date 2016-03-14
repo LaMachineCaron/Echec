@@ -1,7 +1,7 @@
 note
-	description: "Classe pour la pièce reine (Queen)."
+	description: "Class managing the queen."
 	author: "Alexandre Caron"
-	date: "02 février 2016"
+	date: "02 february 2016"
 
 class
 	QUEEN

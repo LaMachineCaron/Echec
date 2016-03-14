@@ -1,7 +1,7 @@
 note
-	description: "Classe qui crée les images pour les pièces."
+	description: "Class that create texture for menus."
 	author: "Alexandre Caron"
-	date: "01-mars-2016"
+	date: "01 March 2016"
 
 class
 	MENU_IMAGES_FACTORY

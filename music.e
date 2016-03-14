@@ -1,7 +1,7 @@
 note
-	description: "Classe qui gère la musique durant le jeu."
+	description: "Class playing music during the game."
 	author: "Alexandre Caron"
-	date: "02 février 2016"
+	date: "02 february 2016"
 
 class
 	MUSIC
