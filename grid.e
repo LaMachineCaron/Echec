@@ -58,9 +58,9 @@ feature -- Methods
 	init_black_team(a_game_images:GAME_IMAGES_FACTORY)
 	-- Initialize black team
 		do
-			grid.at (7).at (1) := create {PAWN}.make (a_game_images.black_pawn_texture, False)
-			grid.at (7).at (2) := create {PAWN}.make (a_game_images.black_pawn_texture, False)
-			grid.at (7).at (3) := create {PAWN}.make (a_game_images.black_pawn_texture, False)
+			grid.at (3).at (1) := create {PAWN}.make (a_game_images.black_pawn_texture, False)
+			grid.at (3).at (2) := create {PAWN}.make (a_game_images.black_pawn_texture, False)
+			grid.at (3).at (3) := create {PAWN}.make (a_game_images.black_pawn_texture, False)
 			grid.at (7).at (4) := create {PAWN}.make (a_game_images.black_pawn_texture, False)
 			grid.at (7).at (5) := create {PAWN}.make (a_game_images.black_pawn_texture, False)
 			grid.at (7).at (6) := create {PAWN}.make (a_game_images.black_pawn_texture, False)

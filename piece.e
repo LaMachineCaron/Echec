@@ -35,6 +35,14 @@ feature -- Methods
 			io.put_string ("Default")
 		end
 
+	possible_positions(a_line, a_column:INTEGER) :LIST[TUPLE[line, column:INTEGER]]
+		deferred
+		end
+
+	possible_kill(a_line, a_column:INTEGER) :LIST[TUPLE[line, column:INTEGER]]
+		deferred
+		end
+
 	set_first_move
 		do
 			first_move:=True

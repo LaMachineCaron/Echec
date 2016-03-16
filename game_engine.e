@@ -32,27 +32,39 @@ feature{NONE} -- Initialization
 			create l_grid.make(a_window.renderer, l_game_images)
 			create l_sound.make
 			draw_piece(a_window.renderer, l_grid)
-			a_window.mouse_button_pressed_actions.extend(agent mouse_pressed(?, ?, ?, a_window, l_grid, l_sound))
+			a_window.mouse_button_pressed_actions.extend(agent mouse_pressed(?, ?, ?, a_window, l_grid, l_sound, l_game_images))
 			a_window.update
 		end
 
 feature -- Methods
+
+	calcul_position(a_grid_x, a_grid_y:INTEGER) :TUPLE[x, y:INTEGER]
+	local
+		l_x:INTEGER
+		l_y:INTEGER
+		l_border:INTEGER
+		l_case:INTEGER
+	do
+		l_case := 69
+		l_border := 24
+		l_x := l_border + ((a_grid_x - 1) * l_case)
+		l_y := l_border + ((a_grid_y - 1) * l_case)
+		Result := [l_x, l_y]
+	end
 
 	draw_piece(a_renderer:GAME_RENDERER; a_grid:GRID)
 	-- Draw every pieces contained in the grid.
 		local
 			l_x:INTEGER
 			l_y:INTEGER
-			l_border:INTEGER
-			l_case:INTEGER
+			l_positions:TUPLE[x, y:INTEGER]
 		do
-			l_case := 69
-			l_border := 24
 			across 1 |..| 8 as la_index loop
 				across 1 |..| 8 as la_index_2 loop
 					if attached a_grid.grid.at (la_index.item).at (la_index_2.item) as la_piece then
-						l_x := l_border + ((la_index_2.item - 1) * l_case)
-						l_y := l_border + ((la_index.item - 1) * l_case)
+						l_positions := calcul_position(la_index_2.item, la_index.item)
+						l_x := l_positions.integer_32_item (1)
+						l_y := l_positions.integer_32_item (2)
 						la_piece.set_positions(l_x, l_y)
 						a_renderer.draw_texture (la_piece.texture, l_x, l_y)
 					end
@@ -60,8 +72,11 @@ feature -- Methods
 			end
 		end
 
-	mouse_pressed (timestamp: NATURAL_32; mouse_state: GAME_MOUSE_BUTTON_PRESSED_STATE; nb_clicks: NATURAL_8; a_window:GAME_WINDOW_RENDERED; a_grid:GRID; a_sound:SOUND)
+	mouse_pressed (timestamp: NATURAL_32; mouse_state: GAME_MOUSE_BUTTON_PRESSED_STATE; nb_clicks: NATURAL_8; a_window:GAME_WINDOW_RENDERED; a_grid:GRID; a_sound:SOUND; a_game_images_factory:GAME_IMAGES_FACTORY)
 	-- When mouse is pressed, look if a sprite as been pressed and if so, execute is on_click method.
+		local
+			l_possible_movements:LIST[TUPLE[line, column:INTEGER]]
+			l_possible_kill:LIST[TUPLE[line, column:INTEGER]]
 		do
 			a_sound.play
 			across a_grid.grid as la_line loop
@@ -69,7 +84,50 @@ feature -- Methods
 					if cursor_over_sprite(mouse_state, la_column.item) then
 						if attached {PIECE} la_column.item as la_piece then
 							la_piece.on_click
+							l_possible_movements:=la_piece.possible_positions(la_line.cursor_index, la_column.cursor_index)
+							l_possible_kill:=la_piece.possible_kill (la_line.cursor_index, la_column.cursor_index)
+							redraw(a_window, a_grid, l_possible_movements,l_possible_kill, a_game_images_factory)
 						end
+					end
+				end
+			end
+		end
+
+	draw_possible_kill(a_window:GAME_WINDOW_RENDERED; a_possible_kill:LIST[TUPLE[line, column:INTEGER]]; a_texture:GAME_TEXTURE; a_grid:GRID)
+	-- Draw color to show killable piece.
+		local
+			l_position:TUPLE[x, y:INTEGER]
+			l_x:INTEGER
+			l_y:INTEGER
+		do
+			across a_possible_kill as la_possible_kill loop
+				if (a_grid.grid.at (la_possible_kill.item.integer_32_item (1)).at(la_possible_kill.item.integer_32_item (2)) /= void) then
+					l_position := calcul_position(la_possible_kill.item.integer_32_item (1), la_possible_kill.item.integer_32_item (2))
+					l_x := l_position.integer_32_item (2)
+					l_y := l_position.integer_32_item (1)
+					a_window.renderer.draw_texture (a_texture, l_x, l_y)
+				end
+			end
+		end
+
+	draw_possible_deplacement(a_window:GAME_WINDOW_RENDERED; a_possible_positions:LIST[TUPLE[line, column:INTEGER]]; a_texture:GAME_TEXTURE; a_grid:GRID)
+	-- Draw color to show possible movement.
+		local
+			l_position:TUPLE[x, y:INTEGER]
+			l_x: INTEGER
+			l_y:INTEGER
+			l_valid:BOOLEAN
+		do
+			l_valid := true
+			across a_possible_positions as la_position loop
+				if l_valid then
+					if (a_grid.grid.at (la_position.item.integer_32_item (1)).at(la_position.item.integer_32_item (2)) = void) then
+						l_position := calcul_position(la_position.item.integer_32_item (1), la_position.item.integer_32_item (2))
+						l_x := l_position.integer_32_item (2)
+						l_y := l_position.integer_32_item (1)
+						a_window.renderer.draw_texture (a_texture, l_x, l_y)
+					else
+						l_valid := false
 					end
 				end
 			end
@@ -91,4 +149,13 @@ feature -- Methods
 			end
 		end
 
+	redraw (a_window:GAME_WINDOW_RENDERED; a_grid:GRID; a_possible_positions, a_possible_kill:LIST[TUPLE[line, column:INTEGER]]; a_game_images_factory:GAME_IMAGES_FACTORY)
+	-- Redraw everything.
+	do
+		a_window.renderer.draw_texture (a_game_images_factory.game_background, 0, 0)
+		draw_possible_deplacement(a_window, a_possible_positions, a_game_images_factory.possible_movement, a_grid)
+		draw_possible_kill(a_window, a_possible_kill, a_game_images_factory.possible_kill, a_grid)
+		draw_piece(a_window.renderer, a_grid)
+		a_window.update
+	end
 end
