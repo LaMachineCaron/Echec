@@ -28,9 +28,16 @@ feature -- Methods
 			l_list:ARRAYED_LIST[TUPLE[line, column:INTEGER]]
 		do
 			create l_list.make (2)
-			l_list.extend ([a_line + 1, a_column])
-			if first_move then
-				l_list.extend ([a_line + 2, a_column])
+			if is_white then
+				l_list.extend ([a_line + 1, a_column])
+				if first_move then
+					l_list.extend ([a_line + 2, a_column])
+				end
+			elseif is_black then
+				l_list.extend ([a_line - 1, a_column])
+				if first_move then
+					l_list.extend ([a_line - 2, a_column])
+				end
 			end
 			Result:=l_list
 		end
@@ -40,11 +47,20 @@ feature -- Methods
 			l_list:ARRAYED_LIST[TUPLE[line, column:INTEGER]]
 		do
 			create l_list.make(2)
-			if a_column > 1 then
-				l_list.extend ([a_line + 1, a_column - 1])
-			end
-			if a_column < 8 then
-				l_list.extend ([a_line + 1, a_column + 1])
+			if is_white then
+				if a_column > 1 then
+					l_list.extend ([a_line + 1, a_column - 1])
+				end
+				if a_column < 8 then
+					l_list.extend ([a_line + 1, a_column + 1])
+				end
+			elseif is_black then
+				if a_column > 1 then
+					l_list.extend ([a_line - 1, a_column - 1])
+				end
+				if a_column < 8 then
+					l_list.extend ([a_line - 1, a_column + 1])
+				end
 			end
 			Result:=l_list
 		end

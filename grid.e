@@ -61,7 +61,7 @@ feature -- Methods
 			grid.at (3).at (1) := create {PAWN}.make (a_game_images.black_pawn_texture, False)
 			grid.at (3).at (2) := create {PAWN}.make (a_game_images.black_pawn_texture, False)
 			grid.at (3).at (3) := create {PAWN}.make (a_game_images.black_pawn_texture, False)
-			grid.at (7).at (4) := create {PAWN}.make (a_game_images.black_pawn_texture, False)
+			grid.at (4).at (4) := create {PAWN}.make (a_game_images.black_pawn_texture, False)
 			grid.at (7).at (5) := create {PAWN}.make (a_game_images.black_pawn_texture, False)
 			grid.at (7).at (6) := create {PAWN}.make (a_game_images.black_pawn_texture, False)
 			grid.at (7).at (7) := create {PAWN}.make (a_game_images.black_pawn_texture, False)
