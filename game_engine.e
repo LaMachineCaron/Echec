@@ -52,6 +52,42 @@ feature -- Methods
 		Result := [l_x, l_y]
 	end
 
+	calcul_valid_movement(a_possible_movement:LIST[TUPLE[line, column:INTEGER]]; a_grid:GRID): LIST[TUPLE[line, column:INTEGER]]
+		local
+			l_valid_movement:LIST[TUPLE[line, column:INTEGER]]
+			l_valid:BOOLEAN
+			l_movement:TUPLE[line, column:INTEGER]
+		do
+			l_valid := true
+			create {ARRAYED_LIST[TUPLE[line, column:INTEGER]]} l_valid_movement.make(a_possible_movement.count)
+			across a_possible_movement as la_possible_movement loop
+				if l_valid then
+					if (a_grid.grid.at (la_possible_movement.item.integer_32_item (1)).at(la_possible_movement.item.integer_32_item (2)) = void) then
+						l_movement := calcul_position(la_possible_movement.item.integer_32_item (2), la_possible_movement.item.integer_32_item (1))
+						l_valid_movement.extend(l_movement)
+					else
+						l_valid := false
+					end
+				end
+			end
+			result := l_valid_movement
+		end
+
+	calcul_valid_kill(a_possible_kill:LIST[TUPLE[line, column:INTEGER]]; a_grid:GRID):LIST[TUPLE[line, column:INTEGER]]
+		local
+			l_valid_kill:LIST[TUPLE[line, column:INTEGER]]
+			l_kill:TUPLE[line, column:INTEGER]
+		do
+			create {ARRAYED_LIST[TUPLE[line, column:INTEGER]]} l_valid_kill.make (a_possible_kill.count)
+			across a_possible_kill as la_possible_kill loop
+				if (a_grid.grid.at (la_possible_kill.item.integer_32_item (1)).at(la_possible_kill.item.integer_32_item (2)) /= void) then
+					l_kill := calcul_position(la_possible_kill.item.integer_32_item (1), la_possible_kill.item.integer_32_item (2))
+					l_valid_kill.extend(l_kill)
+				end
+			end
+			result:=l_valid_kill
+		end
+
 	draw_piece(a_renderer:GAME_RENDERER; a_grid:GRID)
 	-- Draw every pieces contained in the grid.
 		local
@@ -86,6 +122,8 @@ feature -- Methods
 							la_piece.on_click
 							l_possible_movements:=la_piece.possible_positions(la_line.cursor_index, la_column.cursor_index)
 							l_possible_kill:=la_piece.possible_kill (la_line.cursor_index, la_column.cursor_index)
+							l_possible_movements := calcul_valid_movement(l_possible_movements, a_grid)
+							l_possible_kill:=calcul_valid_kill(l_possible_kill, a_grid)
 							redraw(a_window, a_grid, l_possible_movements,l_possible_kill, a_game_images_factory)
 						end
 					end
@@ -93,43 +131,19 @@ feature -- Methods
 			end
 		end
 
-	draw_possible_kill(a_window:GAME_WINDOW_RENDERED; a_possible_kill:LIST[TUPLE[line, column:INTEGER]]; a_texture:GAME_TEXTURE; a_grid:GRID)
+	draw_valid_kill(a_window:GAME_WINDOW_RENDERED; a_valid_kill:LIST[TUPLE[line, column:INTEGER]]; a_texture:GAME_TEXTURE; a_grid:GRID)
 	-- Draw color to show killable piece.
-		local
-			l_position:TUPLE[x, y:INTEGER]
-			l_x:INTEGER
-			l_y:INTEGER
 		do
-			across a_possible_kill as la_possible_kill loop
-				if (a_grid.grid.at (la_possible_kill.item.integer_32_item (1)).at(la_possible_kill.item.integer_32_item (2)) /= void) then
-					l_position := calcul_position(la_possible_kill.item.integer_32_item (1), la_possible_kill.item.integer_32_item (2))
-					l_x := l_position.integer_32_item (2)
-					l_y := l_position.integer_32_item (1)
-					a_window.renderer.draw_texture (a_texture, l_x, l_y)
-				end
+			across a_valid_kill as la_valid_kill loop
+					a_window.renderer.draw_texture (a_texture, la_valid_kill.item.integer_32_item (2), la_valid_kill.item.integer_32_item (1))
 			end
 		end
 
-	draw_possible_deplacement(a_window:GAME_WINDOW_RENDERED; a_possible_positions:LIST[TUPLE[line, column:INTEGER]]; a_texture:GAME_TEXTURE; a_grid:GRID)
+	draw_valid_movement(a_window:GAME_WINDOW_RENDERED; a_valid_positions:LIST[TUPLE[line, column:INTEGER]]; a_texture:GAME_TEXTURE; a_grid:GRID)
 	-- Draw color to show possible movement.
-		local
-			l_position:TUPLE[x, y:INTEGER]
-			l_x: INTEGER
-			l_y:INTEGER
-			l_valid:BOOLEAN
 		do
-			l_valid := true
-			across a_possible_positions as la_position loop
-				if l_valid then
-					if (a_grid.grid.at (la_position.item.integer_32_item (1)).at(la_position.item.integer_32_item (2)) = void) then
-						l_position := calcul_position(la_position.item.integer_32_item (1), la_position.item.integer_32_item (2))
-						l_x := l_position.integer_32_item (2)
-						l_y := l_position.integer_32_item (1)
-						a_window.renderer.draw_texture (a_texture, l_x, l_y)
-					else
-						l_valid := false
-					end
-				end
+			across a_valid_positions as la_valide_position loop
+				a_window.renderer.draw_texture (a_texture, la_valide_position.item.integer_32_item (1), la_valide_position.item.integer_32_item (2))
 			end
 		end
 
@@ -153,8 +167,8 @@ feature -- Methods
 	-- Redraw everything.
 	do
 		a_window.renderer.draw_texture (a_game_images_factory.game_background, 0, 0)
-		draw_possible_deplacement(a_window, a_possible_positions, a_game_images_factory.possible_movement, a_grid)
-		draw_possible_kill(a_window, a_possible_kill, a_game_images_factory.possible_kill, a_grid)
+		draw_valid_movement(a_window, a_possible_positions, a_game_images_factory.possible_movement, a_grid)
+		draw_valid_kill(a_window, a_possible_kill, a_game_images_factory.possible_kill, a_grid)
 		draw_piece(a_window.renderer, a_grid)
 		a_window.update
 	end
