@@ -140,27 +140,30 @@ feature -- Methods
 		do
 			a_sound.play
 			l_position:=calcul_grid_position(a_mouse_state)
-			if attached selected_piece as la_selected_piece and attached valid_movements as la_valid_movements and attached valid_kills as la_valid_kills then
-				across la_valid_movements as la_movement loop
-					if la_movement.item.line = l_position.line and la_movement.item.column = l_position.column then
-						if attached la_selected_piece.line as la_line and attached la_selected_piece.column as la_column then
-							a_grid.grid.at (la_line.item).at (la_column.item) := void
-							a_grid.grid.at (l_position.line).at (l_position.column) := la_selected_piece
-							la_selected_piece.set_grid_position (la_line.item, la_column.item)
-							unselect
+			if selected_piece /= void then
+				if attached selected_piece as la_selected_piece and attached valid_movements as la_valid_movements and attached valid_kills as la_valid_kills then
+					across la_valid_movements as la_movement loop
+						if la_movement.item.line = l_position.line and la_movement.item.column = l_position.column then
+							if attached la_selected_piece.line as la_line and attached la_selected_piece.column as la_column then
+								a_grid.grid.at (la_line.item).at (la_column.item) := void
+								a_grid.grid.at (l_position.line).at (l_position.column) := la_selected_piece
+								la_selected_piece.set_grid_position (la_movement.item.line, la_movement.item.column)
+							end
 						end
 					end
 				end
-			end
-			if attached {PIECE} a_grid.grid.at(l_position.line).at(l_position.column) as la_piece then
-				la_piece.on_click -- Used for testing.
-				selected_piece:=la_piece
-				l_possible_movements:=la_piece.possible_positions(l_position.line, l_position.column)
-				l_possible_kill:=la_piece.possible_kill (l_position.line, l_position.column)
-				calcul_valid_movement(l_possible_movements, a_grid)
-				calcul_valid_kill(l_possible_kill, a_grid)
-			else
 				unselect
+			else
+				if attached {PIECE} a_grid.grid.at(l_position.line).at(l_position.column) as la_piece then
+					la_piece.on_click -- Used for testing.
+					selected_piece:=la_piece
+					l_possible_movements:=la_piece.possible_positions(l_position.line, l_position.column)
+					l_possible_kill:=la_piece.possible_kill (l_position.line, l_position.column)
+					calcul_valid_movement(l_possible_movements, a_grid)
+					calcul_valid_kill(l_possible_kill, a_grid)
+				else
+					unselect
+				end
 			end
 			redraw(a_window, a_grid, a_game_images_factory) -- Redraw no matter what.
 		end
