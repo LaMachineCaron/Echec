@@ -91,7 +91,20 @@ feature -- Methods
 					end
 				end
 			end
+		end
 
+	calcul_grid_position(a_mouse_state:GAME_MOUSE_BUTTON_PRESSED_STATE):TUPLE[line, column:INTEGER]
+		local
+			l_position:TUPLE[line, column:INTEGER]
+			l_border:INTEGER
+			l_case:INTEGER
+		do
+			l_border:=24
+			l_case:=69
+			create l_position.default_create
+			l_position.line:=((a_mouse_state.y - l_border) // l_case) + 1
+			l_position.column:=((a_mouse_state.x - l_border) // l_case) + 1
+			result:=l_position
 		end
 
 	draw_piece(a_renderer:GAME_RENDERER; a_grid:GRID)
@@ -114,33 +127,23 @@ feature -- Methods
 			end
 		end
 
-	mouse_pressed (timestamp: NATURAL_32; mouse_state: GAME_MOUSE_BUTTON_PRESSED_STATE; nb_clicks: NATURAL_8; a_window:GAME_WINDOW_RENDERED; a_grid:GRID; a_sound:SOUND; a_game_images_factory:GAME_IMAGES_FACTORY)
+	mouse_pressed (a_timestamp: NATURAL_32; a_mouse_state: GAME_MOUSE_BUTTON_PRESSED_STATE; a_nb_clicks: NATURAL_8; a_window:GAME_WINDOW_RENDERED; a_grid:GRID; a_sound:SOUND; a_game_images_factory:GAME_IMAGES_FACTORY)
 	-- Manage when mouse is pressed.
 		local
 			l_possible_movements:LIST[TUPLE[line, column:INTEGER]]
 			l_possible_kill:LIST[TUPLE[line, column:INTEGER]]
-			l_unselect:BOOLEAN
+			l_position:TUPLE[line, column:INTEGER]
 		do
-			l_unselect:=True
 			a_sound.play
-			across a_grid.grid as la_line loop
-				across la_line.item as la_column loop
-					if cursor_over_sprite(mouse_state, la_column.item) then
-						if attached {PIECE} la_column.item as la_piece then
-						l_unselect:=False
-							la_piece.on_click -- Used for testing.
-							selected_piece:=la_piece
-							l_possible_movements:=la_piece.possible_positions(la_line.cursor_index, la_column.cursor_index)
-							l_possible_kill:=la_piece.possible_kill (la_line.cursor_index, la_column.cursor_index)
-							calcul_valid_movement(l_possible_movements, a_grid)
-							calcul_valid_kill(l_possible_kill, a_grid)
-						end
-					else
-						-- Manage deplacement.
-					end
-				end
-			end
-			if l_unselect then
+			l_position:=calcul_grid_position(a_mouse_state)
+			if attached {PIECE} a_grid.grid.at(l_position.line).at(l_position.column) as la_piece then
+				la_piece.on_click -- Used for testing.
+				selected_piece:=la_piece
+				l_possible_movements:=la_piece.possible_positions(l_position.line, l_position.column)
+				l_possible_kill:=la_piece.possible_kill (l_position.line, l_position.column)
+				calcul_valid_movement(l_possible_movements, a_grid)
+				calcul_valid_kill(l_possible_kill, a_grid)
+			else
 				valid_movements:=void
 				valid_kills:=void
 				selected_piece:=void
@@ -161,22 +164,6 @@ feature -- Methods
 		do
 			across a_valid_positions as la_valide_position loop
 				a_window.renderer.draw_texture (a_texture, la_valide_position.item.integer_32_item (1), la_valide_position.item.integer_32_item (2))
-			end
-		end
-
-	cursor_over_sprite(a_mouse_stat: GAME_MOUSE_BUTTON_PRESSED_STATE; a_sprite:detachable PIECE):BOOLEAN
-	-- Check if there's a sprite under the cursor.
-		local
-			l_over:BOOLEAN
-		do
-			l_over:= False
-			if attached a_sprite as la_piece then
-				if (a_mouse_stat.x > la_piece.x) and (a_mouse_stat.x < la_piece.x + la_piece.width) then
-					if (a_mouse_stat.y > la_piece.y) and (a_mouse_stat.y < la_piece.y + la_piece.height) then
-						l_over := True
-					end
-				end
-				Result := l_over
 			end
 		end
 
