@@ -43,19 +43,20 @@ feature -- Attributs
 
 feature -- Methods
 
-	calcul_position(a_grid_x, a_grid_y:INTEGER) :TUPLE[x, y:INTEGER]
-	local
-		l_x:INTEGER
-		l_y:INTEGER
-		l_border:INTEGER
-		l_case:INTEGER
-	do
-		l_case := 69
-		l_border := 24
-		l_x := l_border + ((a_grid_x - 1) * l_case)
-		l_y := l_border + ((a_grid_y - 1) * l_case)
-		Result := [l_x, l_y]
-	end
+	convert_grid_to_coord(a_grid:TUPLE[line, column:INTEGER]):TUPLE[x, y:INTEGER]
+		local
+			l_coord:TUPLE[x, y:INTEGER]
+			l_border:INTEGER
+			l_case:INTEGER
+		do
+			l_border:=24
+			l_case:=69
+			create l_coord.default_create
+			l_coord.x := l_border + ((a_grid.column - 1) * l_case)
+			l_coord.y := l_border + ((a_grid.line - 1) * l_case)
+			Result := l_coord
+
+		end
 
 	calcul_valid_movement(a_possible_movement:LIST[TUPLE[line, column:INTEGER]]; a_grid:GRID)
 		local
@@ -66,8 +67,8 @@ feature -- Methods
 			create {ARRAYED_LIST[TUPLE[line, column:INTEGER]]} valid_movements.make(a_possible_movement.count)
 			across a_possible_movement as la_possible_movement loop
 				if l_valid then
-					if (a_grid.grid.at (la_possible_movement.item.integer_32_item (1)).at(la_possible_movement.item.integer_32_item (2)) = void) then
-						l_movement := calcul_position(la_possible_movement.item.integer_32_item (2), la_possible_movement.item.integer_32_item (1))
+					if (a_grid.grid.at (la_possible_movement.item.line).at(la_possible_movement.item.column) = void) then
+						l_movement := [la_possible_movement.item.line, la_possible_movement.item.column]
 						if attached valid_movements as la_valid_movements then
 							la_valid_movements.extend(l_movement)
 						end
@@ -84,8 +85,8 @@ feature -- Methods
 		do
 			create {ARRAYED_LIST[TUPLE[line, column:INTEGER]]} valid_kills.make (a_possible_kill.count)
 			across a_possible_kill as la_possible_kill loop
-				if (a_grid.grid.at (la_possible_kill.item.integer_32_item (1)).at(la_possible_kill.item.integer_32_item (2)) /= void) then
-					l_kill := calcul_position(la_possible_kill.item.integer_32_item (1), la_possible_kill.item.integer_32_item (2))
+				if (a_grid.grid.at (la_possible_kill.item.line).at(la_possible_kill.item.column) /= void) then
+					l_kill := [la_possible_kill.item.line, la_possible_kill.item.column]
 					if attached valid_kills as la_valid_kills then
 						la_valid_kills.extend(l_kill)
 					end
@@ -110,21 +111,24 @@ feature -- Methods
 	draw_piece(a_renderer:GAME_RENDERER; a_grid:GRID)
 	-- Draw every pieces contained in the grid.
 		local
-			l_x:INTEGER
-			l_y:INTEGER
-			l_positions:TUPLE[x, y:INTEGER]
+			l_position:TUPLE[x, y:INTEGER]
 		do
 			across 1 |..| 8 as la_index loop
 				across 1 |..| 8 as la_index_2 loop
 					if attached a_grid.grid.at (la_index.item).at (la_index_2.item) as la_piece then
-						l_positions := calcul_position(la_index_2.item, la_index.item)
-						l_x := l_positions.integer_32_item (1)
-						l_y := l_positions.integer_32_item (2)
-						la_piece.set_positions(l_x, l_y)
-						a_renderer.draw_texture (la_piece.texture, l_x, l_y)
+						l_position := convert_grid_to_coord([la_index.item, la_index_2.item])
+						la_piece.set_positions(l_position.x, l_position.y)
+						a_renderer.draw_texture (la_piece.texture, l_position.x, l_position.y)
 					end
 				end
 			end
+		end
+
+	unselect
+		do
+			valid_movements:=void
+			valid_kills:=void
+			selected_piece:=void
 		end
 
 	mouse_pressed (a_timestamp: NATURAL_32; a_mouse_state: GAME_MOUSE_BUTTON_PRESSED_STATE; a_nb_clicks: NATURAL_8; a_window:GAME_WINDOW_RENDERED; a_grid:GRID; a_sound:SOUND; a_game_images_factory:GAME_IMAGES_FACTORY)
@@ -136,6 +140,18 @@ feature -- Methods
 		do
 			a_sound.play
 			l_position:=calcul_grid_position(a_mouse_state)
+			if attached selected_piece as la_selected_piece and attached valid_movements as la_valid_movements and attached valid_kills as la_valid_kills then
+				across la_valid_movements as la_movement loop
+					if la_movement.item.line = l_position.line and la_movement.item.column = l_position.column then
+						if attached la_selected_piece.line as la_line and attached la_selected_piece.column as la_column then
+							a_grid.grid.at (la_line.item).at (la_column.item) := void
+							a_grid.grid.at (l_position.line).at (l_position.column) := la_selected_piece
+							la_selected_piece.set_grid_position (la_line.item, la_column.item)
+							unselect
+						end
+					end
+				end
+			end
 			if attached {PIECE} a_grid.grid.at(l_position.line).at(l_position.column) as la_piece then
 				la_piece.on_click -- Used for testing.
 				selected_piece:=la_piece
@@ -144,26 +160,30 @@ feature -- Methods
 				calcul_valid_movement(l_possible_movements, a_grid)
 				calcul_valid_kill(l_possible_kill, a_grid)
 			else
-				valid_movements:=void
-				valid_kills:=void
-				selected_piece:=void
+				unselect
 			end
 			redraw(a_window, a_grid, a_game_images_factory) -- Redraw no matter what.
 		end
 
 	draw_valid_kill(a_window:GAME_WINDOW_RENDERED; a_valid_kill:LIST[TUPLE[line, column:INTEGER]]; a_texture:GAME_TEXTURE; a_grid:GRID)
 	-- Draw color to show killable piece.
+		local
+			l_coord:TUPLE[x, y:INTEGER]
 		do
 			across a_valid_kill as la_valid_kill loop
-				a_window.renderer.draw_texture (a_texture, la_valid_kill.item.integer_32_item (2), la_valid_kill.item.integer_32_item (1))
+				l_coord:=convert_grid_to_coord(la_valid_kill.item)
+				a_window.renderer.draw_texture (a_texture, l_coord.x, l_coord.y)
 			end
 		end
 
 	draw_valid_movement(a_window:GAME_WINDOW_RENDERED; a_valid_positions:LIST[TUPLE[line, column:INTEGER]]; a_texture:GAME_TEXTURE; a_grid:GRID)
 	-- Draw color to show possible movement.
+		local
+			l_coord:TUPLE[x, y:INTEGER]
 		do
-			across a_valid_positions as la_valide_position loop
-				a_window.renderer.draw_texture (a_texture, la_valide_position.item.integer_32_item (1), la_valide_position.item.integer_32_item (2))
+			across a_valid_positions as la_valid_position loop
+				l_coord:=convert_grid_to_coord(la_valid_position.item)
+				a_window.renderer.draw_texture (a_texture, l_coord.x, l_coord.y)
 			end
 		end
 
