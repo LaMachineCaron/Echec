@@ -22,6 +22,7 @@ feature{NONE} -- Initialization
 			--l_icon_image:GAME_IMAGE_BMP_FILE
 			l_multijoueur:MULTIPLAYER
 			l_solo:SOLO
+			l_background:BACKGROUND
 			l_sprites: ARRAYED_LIST[DRAWABLE]
 			l_music:MUSIC
 			l_sound:SOUND
@@ -34,14 +35,15 @@ feature{NONE} -- Initialization
 			l_window := l_window_builder.generate_window
 			--l_window.set_icon(l_icon_image)
 			create l_menu_images.make (l_window.renderer)
+			create l_background.make(l_menu_images.background, 800, 600)
+			l_window.renderer.draw_texture (l_background.texture, l_background.x, l_background.y)
 			create l_sprites.make(1)
-			create l_multijoueur.make(l_menu_images.multiplayer_button, 180, 43)
+			create l_multijoueur.make(l_menu_images.multiplayer_button, 200, 50)
 			l_sprites.extend (l_multijoueur)
-			create l_solo.make(l_menu_images.solo_button, 180, 43)
+			create l_solo.make(l_menu_images.solo_button, 200, 50)
 			l_sprites.extend (l_solo)
-			l_multijoueur.set_positions(320, 350)
-			l_solo.set_positions(320, 250)
-			l_window.renderer.clear
+			l_multijoueur.set_positions(450, 450)
+			l_solo.set_positions(150, 450)
 			l_sprites.do_all (agent draw_button(l_window.renderer, ?))
 			create l_music.make
 			create l_sound.make
@@ -84,13 +86,14 @@ feature {NONE}
 			Result := l_over
 		end
 
-	draw(renderer: GAME_RENDERER)
+	draw(renderer: GAME_RENDERER) -- Useless for now. Used for testing.
 		do
 			renderer.set_drawing_color (create {GAME_COLOR}.make_rgb (0, 128, 255))
 			renderer.draw_line (100, 100, 425, 260)
 		end
 
 	draw_button(a_window:GAME_RENDERER; a_sprites:DRAWABLE)
+	-- Draw a drawable.
 		do
 			a_window.draw_texture (a_sprites.texture, a_sprites.x, a_sprites.y)
 		end

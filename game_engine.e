@@ -35,6 +35,11 @@ feature{NONE} -- Initialization
 			a_window.mouse_button_pressed_actions.extend(agent mouse_pressed(?, ?, ?, a_window, l_grid, l_sound, l_game_images))
 			a_window.update
 		end
+feature -- Attributs
+
+	selected_piece:detachable PIECE
+	valid_movements:detachable LIST[TUPLE[line, column:INTEGER]]
+	valid_kills:detachable LIST[TUPLE[line, column:INTEGER]]
 
 feature -- Methods
 
@@ -52,40 +57,41 @@ feature -- Methods
 		Result := [l_x, l_y]
 	end
 
-	calcul_valid_movement(a_possible_movement:LIST[TUPLE[line, column:INTEGER]]; a_grid:GRID): LIST[TUPLE[line, column:INTEGER]]
+	calcul_valid_movement(a_possible_movement:LIST[TUPLE[line, column:INTEGER]]; a_grid:GRID)
 		local
-			l_valid_movement:LIST[TUPLE[line, column:INTEGER]]
 			l_valid:BOOLEAN
 			l_movement:TUPLE[line, column:INTEGER]
 		do
 			l_valid := true
-			create {ARRAYED_LIST[TUPLE[line, column:INTEGER]]} l_valid_movement.make(a_possible_movement.count)
+			create {ARRAYED_LIST[TUPLE[line, column:INTEGER]]} valid_movements.make(a_possible_movement.count)
 			across a_possible_movement as la_possible_movement loop
 				if l_valid then
 					if (a_grid.grid.at (la_possible_movement.item.integer_32_item (1)).at(la_possible_movement.item.integer_32_item (2)) = void) then
 						l_movement := calcul_position(la_possible_movement.item.integer_32_item (2), la_possible_movement.item.integer_32_item (1))
-						l_valid_movement.extend(l_movement)
+						if attached valid_movements as la_valid_movements then
+							la_valid_movements.extend(l_movement)
+						end
 					else
 						l_valid := false
 					end
 				end
 			end
-			result := l_valid_movement
 		end
 
-	calcul_valid_kill(a_possible_kill:LIST[TUPLE[line, column:INTEGER]]; a_grid:GRID):LIST[TUPLE[line, column:INTEGER]]
+	calcul_valid_kill(a_possible_kill:LIST[TUPLE[line, column:INTEGER]]; a_grid:GRID)
 		local
-			l_valid_kill:LIST[TUPLE[line, column:INTEGER]]
 			l_kill:TUPLE[line, column:INTEGER]
 		do
-			create {ARRAYED_LIST[TUPLE[line, column:INTEGER]]} l_valid_kill.make (a_possible_kill.count)
+			create {ARRAYED_LIST[TUPLE[line, column:INTEGER]]} valid_kills.make (a_possible_kill.count)
 			across a_possible_kill as la_possible_kill loop
 				if (a_grid.grid.at (la_possible_kill.item.integer_32_item (1)).at(la_possible_kill.item.integer_32_item (2)) /= void) then
 					l_kill := calcul_position(la_possible_kill.item.integer_32_item (1), la_possible_kill.item.integer_32_item (2))
-					l_valid_kill.extend(l_kill)
+					if attached valid_kills as la_valid_kills then
+						la_valid_kills.extend(l_kill)
+					end
 				end
 			end
-			result:=l_valid_kill
+
 		end
 
 	draw_piece(a_renderer:GAME_RENDERER; a_grid:GRID)
@@ -109,33 +115,44 @@ feature -- Methods
 		end
 
 	mouse_pressed (timestamp: NATURAL_32; mouse_state: GAME_MOUSE_BUTTON_PRESSED_STATE; nb_clicks: NATURAL_8; a_window:GAME_WINDOW_RENDERED; a_grid:GRID; a_sound:SOUND; a_game_images_factory:GAME_IMAGES_FACTORY)
-	-- When mouse is pressed, look if a sprite as been pressed and if so, execute is on_click method.
+	-- Manage when mouse is pressed.
 		local
 			l_possible_movements:LIST[TUPLE[line, column:INTEGER]]
 			l_possible_kill:LIST[TUPLE[line, column:INTEGER]]
+			l_unselect:BOOLEAN
 		do
+			l_unselect:=True
 			a_sound.play
 			across a_grid.grid as la_line loop
 				across la_line.item as la_column loop
 					if cursor_over_sprite(mouse_state, la_column.item) then
 						if attached {PIECE} la_column.item as la_piece then
-							la_piece.on_click
+						l_unselect:=False
+							la_piece.on_click -- Used for testing.
+							selected_piece:=la_piece
 							l_possible_movements:=la_piece.possible_positions(la_line.cursor_index, la_column.cursor_index)
 							l_possible_kill:=la_piece.possible_kill (la_line.cursor_index, la_column.cursor_index)
-							l_possible_movements := calcul_valid_movement(l_possible_movements, a_grid)
-							l_possible_kill:=calcul_valid_kill(l_possible_kill, a_grid)
-							redraw(a_window, a_grid, l_possible_movements,l_possible_kill, a_game_images_factory)
+							calcul_valid_movement(l_possible_movements, a_grid)
+							calcul_valid_kill(l_possible_kill, a_grid)
 						end
+					else
+						-- Manage deplacement.
 					end
 				end
 			end
+			if l_unselect then
+				valid_movements:=void
+				valid_kills:=void
+				selected_piece:=void
+			end
+			redraw(a_window, a_grid, a_game_images_factory) -- Redraw no matter what.
 		end
 
 	draw_valid_kill(a_window:GAME_WINDOW_RENDERED; a_valid_kill:LIST[TUPLE[line, column:INTEGER]]; a_texture:GAME_TEXTURE; a_grid:GRID)
 	-- Draw color to show killable piece.
 		do
 			across a_valid_kill as la_valid_kill loop
-					a_window.renderer.draw_texture (a_texture, la_valid_kill.item.integer_32_item (2), la_valid_kill.item.integer_32_item (1))
+				a_window.renderer.draw_texture (a_texture, la_valid_kill.item.integer_32_item (2), la_valid_kill.item.integer_32_item (1))
 			end
 		end
 
@@ -163,12 +180,16 @@ feature -- Methods
 			end
 		end
 
-	redraw (a_window:GAME_WINDOW_RENDERED; a_grid:GRID; a_possible_positions, a_possible_kill:LIST[TUPLE[line, column:INTEGER]]; a_game_images_factory:GAME_IMAGES_FACTORY)
+	redraw (a_window:GAME_WINDOW_RENDERED; a_grid:GRID; a_game_images_factory:GAME_IMAGES_FACTORY)
 	-- Redraw everything.
 	do
 		a_window.renderer.draw_texture (a_game_images_factory.game_background, 0, 0)
-		draw_valid_movement(a_window, a_possible_positions, a_game_images_factory.possible_movement, a_grid)
-		draw_valid_kill(a_window, a_possible_kill, a_game_images_factory.possible_kill, a_grid)
+		if attached valid_movements as la_valid_movements then
+			draw_valid_movement(a_window, la_valid_movements, a_game_images_factory.possible_movement, a_grid)
+		end
+		if attached valid_kills as la_valid_kills then
+			draw_valid_kill(a_window, la_valid_kills, a_game_images_factory.possible_kill, a_grid)
+		end
 		draw_piece(a_window.renderer, a_grid)
 		a_window.update
 	end

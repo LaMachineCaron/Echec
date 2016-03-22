@@ -16,6 +16,7 @@ feature{NONE} -- Initialization
 			init_grid(a_renderer, a_game_images)
 			init_white_team(a_game_images)
 			init_black_team(a_game_images)
+			init_grid_position
 		end
 
 feature -- Attributs
@@ -74,5 +75,17 @@ feature -- Methods
 			grid.at (8).at (6) := create {BISHOP}.make (a_game_images.black_bishop_texture, False)
 			grid.at (8).at (7) := create {KNIGHT}.make (a_game_images.black_knight_texture, False)
 			grid.at (8).at (8) := create {ROOK}.make (a_game_images.black_rook_texture, False)
+		end
+
+		init_grid_position
+		-- set every the `line` and `column` of every piece.
+		do
+			across grid as la_line loop
+				across la_line.item as la_column loop
+					if attached la_column.item as la_piece then
+						la_piece.set_grid_position (la_line.cursor_index, la_column.cursor_index)
+					end
+				end
+			end
 		end
 end

@@ -28,7 +28,7 @@ feature {NONE} -- Initialization
 			black_king_texture:= set_texture(a_renderer, "./Ressources/black_king.png")
 			black_queen_texture:= set_texture(a_renderer, "./Ressources/black_queen.png")
 			black_pawn_texture:= set_texture(a_renderer, "./Ressources/black_pawn.png")
-			game_background := set_texture(a_renderer, "./Ressources/chessboard.png")
+			game_background := set_texture(a_renderer, "./Ressources/chessboard2.png")
 			possible_movement := set_texture(a_renderer, "./Ressources/possible_movement.png")
 			possible_kill := set_texture(a_renderer, "./Ressources/possible_kill.png")
 
