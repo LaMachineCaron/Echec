@@ -16,10 +16,10 @@ create
 feature{NONE} -- Initialization
 
 	make
+	-- Create the window and the game menu.
 		local
 			l_window_builder:GAME_WINDOW_RENDERED_BUILDER
 			l_window:GAME_WINDOW_RENDERED
-			--l_icon_image:GAME_IMAGE_BMP_FILE
 			l_multijoueur:MULTIPLAYER
 			l_solo:SOLO
 			l_background:BACKGROUND
@@ -31,9 +31,7 @@ feature{NONE} -- Initialization
 			create l_window_builder
 			l_window_builder.set_dimension(800, 600)
 			l_window_builder.set_title("Jeu Échec")
-			--create l_icon_image.make("./Ressources/icon.bmp")-- Ne fonctionne pas.
 			l_window := l_window_builder.generate_window
-			--l_window.set_icon(l_icon_image)
 			create l_menu_images.make (l_window.renderer)
 			create l_background.make(l_menu_images.background, 800, 600)
 			l_window.renderer.draw_texture (l_background.texture, l_background.x, l_background.y)
@@ -56,11 +54,13 @@ feature{NONE} -- Initialization
 feature {NONE}
 
 	set_agents
+	-- Set the agents.
 		do
 			game_library.quit_signal_actions.extend(agent (a_timestamp:NATURAL_32) do game_library.stop end)
 		end
 
 	mouse_pressed (timestamp: NATURAL_32; mouse_state: GAME_MOUSE_BUTTON_PRESSED_STATE; nb_clicks: NATURAL_8; a_window:GAME_WINDOW_RENDERED; a_sprites:ARRAYED_LIST[DRAWABLE]; a_sound:SOUND)
+	-- When the mouse is pressed, it does the button.on_click action.
 		do
 			a_sound.play
 			across a_sprites as la_sprites loop
@@ -74,6 +74,7 @@ feature {NONE}
 		end
 
 	cursor_over_sprite(a_mouse_stat: GAME_MOUSE_BUTTON_PRESSED_STATE; a_sprite:DRAWABLE):BOOLEAN
+	-- Tells if the cursor is over a sprite.
 		local
 			l_over:BOOLEAN
 		do

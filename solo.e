@@ -15,6 +15,7 @@ create
 feature -- Methods
 
 	on_click(a_window:GAME_WINDOW_RENDERED)
+	-- Create the game engine.
 		local
 			l_game_engine:GAME_ENGINE
 		do

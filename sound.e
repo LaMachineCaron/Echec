@@ -15,6 +15,7 @@ create
 feature{NONE} -- Initialize
 
 	make
+	-- Create a sound using "click.ogg".
 		local
 			l_environment:EXECUTION_ENVIRONMENT
 		do
@@ -32,6 +33,7 @@ feature -- Attributs
 feature -- Methods
 
 	play
+	-- play the sound once.
 		do
 			if sound.is_open then
 				source.queue_sound (sound)

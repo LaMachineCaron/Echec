@@ -18,11 +18,13 @@ create
 feature -- Methods
 
 	on_click
+	-- When the piece is clicked.
 			do
 				io.put_string ("Rook!")
 			end
 
 	possible_positions(a_line, a_column:INTEGER) :LIST[TUPLE[line, column:INTEGER]]
+	-- Return a list of possible movements.
 		local
 			l_list:ARRAYED_LIST[TUPLE[line, column:INTEGER]]
 		do
@@ -31,11 +33,9 @@ feature -- Methods
 		end
 
 	possible_kill(a_line, a_column:INTEGER) :LIST[TUPLE[line, column:INTEGER]]
-		local
-			l_list:ARRAYED_LIST[TUPLE[line, column:INTEGER]]
+	-- Return a list of possible kills. (Same as possible_positions for this piece)
 		do
-			create l_list.make(0)
-			Result:=l_list
+			Result:=possible_positions(a_line, a_column)
 		end
 
 

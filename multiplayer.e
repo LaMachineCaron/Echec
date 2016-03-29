@@ -15,6 +15,7 @@ create
 feature -- Methods
 
 	on_click(a_window:GAME_WINDOW_RENDERED)
+	-- When the button is clicked.
 		do
 			print("Multiplayer")
 		end

@@ -15,6 +15,7 @@ create
 feature{NONE} -- Initialization
 
 	make(a_renderer:GAME_RENDERER)
+	-- Create the menu textures.
 		do
 			solo_button := set_texture(a_renderer, "./Ressources/button_solo2.png")
 			multiplayer_button := set_texture(a_renderer, "./Ressources/multiplayer_button2.png")

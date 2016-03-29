@@ -19,11 +19,13 @@ create
 feature -- Methods
 
 	on_click
+	-- When the piece is clicked.
 			do
 				print("Pawn!")
 			end
 
 	possible_positions(a_line, a_column:INTEGER): LIST[TUPLE[line, column:INTEGER]]
+	-- Return a list of possible movements.
 		local
 			l_list:ARRAYED_LIST[TUPLE[line, column:INTEGER]]
 		do
@@ -43,6 +45,7 @@ feature -- Methods
 		end
 
 	possible_kill(a_line, a_column:INTEGER) :LIST[TUPLE[line, column:INTEGER]]
+	-- Return a list of possible kills.
 		local
 			l_list:ARRAYED_LIST[TUPLE[line, column:INTEGER]]
 		do

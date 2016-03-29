@@ -9,6 +9,7 @@ deferred class
 feature -- Methods
 
 	set_texture(a_renderer:GAME_RENDERER; a_image_file:STRING):GAME_TEXTURE
+	-- create a texuture using the image URL.
 		local
 			l_image:IMG_IMAGE_FILE
 			l_texture:GAME_TEXTURE
@@ -28,6 +29,7 @@ feature -- Methods
 		end
 
 	default_image(a_renderer:GAME_RENDERER):GAME_TEXTURE
+	-- If set texture can't create the texture, this will be the texture.
 		local
 			l_pixel_format:GAME_PIXEL_FORMAT
 			l_texture:GAME_TEXTURE

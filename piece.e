@@ -15,6 +15,7 @@ inherit
 feature {NONE} -- Initialization
 
 	make(a_texture:GAME_TEXTURE; a_white_team:BOOLEAN)
+	-- Create a piece.
 		do
 			texture := a_texture
 			set_dimensions(68,68)
@@ -24,7 +25,7 @@ feature {NONE} -- Initialization
 
 feature -- Attributs
 
-	first_move: BOOLEAN
+	first_move: BOOLEAN -- If it is the first time this piece move.
 	is_white: BOOLEAN -- Team
 	is_black: BOOLEAN -- Team
 	line:detachable INTEGER -- Grid line
@@ -33,6 +34,7 @@ feature -- Attributs
 feature -- Methods
 
 	on_click
+	-- When the piece is clicked.
 		do
 			io.put_string ("Default")
 		end

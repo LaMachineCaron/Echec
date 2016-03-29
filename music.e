@@ -15,6 +15,7 @@ create
 feature{NONE} -- Initialization
 
 	make
+	-- play the "music.ogg" in loop.
 		local
 			l_source:AUDIO_SOURCE
 			l_music:AUDIO_SOUND_FILE

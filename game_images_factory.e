@@ -15,6 +15,7 @@ create
 feature {NONE} -- Initialization
 
 	make(a_renderer:GAME_RENDERER)
+	-- create every texture in the game.
 		do
 			white_rook_texture:= set_texture(a_renderer, "./Ressources/white_rook.png")
 			white_knight_texture:= set_texture(a_renderer, "./Ressources/white_knight.png")
