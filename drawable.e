@@ -8,12 +8,12 @@ deferred class
 
 feature {NONE} -- Initialization
 
-	make(a_texture:GAME_TEXTURE; a_width, a_height: INTEGER)
+	make(a_texture:GAME_TEXTURE)
 	-- Create a drawable object using a texture and dimensions.
 		do
 			set_positions (0,0)
 			texture := a_texture
-			set_dimensions(a_width, a_height)
+			set_dimensions
 		end
 
 feature -- Attributs
@@ -39,16 +39,19 @@ feature -- Methods
 			y_setted: y = a_y
 		end
 
-	set_dimensions (a_width, a_height:INTEGER)
-	-- Set the `width` and `height` of the drawable
+	set_dimensions
+	-- Set the `width` and `height` from the texture to the drawable
 		require
-			valid_width: a_width > 0
-			valid_height: a_height > 0
+			valid_width: texture.width > 0
+			valid_height: texture.height > 0
 		do
-			width := a_width
-			height := a_height
+			width := texture.width
+			height := texture.height
 		ensure
-			width_setted: width = a_width
-			height_setted: height = a_height
+			width_setted: width = texture.width
+			height_setted: height = texture.height
 		end
+note
+	copyright: "Copyright (c) 2016, Alexandre Caron"
+	license:   "MIT License (see http://opensource.org/licenses/MIT)"
 end

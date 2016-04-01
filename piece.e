@@ -18,7 +18,7 @@ feature {NONE} -- Initialization
 	-- Create a piece.
 		do
 			texture := a_texture
-			set_dimensions(68,68)
+			set_dimensions
 			set_first_move
 			set_team(a_white_team)
 		end
@@ -74,5 +74,7 @@ feature -- Methods
 			valid_team: is_white = not is_black
 		end
 
-
+note
+	copyright: "Copyright (c) 2016, Alexandre Caron"
+	license:   "MIT License (see http://opensource.org/licenses/MIT)"
 end

@@ -20,7 +20,7 @@ feature -- Methods
 	on_click
 	-- When the piece is clicked.
 			do
-				io.put_string ("Queen!")
+				io.put_string ("Queen %N")
 			end
 
 	possible_positions(a_line, a_column:INTEGER) :LIST[TUPLE[line, column:INTEGER]]
@@ -37,4 +37,7 @@ feature -- Methods
 		do
 			Result:=possible_positions(a_line, a_column)
 		end
+note
+	copyright: "Copyright (c) 2016, Alexandre Caron"
+	license:   "MIT License (see http://opensource.org/licenses/MIT)"
 end

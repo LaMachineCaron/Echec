@@ -10,6 +10,7 @@ inherit
 	AUDIO_LIBRARY_SHARED
 	GAME_LIBRARY_SHARED
 	IMG_LIBRARY_SHARED
+	TEXT_LIBRARY_SHARED
 
 create
 	make
@@ -22,6 +23,7 @@ feature {NONE} -- Initialization
 
 		do
 			game_library.enable_video -- Enable video functinalities
+			text_library.enable_text
 			audio_library.enable_sound
 			audio_library.launch_in_thread
 
@@ -30,8 +32,12 @@ feature {NONE} -- Initialization
 
 			game_library.clear_all_events
 			game_library.quit_library -- Clear the library before quiting
+			text_library.quit_library
 			audio_library.stop_thread
 			audio_library.quit_library
 		end
 
+note
+	copyright: "Copyright (c) 2016, Alexandre Caron"
+	license:   "MIT License (see http://opensource.org/licenses/MIT)"
 end

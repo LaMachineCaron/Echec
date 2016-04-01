@@ -7,34 +7,31 @@ class
 	GAME_ENGINE
 
 inherit
-	GAME_LIBRARY_SHARED
-	IMG_LIBRARY_SHARED
+	ENGINES
 
 create
 	make
 
 feature{NONE} -- Initialization
 
-	make(a_window:GAME_WINDOW_RENDERED)
+	make(a_window:GAME_WINDOW_RENDERED; a_factory: RESSOURCES_FACTORY)
 	-- Create the engine using a window_rendered.
 
 		local
 			l_grid:GRID
-			l_background:BACKGROUND
-			l_game_images:GAME_IMAGES_FACTORY
-			l_sound:SOUND
 		do
 			a_window.clear_events
 			a_window.renderer.clear
-			create l_game_images.make (a_window.renderer)
-			create l_background.make(l_game_images.game_background, 600, 600)
-			a_window.renderer.draw_texture (l_background.texture, l_background.x, l_background.y)
-			create l_grid.make(a_window.renderer, l_game_images)
-			create l_sound.make
+			factory := a_factory
+			create background.make(factory.game_background)
+			a_window.renderer.draw_texture (background.texture, background.x, background.y)
+			create l_grid.make(a_window.renderer, factory)
+			click_sound := factory.click_sound
 			draw_piece(a_window.renderer, l_grid)
-			a_window.mouse_button_pressed_actions.extend(agent mouse_pressed(?, ?, ?, a_window, l_grid, l_sound, l_game_images))
+			a_window.mouse_button_pressed_actions.extend(agent mouse_pressed(?, ?, ?, a_window, l_grid))
 			a_window.update
 		end
+
 feature -- Attributs
 
 	selected_piece:detachable PIECE -- The current `piece` selected
@@ -140,14 +137,14 @@ feature -- Methods
 			piece_unselected: selected_piece = void
 		end
 
-	mouse_pressed (a_timestamp: NATURAL_32; a_mouse_state: GAME_MOUSE_BUTTON_PRESSED_STATE; a_nb_clicks: NATURAL_8; a_window:GAME_WINDOW_RENDERED; a_grid:GRID; a_sound:SOUND; a_game_images_factory:GAME_IMAGES_FACTORY)
+	mouse_pressed (a_timestamp: NATURAL_32; a_mouse_state: GAME_MOUSE_BUTTON_PRESSED_STATE; a_nb_clicks: NATURAL_8; a_window:GAME_WINDOW_RENDERED; a_grid:GRID)
 	-- Manage when mouse is pressed.
 		local
 			l_possible_movements:LIST[TUPLE[line, column:INTEGER]]
 			l_possible_kill:LIST[TUPLE[line, column:INTEGER]]
 			l_position:TUPLE[line, column:INTEGER]
 		do
-			a_sound.play
+			click_sound.play_once
 			l_position:=convert_coord_to_grid(a_mouse_state)
 			if l_position.line <= 8 and l_position.line >= 0 and l_position.column <= 8 and l_position.column >= 0 then
 				if selected_piece /= void then
@@ -175,7 +172,7 @@ feature -- Methods
 						unselect
 					end
 				end
-				redraw(a_window, a_grid, a_game_images_factory) -- Redraw no matter what.
+				redraw(a_window, a_grid) -- Redraw no matter what.
 			end
 		end
 
@@ -201,17 +198,20 @@ feature -- Methods
 			end
 		end
 
-	redraw (a_window:GAME_WINDOW_RENDERED; a_grid:GRID; a_game_images_factory:GAME_IMAGES_FACTORY)
+	redraw (a_window:GAME_WINDOW_RENDERED; a_grid:GRID)
 	-- Redraw everything.
 	do
-		a_window.renderer.draw_texture (a_game_images_factory.game_background, 0, 0)
+		a_window.renderer.draw_texture (factory.game_background, 0, 0)
 		if attached valid_movements as la_valid_movements then
-			draw_valid_movement(a_window, la_valid_movements, a_game_images_factory.possible_movement, a_grid)
+			draw_valid_movement(a_window, la_valid_movements, factory.possible_movement, a_grid)
 		end
 		if attached valid_kills as la_valid_kills then
-			draw_valid_kill(a_window, la_valid_kills, a_game_images_factory.possible_kill, a_grid)
+			draw_valid_kill(a_window, la_valid_kills, factory.possible_kill, a_grid)
 		end
 		draw_piece(a_window.renderer, a_grid)
 		a_window.update
 	end
+note
+	copyright: "Copyright (c) 2016, Alexandre Caron"
+	license:   "MIT License (see http://opensource.org/licenses/MIT)"
 end
