@@ -74,6 +74,11 @@ feature -- Methods
 			valid_team: is_white = not is_black
 		end
 
+invariant
+	valid_team: is_black = not is_white
+	valid_column: attached line implies attached column
+	valid_line: attached column implies attached line
+
 note
 	copyright: "Copyright (c) 2016, Alexandre Caron"
 	license:   "MIT License (see http://opensource.org/licenses/MIT)"

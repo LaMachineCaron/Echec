@@ -34,4 +34,7 @@ feature -- Attributs
 
 	text:READABLE_STRING_GENERAL -- The text to be displayed.
 
+note
+	copyright: "Copyright (c) 2016, Alexandre Caron"
+	license:   "MIT License (see http://opensource.org/licenses/MIT)"
 end

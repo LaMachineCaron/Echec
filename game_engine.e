@@ -211,6 +211,11 @@ feature -- Methods
 		draw_piece(a_window.renderer, a_grid)
 		a_window.update
 	end
+	
+invariant
+
+	valid_selection: attached selected_piece implies (attached valid_movements and attached valid_kills)
+
 note
 	copyright: "Copyright (c) 2016, Alexandre Caron"
 	license:   "MIT License (see http://opensource.org/licenses/MIT)"

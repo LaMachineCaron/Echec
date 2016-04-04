@@ -51,6 +51,11 @@ feature -- Methods
 			width_setted: width = texture.width
 			height_setted: height = texture.height
 		end
+
+invariant
+	valid_dimensions: width > 0 and height > 0 and texture.width = width and texture.height = height
+	valid_positions: x >= 0 and y >= 0
+
 note
 	copyright: "Copyright (c) 2016, Alexandre Caron"
 	license:   "MIT License (see http://opensource.org/licenses/MIT)"
