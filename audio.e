@@ -15,7 +15,7 @@ create
 feature{NONE} -- Initialize
 
 	make(a_sound_file:STRING)
-	-- Create a sound passed in argument.
+	-- Create a `sound' with the string passed in argument.
 		local
 			l_environment:EXECUTION_ENVIRONMENT
 		do
@@ -34,7 +34,7 @@ feature{NONE} -- Initialize
 feature -- Attributs
 
 	has_error: BOOLEAN -- True is there's an error.
-	sound: AUDIO_SOUND_FILE
+	sound: AUDIO_SOUND_FILE 
 	source: AUDIO_SOURCE
 
 feature -- Methods

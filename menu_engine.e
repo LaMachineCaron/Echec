@@ -7,8 +7,6 @@ class
 	MENU_ENGINE
 
 inherit
-	GAME_LIBRARY_SHARED
-	IMG_LIBRARY_SHARED
 	ENGINES
 
 create
@@ -20,58 +18,63 @@ feature{NONE} -- Initialization
 	-- Create the window and the game menu.
 		local
 			l_window_builder:GAME_WINDOW_RENDERED_BUILDER
-			l_window:GAME_WINDOW_RENDERED
-			l_multijoueur:MULTIPLAYER
-			l_solo:SOLO
-			l_sprites: ARRAYED_LIST[DRAWABLE]
 		do
 			create l_window_builder
 			l_window_builder.set_dimension(800, 600)
 			l_window_builder.set_title("Jeu Échec")
-			l_window := l_window_builder.generate_window
-			create factory.make (l_window.renderer)
-			click_sound := factory.click_sound
-			create background.make(factory.menu_background)
-			l_window.renderer.draw_texture (background.texture, background.x, background.y)
-			create l_sprites.make(1)
-			create l_multijoueur.make(factory.multiplayer_button)
-			l_sprites.extend (l_multijoueur)
-			create l_solo.make(factory.solo_button)
-			l_sprites.extend (l_solo)
-			l_multijoueur.set_positions(450, 450)
-			l_solo.set_positions(150, 450)
-			l_sprites.do_all (agent draw_button(l_window.renderer, ?))
+			window := l_window_builder.generate_window
+			create factory.make (window.renderer)
+			init_ressources
 			factory.main_music.play_loop
-			l_window.mouse_button_pressed_actions.extend(agent mouse_pressed(?, ?, ?, l_window, l_sprites))
 			set_agents
-			l_window.update
+			draw_all
 			game_library.launch
 		end
 
 feature {NONE}
 
+	init_ressources
+	-- Initialize every ressources used for this menu.
+		local
+			l_multiplayer: MULTIPLAYER
+			l_solo: SOLO
+		do
+			create background.make (factory.menu_background)
+			create l_multiplayer.make_with_position (factory.multiplayer_button, 450, 450)
+			create l_solo.make_with_position (factory.solo_button, 150, 450)
+			create {LINKED_LIST[DRAWABLE]} textures.make
+			click_sound := factory.click_sound
+			textures.extend (background)
+			textures.extend (l_multiplayer)
+			textures.extend (l_solo)
+		end
+
 	set_agents
 	-- Set the agents.
 		do
 			game_library.quit_signal_actions.extend(agent (a_timestamp:NATURAL_32) do game_library.stop end)
+			window.mouse_button_pressed_actions.extend(agent mouse_pressed)
+			window.expose_actions.extend (agent (timestamp: NATURAL_32) do draw_all end)
 		end
 
-	mouse_pressed (timestamp: NATURAL_32; mouse_state: GAME_MOUSE_BUTTON_PRESSED_STATE; nb_clicks: NATURAL_8; a_window:GAME_WINDOW_RENDERED; a_sprites:ARRAYED_LIST[DRAWABLE])
+	mouse_pressed (timestamp: NATURAL_32; mouse_state: GAME_MOUSE_BUTTON_PRESSED_STATE; nb_clicks: NATURAL_8)
 	-- When the mouse is pressed, it does the button.on_click action.
 		do
 			click_sound.play_once
-			across a_sprites as la_sprites loop
-				if cursor_over_sprite(mouse_state, la_sprites.item) then
-					if attached {BUTTONS} la_sprites.item as la_bouton then
-						la_bouton.on_click(a_window, factory)
+			across textures as la_texture loop
+				if cursor_over_sprite(mouse_state, la_texture.item) then
+					if attached {BUTTON} la_texture.item as la_bouton then
+						window.clear_events
+						window.renderer.clear
+						la_bouton.on_click(window, factory)
+						-- Reset evenement
 					end
 				end
 			end
-
 		end
 
 	cursor_over_sprite(a_mouse_stat: GAME_MOUSE_BUTTON_PRESSED_STATE; a_sprite:DRAWABLE):BOOLEAN
-	-- Tells if the cursor is over a sprite.
+	-- Tells if the cursor is over a button.
 		local
 			l_over:BOOLEAN
 		do
@@ -84,17 +87,6 @@ feature {NONE}
 			Result := l_over
 		end
 
-	draw(renderer: GAME_RENDERER) -- Useless for now. Used for testing.
-		do
-			renderer.set_drawing_color (create {GAME_COLOR}.make_rgb (0, 128, 255))
-			renderer.draw_line (100, 100, 425, 260)
-		end
-
-	draw_button(a_window:GAME_RENDERER; a_sprites:DRAWABLE)
-	-- Draw a drawable.
-		do
-			a_window.draw_texture (a_sprites.texture, a_sprites.x, a_sprites.y)
-		end
 note
 	copyright: "Copyright (c) 2016, Alexandre Caron"
 	license:   "MIT License (see http://opensource.org/licenses/MIT)"

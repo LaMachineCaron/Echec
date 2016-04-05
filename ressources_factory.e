@@ -42,6 +42,7 @@ feature -- Attributs
 	solo_button:GAME_TEXTURE
 	multiplayer_button:GAME_TEXTURE
 	menu_background:GAME_TEXTURE
+	return_button:GAME_TEXTURE
 
 	-- Every sound in the game.
 	click_sound:AUDIO
@@ -51,6 +52,7 @@ feature -- Attributs
 
 	-- Colors
 	black:GAME_COLOR
+	white:GAME_COLOR
 
 	--Fonts
 	ubuntu_font:TEXT_FONT
@@ -78,6 +80,7 @@ feature -- Methods
 			solo_button := set_texture(a_renderer, "./Ressources/button_solo2.png")
 			multiplayer_button := set_texture(a_renderer, "./Ressources/multiplayer_button2.png")
 			menu_background := set_texture(a_renderer, "./Ressources/menu_background.png")
+			return_button := set_texture(a_renderer, "./Ressources/button_return.png")
 		end
 
 	create_sounds
@@ -96,12 +99,13 @@ feature -- Methods
 	-- Create every color.
 		do
 			create black.make(0, 0, 0, 0)
+			create white.make(255,255,255,0)
 		end
 
 	create_fonts
 	-- Create every font.
 		do
-			create ubuntu_font.make("./Ressources/ubuntu.ttf", 12)
+			create ubuntu_font.make("./Ressources/ubuntu.ttf", 16)
 			if ubuntu_font.is_openable then
 				ubuntu_font.open
 			end

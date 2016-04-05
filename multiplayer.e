@@ -7,10 +7,11 @@ class
 	MULTIPLAYER
 
 inherit
-	BUTTONS
+	BUTTON
 
 create
-	make
+	make,
+	make_with_position
 
 feature -- Methods
 
@@ -19,7 +20,7 @@ feature -- Methods
 		local
 			l_multiplayer_menu:MULTIPLAYER_MENU_ENGINE
 		do
-			io.put_string ("Bouton Multiplayer")
+			io.put_string ("Bouton Multiplayer") -- For testing.
 			create l_multiplayer_menu.make (a_window, a_factory)
 		end
 note

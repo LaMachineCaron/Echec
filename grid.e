@@ -78,7 +78,7 @@ feature -- Methods
 		end
 
 		init_grid_position
-		-- set every the `line` and `column` of every piece.
+		-- set every the line and column of every piece.
 		do
 			across grid as la_line loop
 				across la_line.item as la_column loop

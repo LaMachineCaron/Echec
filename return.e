@@ -1,10 +1,10 @@
 note
-	description: "Class managing solo button."
+	description: "Manage the back button."
 	author: "Alexandre Caron"
-	date: "02 february 2016"
+	date: "05 April"
 
 class
-	SOLO
+	RETURN
 
 inherit
 	BUTTON
@@ -16,13 +16,14 @@ create
 feature -- Methods
 
 	on_click(a_window:GAME_WINDOW_RENDERED; a_factory: RESSOURCES_FACTORY)
-	-- Create the game engine.
+	-- Return to the main menu.
 		local
-			l_game_engine:GAME_ENGINE
+			l_menu_engine:MENU_ENGINE
 		do
-			create l_game_engine.make(a_window, a_factory)
 		end
+
 note
 	copyright: "Copyright (c) 2016, Alexandre Caron"
 	license:   "MIT License (see http://opensource.org/licenses/MIT)"
+
 end

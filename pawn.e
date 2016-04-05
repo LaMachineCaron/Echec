@@ -19,7 +19,7 @@ create
 feature -- Methods
 
 	on_click
-	-- When the piece is clicked.
+	-- When the `Current' is clicked.
 			do
 				io.put_string ("Pawn %N")
 			end
