@@ -40,7 +40,7 @@ feature -- Methods
 		end
 
 	set_dimensions
-	-- Set the `width` and `height` from the texture to the drawable
+	-- Set the `width' and `height' from the texture to the drawable
 		require
 			valid_width: texture.width > 0
 			valid_height: texture.height > 0
