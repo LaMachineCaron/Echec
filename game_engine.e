@@ -8,6 +8,9 @@ class
 
 inherit
 	ENGINES
+		redefine
+			draw_all
+		end
 
 create
 	make
@@ -20,12 +23,7 @@ feature{NONE} -- Initialization
 			factory := a_factory
 			window := a_window
 			create grid.make(window.renderer, factory)
-			draw_piece
 			init_ressources
-			redraw
-			window.mouse_button_pressed_actions.extend(agent mouse_pressed)
-			window.expose_actions.extend (agent (timestamp: NATURAL_32) do redraw end)
-
 		end
 
 feature -- Attributs
@@ -37,8 +35,16 @@ feature -- Attributs
 
 feature -- Methods
 
+	set_agents
+			-- Set the agent for the `Current'
+		do
+			game_library.quit_signal_actions.extend (agent quit)
+			window.mouse_button_pressed_actions.extend(agent mouse_pressed)
+			window.expose_actions.extend (agent (timestamp: NATURAL_32) do draw_all end)
+		end
+
 	convert_grid_to_coord(a_position:TUPLE[line, column:INTEGER]):TUPLE[x, y:INTEGER]
-	-- Convert a matrix position (line, column) to a window position (x, y)
+			-- Convert a matrix position (line, column) to a window position (x, y)
 		local
 			l_coord:TUPLE[x, y:INTEGER]
 			l_border:INTEGER
@@ -54,7 +60,7 @@ feature -- Methods
 		end
 
 	convert_coord_to_grid(a_mouse_state:GAME_MOUSE_BUTTON_PRESSED_STATE):TUPLE[line, column:INTEGER]
-	-- Convert a window position (x, y) to a matrix position (line, column)
+			-- Convert a window position (x, y) to a matrix position (line, column)
 		local
 			l_position:TUPLE[line, column:INTEGER]
 			l_border:INTEGER
@@ -69,7 +75,7 @@ feature -- Methods
 		end
 
 	calcul_valid_movement(a_possible_movement:LIST[TUPLE[line, column:INTEGER]])
-	-- Put every valid movement of a `piece' in a list of valid movements.
+			-- Put every valid movement of a `piece' in a list of valid movements.
 		local
 			l_valid:BOOLEAN
 			l_movement:TUPLE[line, column:INTEGER]
@@ -91,7 +97,7 @@ feature -- Methods
 		end
 
 	calcul_valid_kill(a_possible_kill:LIST[TUPLE[line, column:INTEGER]])
-	-- Put every valid kill of a `piece' in a list of valid kills.
+			-- Put every valid kill of a `piece' in a list of valid kills.
 		local
 			l_kill:TUPLE[line, column:INTEGER]
 		do
@@ -107,7 +113,7 @@ feature -- Methods
 		end
 
 	draw_piece
-	-- Draw every pieces contained in the grid.
+			-- Draw every pieces contained in the grid.
 		local
 			l_position:TUPLE[x, y:INTEGER]
 		do
@@ -123,7 +129,7 @@ feature -- Methods
 		end
 
 	unselect
-	-- Set the class attributs to void
+			-- Set the class attributs to void
 		do
 			valid_movements:=void
 			valid_kills:=void
@@ -135,7 +141,7 @@ feature -- Methods
 		end
 
 	mouse_pressed (a_timestamp: NATURAL_32; a_mouse_state: GAME_MOUSE_BUTTON_PRESSED_STATE; a_nb_clicks: NATURAL_8)
-	-- Manage when mouse is pressed.
+			-- Manage when mouse is pressed.
 		local
 			l_possible_movements:LIST[TUPLE[line, column:INTEGER]]
 			l_possible_kill:LIST[TUPLE[line, column:INTEGER]]
@@ -169,11 +175,12 @@ feature -- Methods
 						unselect
 					end
 				end
-				redraw -- Redraw no matter what.
+				draw_all -- Redraw no matter what.
 			end
 		end
 
 	init_ressources
+			-- Initialize the ressources.
 		do
 			click_sound := factory.click_sound
 			create background.make(factory.game_background)
@@ -182,7 +189,7 @@ feature -- Methods
 		end
 
 	draw_valid_kill(a_valid_kill:LIST[TUPLE[line, column:INTEGER]]; a_texture:GAME_TEXTURE)
-	-- Draw color to show killable piece.
+			-- Draw color to show killable piece.
 		local
 			l_coord:TUPLE[x, y:INTEGER]
 		do
@@ -193,7 +200,7 @@ feature -- Methods
 		end
 
 	draw_valid_movement(a_valid_positions:LIST[TUPLE[line, column:INTEGER]]; a_texture:GAME_TEXTURE)
-	-- Draw color to show possible movement.
+			-- Draw color to show possible movement.
 		local
 			l_coord:TUPLE[x, y:INTEGER]
 		do
@@ -203,10 +210,16 @@ feature -- Methods
 			end
 		end
 
-	redraw
-	-- Redraw everything.
+	draw_all
+			-- <Precursor>.
 	do
-		draw_all
+		Precursor
+		redraw
+	end
+
+	redraw
+			--Redraw the `Piece' and there possible movements/kills.
+	do
 		if attached valid_movements as la_valid_movements then
 			draw_valid_movement(la_valid_movements, factory.possible_movement)
 		end

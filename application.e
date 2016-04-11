@@ -19,7 +19,7 @@ feature {NONE} -- Initialization
 
 	make
 		local
-			l_menu: detachable MENU_ENGINE
+			l_master: detachable ENGINE_MASTER
 
 		do
 			game_library.enable_video -- Enable video functinalities
@@ -27,8 +27,8 @@ feature {NONE} -- Initialization
 			audio_library.enable_sound
 			audio_library.launch_in_thread
 
-			create l_menu.make -- Launch the main loop
-			l_menu := Void
+			create l_master.make -- Launch the main loop
+			l_master := Void
 
 			game_library.clear_all_events
 			game_library.quit_library -- Clear the library before quiting

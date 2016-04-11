@@ -60,6 +60,8 @@ feature -- Attributs
 	has_error: BOOLEAN -- True if there's a error,false otherwise.
 	socket: NETWORK_STREAM_SOCKET
 
+invariant
+
 note
 	copyright: "Copyright (c) 2016, Alexandre Caron"
 	license:   "MIT License (see http://opensource.org/licenses/MIT)"

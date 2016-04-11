@@ -27,6 +27,12 @@ feature -- Attributs
 
 feature -- Methods
 
+	clear
+			--Clear the text from the Textbox.
+		do
+			text := ""
+		end
+
 	add_text(a_text:STRING_32)
 	-- Add `a_text' to the `text'.
 		do

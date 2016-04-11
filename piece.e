@@ -15,7 +15,7 @@ inherit
 feature {NONE} -- Initialization
 
 	make(a_texture:GAME_TEXTURE; a_white_team:BOOLEAN)
-	-- Create a `Current'.
+			-- Create a `Current'.
 		do
 			texture := a_texture
 			set_dimensions
@@ -34,7 +34,7 @@ feature -- Attributs
 feature -- Methods
 
 	on_click
-	-- When the piece is clicked.
+			-- When the piece is clicked.
 		do
 			io.put_string ("Default")
 		end
@@ -48,7 +48,7 @@ feature -- Methods
 		end
 
 	set_grid_position(a_line, a_column:INTEGER)
-	-- modifiy `line' and `column' attribut from a piece.
+			-- modifiy `line' and `column' attribut from a piece.
 		require -- Line and column are between 1 and 8.
 			valid_line: a_line <= 8 and a_line >= 1
 			valid_column: a_column <= 8 and a_column >= 1
@@ -60,13 +60,13 @@ feature -- Methods
 		end
 
 	set_first_move
-	-- Set `first_move' at True.
+			-- Set `first_move' at True.
 		do
 			first_move:=True
 		end
 
 	set_team(a_white_team:BOOLEAN)
-	-- set team color.
+			-- set team color.
 		do
 			is_white:=a_white_team
 			is_black:=not a_white_team
