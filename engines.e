@@ -12,12 +12,18 @@ inherit
 
 feature -- Attributs
 
-	background: BACKGROUND -- The engine background
-	factory: RESSOURCES_FACTORY -- The ressource factory.
-	click_sound: AUDIO -- The `Sound' of the click.
-	textures:LIST[DRAWABLE] -- List of `Drawable' to be draw.
-	window: GAME_WINDOW_RENDERED -- The `Current' window.
-	must_quit:BOOLEAN -- True when the user want to quit the program.
+	background: BACKGROUND
+			-- The engine background
+	factory: RESSOURCES_FACTORY
+			-- The ressource factory.
+	click_sound: AUDIO
+			-- The sound of the click.
+	textures:LIST[DRAWABLE]
+			-- List of {DRAWABLE} to be draw.
+	window: GAME_WINDOW_RENDERED
+			-- The `Current' window.
+	must_quit:BOOLEAN
+			-- True when the user want to quit the program.
 
 feature -- Methods
 

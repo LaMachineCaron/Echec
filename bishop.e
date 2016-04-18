@@ -15,31 +15,27 @@ inherit
 create
 	make
 
+feature -- Attributs
+
+	move: LIST[TUPLE[line, column, max_range: INTEGER]]
+			-- `line' : between -1 and 1. Represente one deplacement depending on the `piece' position.
+			-- `column' : between -1 and 1. Represente one deplacement depending on the `piece' position.
+			-- `max_range' : between 1 and 8. Number for deplacement possible.
+		once ("PROCESS")
+			create {ARRAYED_LIST[TUPLE[line, column, max_range:INTEGER]]} Result.make(4)
+			Result.extend([1, 1, 8])
+			Result.extend([-1, 1, 8])
+			Result.extend([-1, -1, 8])
+			Result.extend([1, -1, 8])
+		end
+
 feature -- Methods
 
 	on_click
-	-- When the piece is clicked. Debug purposes.
+			-- When the piece is clicked. Debug purposes.
 			do
 				io.put_string ("Bishop %N")
 			end
-
-	possible_positions(a_line, a_column:INTEGER) :LIST[TUPLE[line, column:INTEGER]]
-	-- return a `list' of possible deplacement (Grid position)
-		local
-			l_list:ARRAYED_LIST[TUPLE[line, column:INTEGER]]
-		do
-			create l_list.make(0)
-			Result:=l_list
-		end
-
-	possible_kill(a_line, a_column:INTEGER) :LIST[TUPLE[line, column:INTEGER]]
-	-- return a `list' of possible kill (Grid position)
-		local
-			l_list:LIST[TUPLE[line, column:INTEGER]]
-		do
-			l_list:=possible_positions(a_line, a_column)
-			Result:=l_list
-		end
 
 note
 	copyright: "Copyright (c) 2016, Alexandre Caron"

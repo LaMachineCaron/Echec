@@ -50,14 +50,13 @@ feature -- Methods
 				if attached la_socket.peer_address as la_address then
 					print("Connection created")
 				end
-				create l_game_engine.make (a_window)
 				la_socket.close
 			end
 		end
 
 feature -- Attributs
 
-	has_error: BOOLEAN -- True if there's a error,false otherwise.
+	has_error: BOOLEAN -- True if there's a error, false otherwise.
 	socket: NETWORK_STREAM_SOCKET
 
 invariant

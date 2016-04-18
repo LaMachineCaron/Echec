@@ -8,36 +8,34 @@ class
 
 inherit
 	DRAWABLE
+		rename
+			make as make_drawable
+		end
 
 create
-	make_with_position
+	make
 
 feature -- Initialization
 
-	make_with_position(a_texture: GAME_TEXTURE; a_x, a_y: INTEGER; a_action:PROCEDURE[ANY, TUPLE])
-	-- Create the `Current' using his position.
-		require
-			valid_a_x: a_x >= 0
-			valid_a_y: a_y >= 0
+	make(a_texture: GAME_TEXTURE; a_x, a_y: INTEGER; a_action:PROCEDURE[ANY, TUPLE])
+			-- Create the `Current'.
 		do
-			set_positions (a_x, a_y)
-			texture := a_texture
-			set_dimensions
+			make_with_position (a_texture, a_x, a_y)
 			action := a_action
 		end
 
 feature -- Attributs
 
 	action: PROCEDURE[ANY, TUPLE]
+			--  The agent that the `Current' will launch.
 
 feature -- Methods
 
 	on_click
+			-- Call the `action'
 		do
 			action.call
 		end
-
-invariant
 
 note
 	copyright: "Copyright (c) 2016, Alexandre Caron"

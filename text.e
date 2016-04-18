@@ -18,6 +18,7 @@ create
 feature -- Initialization
 
 	make(a_text:READABLE_STRING_GENERAL; a_factory:RESSOURCES_FACTORY; a_renderer:GAME_RENDERER)
+			--Create `Current'.
 		local
 			l_text_surface: TEXT_SURFACE_BLENDED
 		do
@@ -33,7 +34,8 @@ feature -- Initialization
 
 feature -- Attributs
 
-	text:READABLE_STRING_GENERAL -- The text to be displayed.
+	text:READABLE_STRING_GENERAL
+			-- The text to be displayed.
 
 invariant
 

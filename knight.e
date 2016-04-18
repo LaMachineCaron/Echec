@@ -15,28 +15,32 @@ inherit
 create
 	make
 
+feature -- Attributs
+
+	move: LIST[TUPLE[line, column, max_range: INTEGER]]
+			-- `line' : between -1 and 1. Represente one deplacement depending on the `piece' position.
+			-- `column' : between -1 and 1. Represente one deplacement depending on the `piece' position.
+			-- `max_range' : between 1 and 8. Number for deplacement possible.
+		once ("PROCESS")
+			create {ARRAYED_LIST[TUPLE[line, column, max_range:INTEGER]]} Result.make(4)
+			Result.extend([2, 1, 1])
+			Result.extend([-2, 1, 1])
+			Result.extend([-1, -2, 1])
+			Result.extend([1, -2, 1])
+			Result.extend([2, -1, 1])
+			Result.extend([-2, -1, 1])
+			Result.extend([-1, 2, 1])
+			Result.extend([1, 2, 1])
+		end
+
 feature -- Methods
 
 	on_click
-	-- When the `Current' is clicked.
+			-- When the `Current' is clicked.
 			do
 				io.put_string ("Knight %N")
 			end
 
-	possible_positions(a_line, a_column:INTEGER) :LIST[TUPLE[line, column:INTEGER]]
-	-- Return a list on possible movements.
-		local
-			l_list:ARRAYED_LIST[TUPLE[line, column:INTEGER]]
-		do
-			create l_list.make(0)
-			Result:=l_list
-		end
-
-	possible_kill(a_line, a_column:INTEGER) :LIST[TUPLE[line, column:INTEGER]]
-	-- Return a list of possible kills. (Same as possible_positions for this piece)
-		do
-			Result:=possible_positions(a_line, a_column)
-		end
 note
 	copyright: "Copyright (c) 2016, Alexandre Caron"
 	license:   "MIT License (see http://opensource.org/licenses/MIT)"

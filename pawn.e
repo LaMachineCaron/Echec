@@ -9,64 +9,31 @@ class
 inherit
 	PIECE
 		redefine
-			on_click,
-			possible_positions
+			on_click
 		end
 
 create
 	make
 
+feature -- Attributs
+
+	move: LIST[TUPLE[line, column, max_range: INTEGER]]
+			-- `line' : between -1 and 1. Represente one deplacement depending on the `piece' position.
+			-- `column' : between -1 and 1. Represente one deplacement depending on the `piece' position.
+			-- `max_range' : between 1 and 8. Number for deplacement possible.
+		once ("PROCESS")
+			create {ARRAYED_LIST[TUPLE[line, column, max_range:INTEGER]]} Result.make(4)
+			Result.extend([1, 0, 1])
+		end
+
 feature -- Methods
 
 	on_click
-	-- When the `Current' is clicked.
+			-- When the `Current' is clicked.
 			do
 				io.put_string ("Pawn %N")
 			end
 
-	possible_positions(a_line, a_column:INTEGER): LIST[TUPLE[line, column:INTEGER]]
-	-- Return a list of possible movements.
-		local
-			l_list:ARRAYED_LIST[TUPLE[line, column:INTEGER]]
-		do
-			create l_list.make (2)
-			if is_white then
-				l_list.extend ([a_line + 1, a_column])
-				if first_move then
-					l_list.extend ([a_line + 2, a_column])
-				end
-			elseif is_black then
-				l_list.extend ([a_line - 1, a_column])
-				if first_move then
-					l_list.extend ([a_line - 2, a_column])
-				end
-			end
-			Result:=l_list
-		end
-
-	possible_kill(a_line, a_column:INTEGER) :LIST[TUPLE[line, column:INTEGER]]
-	-- Return a list of possible kills.
-		local
-			l_list:ARRAYED_LIST[TUPLE[line, column:INTEGER]]
-		do
-			create l_list.make(2)
-			if is_white then
-				if a_column > 1 then
-					l_list.extend ([a_line + 1, a_column - 1])
-				end
-				if a_column < 8 then
-					l_list.extend ([a_line + 1, a_column + 1])
-				end
-			elseif is_black then
-				if a_column > 1 then
-					l_list.extend ([a_line - 1, a_column - 1])
-				end
-				if a_column < 8 then
-					l_list.extend ([a_line - 1, a_column + 1])
-				end
-			end
-			Result:=l_list
-		end
 note
 	copyright: "Copyright (c) 2016, Alexandre Caron"
 	license:   "MIT License (see http://opensource.org/licenses/MIT)"

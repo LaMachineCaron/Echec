@@ -15,7 +15,7 @@ create
 feature{NONE} -- Initialize
 
 	make(a_sound_file:STRING)
-	-- Create a `sound' with the string passed in argument.
+			-- Create a `sound' with the string passed in argument.
 		local
 			l_environment:EXECUTION_ENVIRONMENT
 		do
@@ -34,13 +34,13 @@ feature{NONE} -- Initialize
 feature -- Attributs
 
 	has_error: BOOLEAN -- True is there's an error.
-	sound: AUDIO_SOUND_FILE 
-	source: AUDIO_SOURCE
+	sound: AUDIO_SOUND_FILE -- The sound to be played.
+	source: AUDIO_SOURCE -- The source where the sound is.
 
 feature -- Methods
 
 	play_once
-	-- play the audio once.
+			-- play the `sound' once.
 		do
 			if sound.is_open then
 				source.queue_sound (sound)
@@ -49,7 +49,7 @@ feature -- Methods
 		end
 
 	play_loop
-	-- Play the audio in loop.
+			-- Play the audio in loop.
 		do
 			if sound.is_open then
 				source.queue_sound_infinite_loop (sound)

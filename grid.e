@@ -14,19 +14,19 @@ feature{NONE} -- Initialization
 	make(a_renderer:GAME_RENDERER; a_factory:RESSOURCES_FACTORY)
 		do
 			init_grid(a_renderer, a_factory)
-			init_white_team(a_factory)
-			init_black_team(a_factory)
+			init_team(a_factory)
 			init_grid_position
 		end
 
 feature -- Attributs
 
 	grid:ARRAYED_LIST[ARRAYED_LIST[detachable PIECE]]
+			-- 2 dimension list for containing `Piece' and empty space.
 
 feature -- Methods
 
 	init_grid(a_renderer:GAME_RENDERER; a_factory:RESSOURCES_FACTORY)
-	-- Create the grid
+			-- Create the grid
 		do
 			create grid.make(8)
 			across 1 |..| 8 as it loop
@@ -34,9 +34,10 @@ feature -- Methods
 			end
 		end
 
-	init_white_team(a_factory:RESSOURCES_FACTORY)
-	-- Initialize white team
+	init_team(a_factory:RESSOURCES_FACTORY)
+			-- Initialize teams `Piece'.
 		do
+			--White Team
 			grid.at (1).at (1) := create {ROOK}.make (a_factory.white_rook_texture, True)
 			grid.at (1).at (2) := create {KNIGHT}.make (a_factory.white_knight_texture, True)
 			grid.at (1).at (3) := create {BISHOP}.make (a_factory.white_bishop_texture, True)
@@ -53,12 +54,8 @@ feature -- Methods
 			grid.at (2).at (6) := create {PAWN}.make (a_factory.white_pawn_texture, True)
 			grid.at (2).at (7) := create {PAWN}.make (a_factory.white_pawn_texture, True)
 			grid.at (2).at (8) := create {PAWN}.make (a_factory.white_pawn_texture, True)
-		end
 
-
-	init_black_team(a_factory:RESSOURCES_FACTORY)
-	-- Initialize black team
-		do
+			--Black Team
 			grid.at (3).at (1) := create {PAWN}.make (a_factory.black_pawn_texture, False)
 			grid.at (3).at (2) := create {PAWN}.make (a_factory.black_pawn_texture, False)
 			grid.at (3).at (3) := create {PAWN}.make (a_factory.black_pawn_texture, False)
@@ -78,12 +75,13 @@ feature -- Methods
 		end
 
 		init_grid_position
-		-- set every the line and column of every piece.
+				-- set every the line and column of every piece.
 		do
 			across grid as la_line loop
 				across la_line.item as la_column loop
 					if attached la_column.item as la_piece then
 						la_piece.set_grid_position (la_line.cursor_index, la_column.cursor_index)
+						la_piece.move.start
 					end
 				end
 			end

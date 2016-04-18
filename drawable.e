@@ -9,25 +9,41 @@ deferred class
 feature {NONE} -- Initialization
 
 	make(a_texture:GAME_TEXTURE)
-	-- Create a drawable object using a texture and dimensions.
+			-- Create a drawable object using a texture and dimensions.
 		do
 			set_positions (0,0)
 			texture := a_texture
-			set_dimensions
+		end
+
+	make_with_position(a_texture: GAME_TEXTURE; a_x, a_y: INTEGER)
+			-- Create the `Current' using his position.
+		require
+			valid_a_x: a_x >= 0
+			valid_a_y: a_y >= 0
+		do
+			set_positions (a_x, a_y)
+			texture := a_texture
 		end
 
 feature -- Attributs
 
-	texture:GAME_TEXTURE	-- Texture of the drawable
-	x: INTEGER	-- x position
-	y: INTEGER	-- y position
-	width: INTEGER	-- Width of the drawable (Texture)
-	height: INTEGER	-- Height of the drawable (Texture)
+	texture:GAME_TEXTURE assign change_texture
+			-- Texture of the drawable
+	x: INTEGER
+			-- x position
+	y: INTEGER
+			-- y position
 
 feature -- Methods
 
+	change_texture (a_new:GAME_TEXTURE)
+			-- For changing the `Current' texture for a new one.
+		do
+			texture := a_new
+		end
+
 	set_positions (a_x, a_y:INTEGER)
-	-- Set the position of the drawable
+			-- Set the position of the drawable
 		require
 			valid_x: a_x >= 0
 			valid_y: a_y >= 0
@@ -39,21 +55,19 @@ feature -- Methods
 			y_setted: y = a_y
 		end
 
-	set_dimensions
-	-- Set the `width' and `height' from the texture to the drawable
-		require
-			valid_width: texture.width > 0
-			valid_height: texture.height > 0
+	width: INTEGER
+			-- Return the `width' of the texture.
 		do
-			width := texture.width
-			height := texture.height
-		ensure
-			width_setted: width = texture.width
-			height_setted: height = texture.height
+			Result := texture.width
+		end
+
+	height: INTEGER
+			-- Return the `height' of the texture.
+		do
+			Result := texture.height
 		end
 
 invariant
-	valid_dimensions: width > 0 and height > 0 and texture.width = width and texture.height = height
 	valid_positions: x >= 0 and y >= 0
 
 note

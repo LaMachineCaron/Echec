@@ -12,7 +12,7 @@ create
 feature -- Initialization
 
 	make(a_renderer:GAME_RENDERER)
-	-- create every ressource in the game.
+			-- create every ressource in the game.
 		do
 			create_textures(a_renderer)
 			create_sounds
@@ -23,7 +23,6 @@ feature -- Initialization
 
 feature -- Attributs
 
-	-- Every texture in the game.
 	white_rook_texture:GAME_TEXTURE
 	white_knight_texture:GAME_TEXTURE
 	white_bishop_texture:GAME_TEXTURE
@@ -43,21 +42,27 @@ feature -- Attributs
 	multiplayer_button:GAME_TEXTURE
 	menu_background:GAME_TEXTURE
 	return_button:GAME_TEXTURE
+	join_button:GAME_TEXTURE
+	host_button:GAME_TEXTURE
+	in_game_menu:GAME_TEXTURE
+	white_turn:GAME_TEXTURE
+	black_turn:GAME_TEXTURE
+			-- Every texture in the game.
 
-	-- Every sound in the game.
 	click_sound:AUDIO
+			-- Every sound in the game.
 
-	-- Every music in the game.
 	main_music: AUDIO
+			-- Every music in the game.
 
-	-- Colors
 	black:GAME_COLOR
 	white:GAME_COLOR
+			-- Colors
 
-	--Fonts
 	ubuntu_font:TEXT_FONT
+			--Fonts
 
-feature -- Methods
+feature{NONE} -- Private Methods
 
 	create_textures(a_renderer:GAME_RENDERER)
 	-- Create every texture.
@@ -81,6 +86,11 @@ feature -- Methods
 			multiplayer_button := set_texture(a_renderer, "./Ressources/multiplayer_button2.png")
 			menu_background := set_texture(a_renderer, "./Ressources/menu_background.png")
 			return_button := set_texture(a_renderer, "./Ressources/button_return.png")
+			join_button := set_texture(a_renderer, "./Ressources/button_join.png")
+			host_button := set_texture(a_renderer, "./Ressources/button_host.png")
+			in_game_menu := set_texture(a_renderer, "./Ressources/in_game_menu.png")
+			white_turn := set_texture(a_renderer, "./Ressources/white_turn.png")
+			black_turn := set_texture(a_renderer, "./Ressources/black_turn.png")
 		end
 
 	create_sounds
@@ -130,6 +140,8 @@ feature -- Methods
 			end
 			result := l_texture
 		end
+
+feature -- Public Methods
 
 	default_image(a_renderer:GAME_RENDERER):GAME_TEXTURE
 	-- If set texture can't create the texture, this will be the texture.

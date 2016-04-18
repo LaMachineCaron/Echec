@@ -28,25 +28,11 @@ feature{NONE} -- Initialization
 feature
 
 	is_next_single:BOOLEAN
+			-- If the `game_engine' is the next to lauch.
 	is_next_multiplayer:BOOLEAN
+			-- If the `multiplayer_menu_engine' is the next to lauch.
 
-feature -- Methods
-
-	init_ressources
-			-- Initialize every ressources used for this menu.
-		local
-			l_solo:BUTTON
-			l_multiplayer:BUTTON
-		do
-			create background.make (factory.menu_background)
-			create {LINKED_LIST[DRAWABLE]} textures.make
-			click_sound := factory.click_sound
-			textures.extend (background)
-			create l_solo.make_with_position(factory.solo_button, 150, 450, agent start_solo)
-			create l_multiplayer.make_with_position (factory.multiplayer_button, 450, 450, agent start_multiplayer)
-			textures.extend (l_solo)
-			textures.extend (l_multiplayer)
-		end
+feature{NONE} -- Private Methods
 
 	start_solo
 			-- When the solo `Button' is clicked.
@@ -66,14 +52,6 @@ feature -- Methods
 			is_next_multiplayer := True
 		end
 
-	set_agents
-			-- Set the agents.
-		do
-			game_library.quit_signal_actions.extend(agent quit)
-			window.mouse_button_pressed_actions.extend(agent mouse_pressed)
-			window.expose_actions.extend (agent (timestamp: NATURAL_32) do draw_all end)
-		end
-
 	mouse_pressed (a_timestamp: NATURAL_32; a_mouse_state: GAME_MOUSE_BUTTON_PRESSED_STATE; a_nb_clicks: NATURAL_8)
 			-- When the mouse is pressed, it does the button.on_click action.
 		do
@@ -90,16 +68,39 @@ feature -- Methods
 
 	cursor_hover_sprite(a_mouse_stat: GAME_MOUSE_BUTTON_PRESSED_STATE; a_sprite:DRAWABLE):BOOLEAN
 			-- Tells if the cursor is hover a button.
-		local
-			l_hover:BOOLEAN
 		do
-			l_hover:= False
+			Result := False
 			if (a_mouse_stat.x > a_sprite.x) and (a_mouse_stat.x < a_sprite.x + a_sprite.width) then
 				if (a_mouse_stat.y > a_sprite.y) and (a_mouse_stat.y < a_sprite.y + a_sprite.height) then
-					l_hover := True
+					Result := True
 				end
 			end
-			Result := l_hover
+		end
+
+feature -- Publics Methods
+
+	init_ressources
+			-- Initialize every ressources used for this menu.
+		local
+			l_solo:BUTTON
+			l_multiplayer:BUTTON
+		do
+			create background.make (factory.menu_background)
+			create {LINKED_LIST[DRAWABLE]} textures.make
+			click_sound := factory.click_sound
+			textures.extend (background)
+			create l_solo.make (factory.solo_button, 150, 450, agent start_solo)
+			create l_multiplayer.make (factory.multiplayer_button, 450, 450, agent start_multiplayer)
+			textures.extend (l_solo)
+			textures.extend (l_multiplayer)
+		end
+
+	set_agents
+			-- Set the agents.
+		do
+			game_library.quit_signal_actions.extend(agent quit)
+			window.mouse_button_pressed_actions.extend(agent mouse_pressed)
+			window.expose_actions.extend (agent (timestamp: NATURAL_32) do draw_all end)
 		end
 
 	start

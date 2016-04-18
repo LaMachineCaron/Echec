@@ -12,7 +12,7 @@ create
 feature {NONE} -- Initialization
 
 	make(a_x, a_y, a_width, a_height, a_padding:INTEGER)
-	-- Create a `Current' using is position and dimension.
+			-- Create a `Current' using is position and dimension.
 		do
 			info := [a_x, a_y, a_width, a_height, a_padding]
 			is_selected := False
@@ -21,9 +21,12 @@ feature {NONE} -- Initialization
 
 feature -- Attributs
 
-	info:TUPLE[x, y, width, height, padding:INTEGER] -- Position and dimension info about the textbox.
-	is_selected: BOOLEAN assign set_selected -- True if the textbox is currently selected.
-	text: STRING_32 -- The text contained in the textbox.
+	info:TUPLE[x, y, width, height, padding:INTEGER]
+			-- Position and dimension info about the textbox.
+	is_selected: BOOLEAN assign set_selected
+			-- True if the textbox is currently selected.
+	text: STRING_32
+			-- The text contained in the textbox.
 
 feature -- Methods
 
@@ -34,7 +37,7 @@ feature -- Methods
 		end
 
 	add_text(a_text:STRING_32)
-	-- Add `a_text' to the `text'.
+			-- Add `a_text' to the `text'.
 		do
 			text := text + a_text
 		ensure
@@ -42,7 +45,7 @@ feature -- Methods
 		end
 
 	sub_text
-	-- Delete a charactere from `text'.
+			-- Delete a charactere from `text'.
 		do
 			text := text.substring (1, text.count - 1)
 		ensure
@@ -50,13 +53,13 @@ feature -- Methods
 		end
 
 	set_selected(a_bool:BOOLEAN)
-	-- Set the `is_selected' at `a_bool'.
+			-- Set the `is_selected' at `a_bool'.
 		do
 			is_selected := a_bool
 		end
 
 	flashing_cursor(a_window: GAME_WINDOW_RENDERED; a_factory: RESSOURCES_FACTORY)
-	-- Make a little flashing line in the cursor.
+			-- Make a little flashing line in the cursor.
 		local
 			l_position: TUPLE[x, y: INTEGER]
 		do

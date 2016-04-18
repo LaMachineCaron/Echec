@@ -28,29 +28,12 @@ feature {NONE} -- Initialization
 
 feature -- Attributs
 
-	textbox: TEXTBOX -- For the player to enter a server ip.
+	textbox: TEXTBOX
+			-- For the player to enter a server ip.
 	is_return: BOOLEAN
+	server: detachable SERVEURS
 
-feature -- Methods
-
-	start
-				--<Precursor>
-		do
-			--window.events_controller.enable_text_input_event
-			is_return := False
-			Precursor
-		end
-
-	set_agents
-			-- Set every agent for this menu.
-		do
-			game_library.quit_signal_actions.extend (agent quit)
-			window.mouse_button_pressed_actions.extend(agent mouse_pressed)
-			game_library.iteration_actions.extend (agent on_iteration)
-			window.text_input_actions.extend (agent text_input)
-			window.key_pressed_actions.extend (agent key_pressed)
-			window.expose_actions.extend (agent (timestamp: NATURAL_32) do draw_all end)
-		end
+feature{NONE} -- Private Methods
 
 	key_pressed(a_timestamp: NATURAL_32; a_key_state: GAME_KEY_STATE)
 			-- When a key is being pressed.
@@ -85,7 +68,12 @@ feature -- Methods
 			if cursor_hover_textbox(a_mouse_state) then
 				textbox.is_selected := True
 				window.start_text_input
+				window.text_input_actions.extend (agent text_input)
 			else
+				if game_library.events_controller.is_text_input_event_enable then
+					window.text_input_actions.wipe_out
+				end
+				window.stop_text_input
 				textbox.is_selected := False
 				across textures as la_texture loop
 					if attached {BUTTON} la_texture.item as la_button then
@@ -125,22 +113,6 @@ feature -- Methods
 			Result := l_valid
 		end
 
-	init_ressources
-			-- Initialize every ressources for this menu.
-		local
-			l_ip_text:TEXT
-			l_return: BUTTON
-		do
-			create {LINKED_LIST[DRAWABLE]} textures.make
-			create background.make (factory.menu_background)
-			create l_ip_text.make ("Server IP", factory, window.renderer)
-			create textbox.make(350, 450, factory.ubuntu_font.text_dimension ("000.000.000.000").width + 10, 25, 5)
-			click_sound := factory.click_sound
-			create l_return.make_with_position (factory.return_button, 100, 100, agent return_from_menu)
-			textures.extend (background)
-			textures.extend (l_return)
-		end
-
 	draw_textbox
 			-- Draw the white textbox.
 		do
@@ -161,8 +133,24 @@ feature -- Methods
 			end
 		end
 
+	join
+			-- Create a connexion with the ip in the `Textbox'.
+		local
+			l_client: CLIENTS
+		do
+			create l_client.make (textbox.text)
+		end
+
+	host
+			-- Wait for a user to join the game.
+		do
+			if not attached server as la_server then
+				create server.make
+			end
+		end
+
 	return_from_menu
-		-- Return to the last menu.
+			-- Return to the last menu.
 		do
 			textbox.clear
 			game_library.clear_all_events
@@ -170,6 +158,47 @@ feature -- Methods
 			window.renderer.clear
 			game_library.stop
 			is_return := True
+		end
+
+feature -- Public Methods
+
+	start
+				--<Precursor>
+		do
+			is_return := False
+			Precursor
+		end
+
+	set_agents
+			-- Set every agent for this menu.
+		do
+			game_library.quit_signal_actions.extend (agent quit)
+			window.mouse_button_pressed_actions.extend(agent mouse_pressed)
+			game_library.iteration_actions.extend (agent on_iteration)
+			window.key_pressed_actions.extend (agent key_pressed)
+			window.expose_actions.extend (agent (timestamp: NATURAL_32) do draw_all end)
+		end
+
+	init_ressources
+			-- Initialize every ressources for this menu.
+		local
+			l_ip_text: TEXT
+			l_return: BUTTON
+			l_join: BUTTON
+			l_host: BUTTON
+		do
+			create {LINKED_LIST[DRAWABLE]} textures.make
+			create background.make (factory.menu_background)
+			create l_ip_text.make ("Server IP", factory, window.renderer)
+			create textbox.make(350, 400, factory.ubuntu_font.text_dimension ("000.000.000.000").width + 10, 25, 5)
+			click_sound := factory.click_sound
+			create l_return.make (factory.return_button, 100, 100, agent return_from_menu)
+			create l_join.make (factory.join_button, 450, 450, agent join)
+			create l_host.make (factory.host_button, 150, 450, agent host)
+			textures.extend (background)
+			textures.extend(l_join)
+			textures.extend (l_host)
+			textures.extend (l_return)
 		end
 
 	draw_all
