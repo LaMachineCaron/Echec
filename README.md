@@ -4,7 +4,7 @@ Jeu d'échec
 Général
 -------
 
-Le jeu est présentement en developpement. Veuillez cependant prendre note que théoriquement, les fichiers sur le GitHub devrait tous être fonctionnels. 
+Le jeu est présentement en developpement. Veuillez cependant prendre note que théoriquement, les fichiers sur le GitHub devrait tous être fonctionnels.  
 
 Installation
 ------------
