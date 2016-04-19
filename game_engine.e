@@ -38,22 +38,6 @@ feature -- Attributs
 
 feature {NONE} -- Private Methods
 
-
-	convert_coord_to_grid(a_mouse_state:GAME_MOUSE_BUTTON_PRESSED_STATE):TUPLE[line, column:INTEGER]
-			-- Convert a window position (x, y) to a matrix position (line, column)
-		local
-			l_position:TUPLE[line, column:INTEGER]
-			l_border:INTEGER
-			l_case:INTEGER
-		do
-			l_border:=24
-			l_case:=69
-			create l_position.default_create
-			l_position.line:=((a_mouse_state.y - l_border) // l_case) + 1
-			l_position.column:=((a_mouse_state.x - l_border) // l_case) + 1
-			result:=l_position
-		end
-
 	calcul_valid_movement
 			-- Calcul the valid position for the `selected_piece'
 		local
@@ -126,8 +110,8 @@ feature {NONE} -- Private Methods
 			l_position:TUPLE[line, column:INTEGER]
 		do
 			click_sound.play_once
-			l_position := convert_coord_to_grid(a_mouse_state)
-			if l_position.line <= 8 and l_position.line >= 0 and l_position.column <= 8 and l_position.column >= 0 then
+			l_position := convert_coord_to_grid([a_mouse_state.x, a_mouse_state.y])
+			if l_position.line /= 0 and l_position.column /= 0 then
 				if selected_piece /= void then
 					if attached selected_piece as la_selected_piece and attached valid_movements as la_valid_movements and attached valid_kills as la_valid_kills then
 						-- Normal Deplacement

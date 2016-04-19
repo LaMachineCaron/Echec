@@ -23,6 +23,7 @@ feature -- Attributs
 	current_engine:ENGINES
 	last_engine:detachable ENGINES
 	must_quit:BOOLEAN
+	thread: NETWORK_THREAD
 
 feature {NONE} -- Initialization
 
@@ -39,6 +40,7 @@ feature {NONE} -- Initialization
 			create menu_engine.make (window, factory)
 			create multiplayer_menu_engine.make(window, factory)
 			create game_engine.make(window, factory)
+			create thread.make
 			must_quit := False
 			current_engine := menu_engine
 			factory.main_music.play_loop
@@ -63,9 +65,13 @@ feature -- Methods
 				elseif la_menu.is_next_multiplayer then
 					last_engine := current_engine
 					current_engine := multiplayer_menu_engine
+					thread.reset
+					thread.launch
 				end
 			--elseif attached {GAME_ENGINE} current_engine as la_menu then
 			elseif attached {MULTIPLAYER_MENU_ENGINE} current_engine as la_menu then
+				thread.stop_thread
+				thread.join
 				if la_menu.is_return then
 					if attached last_engine as la_last_engine then
 						current_engine := menu_engine

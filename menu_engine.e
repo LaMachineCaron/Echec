@@ -60,7 +60,6 @@ feature{NONE} -- Private Methods
 				if cursor_hover_sprite(a_mouse_state, la_texture.item) then
 					if attached {BUTTON} la_texture.item as la_bouton then
 						la_bouton.on_click
-						-- Reset evenement
 					end
 				end
 			end

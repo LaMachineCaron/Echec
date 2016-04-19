@@ -41,7 +41,7 @@ feature -- Methods
 		do
 			text := text + a_text
 		ensure
-			addition_succes: old text.count < text.count
+			addition_succes: old text.count < text.count or text.count = 0
 		end
 
 	sub_text
@@ -49,7 +49,7 @@ feature -- Methods
 		do
 			text := text.substring (1, text.count - 1)
 		ensure
-			deletion_succes: old text.count > text.count
+			deletion_succes: old text.count > text.count or text.count = 0
 		end
 
 	set_selected(a_bool:BOOLEAN)
