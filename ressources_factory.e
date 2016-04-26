@@ -47,6 +47,7 @@ feature -- Attributs
 	in_game_menu:GAME_TEXTURE
 	white_turn:GAME_TEXTURE
 	black_turn:GAME_TEXTURE
+	waiting_for_connection:GAME_TEXTURE
 			-- Every texture in the game.
 
 	click_sound:AUDIO
@@ -91,6 +92,7 @@ feature{NONE} -- Private Methods
 			in_game_menu := set_texture(a_renderer, "./Ressources/in_game_menu.png")
 			white_turn := set_texture(a_renderer, "./Ressources/white_turn.png")
 			black_turn := set_texture(a_renderer, "./Ressources/black_turn.png")
+			waiting_for_connection := set_texture(a_renderer, "./Ressources/waiting_for_connection_background.png")
 		end
 
 	create_sounds

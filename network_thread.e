@@ -17,10 +17,11 @@ create
 
 feature{NONE} -- Initialization
 
-	make
+	make(a_socket:NETWORK_STREAM_SOCKET)
 			--Create the `Current'.
 		do
 			make_thread
+			socket := a_socket
 			job_done := False
 		end
 
@@ -28,6 +29,8 @@ feature{NONE} -- Attributs
 
 	job_done: BOOLEAN
 			-- True if the `Current' job is done.
+	socket: NETWORK_STREAM_SOCKET
+			-- Socket that listen.
 
 feature -- Public Methods
 
@@ -49,6 +52,9 @@ feature -- Private Methods
 			-- What the thread will be executing.
 		do
 			print("Thread")
+			socket.listen(1)
+			socket.accept
+			stop_thread
 		end
 
 note

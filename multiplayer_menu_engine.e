@@ -31,7 +31,10 @@ feature -- Attributs
 	textbox: TEXTBOX
 			-- For the player to enter a server ip.
 	is_return: BOOLEAN
-	server: detachable SERVEURS
+			-- If the next engine is the last one.
+	is_host: BOOLEAN
+			-- If the next engine is `Connection_engine'.
+
 
 feature{NONE} -- Private Methods
 
@@ -65,6 +68,7 @@ feature{NONE} -- Private Methods
 	mouse_pressed(a_timestamp: NATURAL_32; a_mouse_state: GAME_MOUSE_BUTTON_PRESSED_STATE; a_nb_clicks: NATURAL_8)
 			-- When the mouse button is pressed.
 		do
+			factory.click_sound.play_once
 			if cursor_hover_textbox(a_mouse_state) then
 				textbox.is_selected := True
 				window.start_text_input
@@ -142,11 +146,12 @@ feature{NONE} -- Private Methods
 		end
 
 	host
-			-- Wait for a user to join the game.
+			-- Lauch the engine that wait for a connection.
 		do
-			if not attached server as la_server then
-				create server.make
-			end
+			game_library.clear_all_events
+			window.renderer.clear
+			game_library.stop
+			is_host := True
 		end
 
 	return_from_menu
@@ -166,6 +171,7 @@ feature -- Public Methods
 				--<Precursor>
 		do
 			is_return := False
+			is_host := False
 			Precursor
 		end
 

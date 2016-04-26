@@ -97,7 +97,7 @@ feature -- Publics Methods
 	set_agents
 			-- Set the agents.
 		do
-			game_library.quit_signal_actions.extend(agent quit)
+			game_library.quit_signal_actions.extend(agent quit(?))
 			window.mouse_button_pressed_actions.extend(agent mouse_pressed)
 			window.expose_actions.extend (agent (timestamp: NATURAL_32) do draw_all end)
 		end

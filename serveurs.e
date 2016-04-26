@@ -27,9 +27,9 @@ feature {NONE}
 			if l_socket.is_bound then
 				--create l_connecter.make (l_socket)
 				--l_connecter.launch
-				l_socket.listen (1)
-				l_socket.accept
-				print("Serveur: Réception de connection.%N")
+				--l_socket.listen (1)
+				--l_socket.accept
+				--print("Serveur: Réception de connection.%N")
 			end
 		end
 
