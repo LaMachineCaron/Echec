@@ -1,8 +1,7 @@
 note
-	description: "Summary description for {CONNECTION_ENGINE}."
-	author: ""
-	date: "$Date$"
-	revision: "$Revision$"
+	description: "Engine managing the host feature."
+	author: "Alexandre Caron"
+	date: "26 April 2016"
 
 class
 	CONNECTION_ENGINE
@@ -28,12 +27,14 @@ feature {NONE} -- Initialization
 feature -- Public Attributs
 
 	is_return: BOOLEAN
-	thread: detachable CONNECTOR_THREAD
+			-- If the next menu to be used is the last one.
+	thread: detachable HOSTING_THREAD
 			-- The thread that wait for a connection.
 
 feature{NONE}	-- Private Methods
 
 	mouse_pressed(a_timestamp: NATURAL_32; a_mouse_state: GAME_MOUSE_BUTTON_PRESSED_STATE; a_nb_clicks: NATURAL_8)
+			-- When the user click.
 		do
 			click_sound.play_once
 			across textures as la_texture loop
@@ -46,11 +47,14 @@ feature{NONE}	-- Private Methods
 		end
 
 	on_iteration(a_timestamp: NATURAL_32)
+			-- At every frames
 		do
 			if attached thread as la_thread then
 				if la_thread.job_done then
 					la_thread.join
 					print("Connection exectuée!%N")
+					return_from_menu -- Pour quitter le connection_engine en attendant d'avoir codé la suite.
+
 				end
 			end
 		end
@@ -60,7 +64,7 @@ feature{NONE}	-- Private Methods
 		do
 			if attached thread as la_thread then
 				la_thread.stop_thread
-				la_thread.socket.close
+				la_thread.main_socket.close
 				la_thread.join
 			end
 			game_library.clear_all_events

@@ -1,36 +1,24 @@
 note
-	description: "Thread to manage network."
+	description: "Thread that wait for a connection."
 	author: "Alexandre Caron"
-	date: "19 April 2016"
+	date: "26 April 2016"
 
-class
+deferred class
 	NETWORK_THREAD
 
 inherit
 	THREAD
-	rename
-		make as make_thread
-	end
 
-create
-	make
-
-feature{NONE} -- Initialization
-
-	make(a_socket:NETWORK_STREAM_SOCKET)
-			--Create the `Current'.
-		do
-			make_thread
-			socket := a_socket
-			job_done := False
-		end
-
-feature{NONE} -- Attributs
+feature -- Attributs
 
 	job_done: BOOLEAN
 			-- True if the `Current' job is done.
-	socket: NETWORK_STREAM_SOCKET
-			-- Socket that listen.
+	main_socket: NETWORK_STREAM_SOCKET
+			-- The socket that will created other socket.
+	socket:detachable NETWORK_STREAM_SOCKET
+			-- The socket that will be created by the main_socket.
+	port: INTEGER
+			-- The port to connect to.
 
 feature -- Public Methods
 
@@ -38,6 +26,7 @@ feature -- Public Methods
 			-- Set `terminated' to false.
 		do
 			terminated := False
+			job_done := False
 		end
 
 	stop_thread
@@ -46,16 +35,9 @@ feature -- Public Methods
 			job_done := True
 		end
 
-feature -- Private Methods
+	has_failed:BOOLEAN
 
-	execute
-			-- What the thread will be executing.
-		do
-			print("Thread")
-			socket.listen(1)
-			socket.accept
-			stop_thread
-		end
+invariant
 
 note
 	copyright: "Copyright (c) 2016, Alexandre Caron"

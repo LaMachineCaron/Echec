@@ -140,9 +140,10 @@ feature{NONE} -- Private Methods
 	join
 			-- Create a connexion with the ip in the `Textbox'.
 		local
-			l_client: CLIENTS
+			l_thread: JOIN_THREAD
 		do
-			create l_client.make (textbox.text)
+			create l_thread.make (textbox.text)
+			l_thread.launch
 		end
 
 	host
