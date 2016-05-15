@@ -18,6 +18,7 @@ create
 feature {NONE} -- Initialization
 
 	make
+			-- Create the `Current'
 		local
 			l_master: detachable ENGINE_MASTER
 

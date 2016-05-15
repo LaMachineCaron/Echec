@@ -31,11 +31,15 @@ feature{NONE} -- Initialize
 				io.put_string ("Can't open the sound file " + a_sound_file + ".%N")
 			end
 		end
+		
 feature -- Attributs
 
-	has_error: BOOLEAN -- True is there's an error.
-	sound: AUDIO_SOUND_FILE -- The sound to be played.
-	source: AUDIO_SOURCE -- The source where the sound is.
+	has_error: BOOLEAN
+			-- True is there's an error.
+	sound: AUDIO_SOUND_FILE
+			-- The sound to be played.
+	source: AUDIO_SOURCE
+			-- The source where the sound is.
 
 feature -- Methods
 

@@ -40,6 +40,7 @@ feature -- Attributs
 	possible_kill:GAME_TEXTURE
 	solo_button:GAME_TEXTURE
 	multiplayer_button:GAME_TEXTURE
+	local_button: GAME_TEXTURE
 	menu_background:GAME_TEXTURE
 	return_button:GAME_TEXTURE
 	join_button:GAME_TEXTURE
@@ -85,6 +86,7 @@ feature{NONE} -- Private Methods
 			possible_kill := set_texture(a_renderer, "./Ressources/possible_kill.png")
 			solo_button := set_texture(a_renderer, "./Ressources/button_solo2.png")
 			multiplayer_button := set_texture(a_renderer, "./Ressources/multiplayer_button2.png")
+			local_button := set_texture(a_renderer, "./Ressources/local_button.png")
 			menu_background := set_texture(a_renderer, "./Ressources/menu_background.png")
 			return_button := set_texture(a_renderer, "./Ressources/button_return.png")
 			join_button := set_texture(a_renderer, "./Ressources/button_join.png")

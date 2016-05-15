@@ -28,9 +28,11 @@ feature{NONE} -- Initialization
 feature
 
 	is_next_single:BOOLEAN
-			-- If the `game_engine' is the next to lauch.
+			-- If the `game_engine_singleplayer' is the next to lauch.
 	is_next_multiplayer:BOOLEAN
 			-- If the `multiplayer_menu_engine' is the next to lauch.
+	is_next_local:BOOLEAN
+		-- If the `game_engine_multiplayer_local' is the next to lauch.
 
 feature{NONE} -- Private Methods
 
@@ -50,6 +52,15 @@ feature{NONE} -- Private Methods
 			window.renderer.clear
 			game_library.stop
 			is_next_multiplayer := True
+		end
+
+	start_local
+			-- When the local `Button' is clicked.
+		do
+			game_library.clear_all_events
+			window.renderer.clear
+			game_library.stop
+			is_next_local := True
 		end
 
 	mouse_pressed (a_timestamp: NATURAL_32; a_mouse_state: GAME_MOUSE_BUTTON_PRESSED_STATE; a_nb_clicks: NATURAL_8)
@@ -83,15 +94,20 @@ feature -- Publics Methods
 		local
 			l_solo:BUTTON
 			l_multiplayer:BUTTON
+			l_local:BUTTON
+			l_padding: INTEGER
 		do
+			l_padding := 50
 			create background.make (factory.menu_background)
 			create {LINKED_LIST[DRAWABLE]} textures.make
 			click_sound := factory.click_sound
 			textures.extend (background)
-			create l_solo.make (factory.solo_button, 150, 450, agent start_solo)
-			create l_multiplayer.make (factory.multiplayer_button, 450, 450, agent start_multiplayer)
+			create l_solo.make (factory.solo_button, l_padding, 450, agent start_solo)
+			create l_multiplayer.make (factory.multiplayer_button, (background.width - l_padding - factory.multiplayer_button.width), 450, agent start_multiplayer)
+			create l_local.make (factory.local_button, (l_solo.x + l_solo.width + (l_multiplayer.x - l_solo.x - l_solo.width - factory.local_button.width) // 2), 450, agent start_local)
 			textures.extend (l_solo)
 			textures.extend (l_multiplayer)
+			textures.extend (l_local)
 		end
 
 	set_agents
@@ -107,6 +123,7 @@ feature -- Publics Methods
 		do
 			is_next_single := False
 			is_next_multiplayer := False
+			is_next_local := False
 			Precursor
 		end
 note

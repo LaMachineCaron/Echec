@@ -34,6 +34,12 @@ feature -- Attributs
 			-- If the next engine is the last one.
 	is_host: BOOLEAN
 			-- If the next engine is `Connection_engine'.
+	is_join: BOOLEAN
+			-- If the player as join a game.
+	thread: detachable JOIN_THREAD
+			-- The thread for joining a game.
+	socket:detachable NETWORK_STREAM_SOCKET
+			-- The socket create by the `thread' to communicate with the other player.
 
 
 feature{NONE} -- Private Methods
@@ -62,6 +68,12 @@ feature{NONE} -- Private Methods
 				textbox.flashing_cursor (window, factory)
 			end
 			draw_textbox_text
+			if attached thread as la_thread then
+				if attached la_thread.main_socket as la_socket then
+					socket := la_socket
+					start_game
+				end
+			end
 			window.update
 		end
 
@@ -139,11 +151,11 @@ feature{NONE} -- Private Methods
 
 	join
 			-- Create a connexion with the ip in the `Textbox'.
-		local
-			l_thread: JOIN_THREAD
 		do
-			create l_thread.make (textbox.text)
-			l_thread.launch
+			create thread.make (textbox.text)
+			if attached thread as la_thread then
+				la_thread.launch
+			end
 		end
 
 	host
@@ -153,6 +165,16 @@ feature{NONE} -- Private Methods
 			window.renderer.clear
 			game_library.stop
 			is_host := True
+		end
+
+	start_game
+			-- Quit the `Current' to let the game start.
+		do
+			is_join := true
+			game_library.clear_all_events
+			window.clear_events
+			window.renderer.clear
+			game_library.stop
 		end
 
 	return_from_menu

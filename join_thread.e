@@ -48,8 +48,6 @@ feature {NONE} -- Private Methods
 
 	execute
 			-- What the thread will be executing.
-		local
-			l_i :BOOLEAN
 		do
 			print(has_failed)
 			if not job_done and not has_failed then

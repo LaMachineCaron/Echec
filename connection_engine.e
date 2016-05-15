@@ -28,8 +28,12 @@ feature -- Public Attributs
 
 	is_return: BOOLEAN
 			-- If the next menu to be used is the last one.
-	thread: detachable HOSTING_THREAD
+	thread:detachable HOSTING_THREAD
 			-- The thread that wait for a connection.
+	is_play: BOOLEAN
+			-- If the next `engine' to be launch is the game.
+	socket:detachable NETWORK_STREAM_SOCKET
+			-- The socket that the `thread' will hve created.
 
 feature{NONE}	-- Private Methods
 
@@ -50,13 +54,30 @@ feature{NONE}	-- Private Methods
 			-- At every frames
 		do
 			if attached thread as la_thread then
-				if la_thread.job_done then
+					if la_thread.job_done then
 					la_thread.join
 					print("Connection exectuée!%N")
-					return_from_menu -- Pour quitter le connection_engine en attendant d'avoir codé la suite.
-
+					start_game
 				end
 			end
+		end
+
+	start_game
+			-- Set the next `engine' to be the game.
+		do
+			if attached thread as la_thread then
+				if attached la_thread.socket as la_socket then
+					socket := la_socket
+				end
+				la_thread.stop_thread
+				la_thread.main_socket.close
+				la_thread.join
+			end
+			game_library.clear_all_events
+			window.clear_events
+			window.renderer.clear
+			game_library.stop
+			is_play := True
 		end
 
 	return_from_menu

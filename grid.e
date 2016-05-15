@@ -86,6 +86,52 @@ feature -- Methods
 				end
 			end
 		end
+
+	update (a_factory:RESSOURCES_FACTORY)
+			-- Reset texture of all the pieces in the {GRID}.
+		do
+			across grid as la_grid loop
+				across la_grid.item as la_item loop
+					if attached {PAWN} la_item.item as la_pawn then
+						if la_pawn.is_white then
+							la_pawn.change_texture (a_factory.white_pawn_texture)
+						else
+							la_pawn.change_texture (a_factory.black_pawn_texture)
+						end
+					elseif attached {ROOK} la_item.item as la_rook then
+						if la_rook.is_white then
+							la_rook.change_texture (a_factory.white_rook_texture)
+						else
+							la_rook.change_texture (a_factory.black_rook_texture)
+						end
+					elseif attached {BISHOP} la_item.item as la_bishop then
+						if la_bishop.is_white then
+							la_bishop.change_texture (a_factory.white_bishop_texture)
+						else
+							la_bishop.change_texture (a_factory.black_bishop_texture)
+						end
+					elseif attached {KNIGHT} la_item.item as la_knight then
+						if la_knight.is_white then
+							la_knight.change_texture (a_factory.white_knight_texture)
+						else
+							la_knight.change_texture (a_factory.black_knight_texture)
+						end
+					elseif attached {KING} la_item.item as la_king then
+						if la_king.is_white then
+							la_king.change_texture (a_factory.white_king_texture)
+						else
+							la_king.change_texture (a_factory.black_king_texture)
+						end
+					elseif attached {QUEEN} la_item.item as la_queen then
+						if la_queen.is_white then
+							la_queen.change_texture (a_factory.white_queen_texture)
+						else
+							la_queen.change_texture (a_factory.white_queen_texture)
+						end
+					end
+				end
+			end
+		end
 note
 	copyright: "Copyright (c) 2016, Alexandre Caron"
 	license:   "MIT License (see http://opensource.org/licenses/MIT)"
