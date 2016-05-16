@@ -126,7 +126,7 @@ feature -- Methods
 						if la_queen.is_white then
 							la_queen.change_texture (a_factory.white_queen_texture)
 						else
-							la_queen.change_texture (a_factory.white_queen_texture)
+							la_queen.change_texture (a_factory.black_queen_texture)
 						end
 					end
 				end

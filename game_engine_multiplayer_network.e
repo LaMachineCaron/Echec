@@ -43,7 +43,7 @@ feature {NONE} -- Private Methods
 	other_player_turn
 			-- Manage the turn of the other player/AI.
 		do
-			print("Other player played %N")
+			print("Other player turn %N")
 			game_thread.main_socket.independent_store (grid)
 			print("Grid envoyé %N")
 		end
@@ -76,6 +76,10 @@ feature {NONE} -- Private Methods
 			-- <Precusor>
 		do
 			Precursor(l_position)
+			print("Is_White_turn: " + is_white_turn.out + "%N")
+			print("Is_player_white" + is_player_white.out + "%N")
+			print("turn is done" + turn_is_done.out + "%N")
+			print("Condition: " + (is_white_turn /= is_player_white and not turn_is_done).out + "%N")
 			if is_white_turn /= is_player_white and not turn_is_done then
 				turn_is_done := true
 				other_player_turn
@@ -96,9 +100,10 @@ feature {NONE} -- Private Methods
 			-- At every frames
 		do
 			if game_thread.grid_received then
-				print("Grid received at: " + a_timestamp.out)
+				print("Grid received at: " + a_timestamp.out + "%N")
 				grid := game_thread.grid
 				game_thread.set_grid_received (false)
+				turn_is_done := false
 				grid.update (factory)
 				toggle_turn
 				draw_all
