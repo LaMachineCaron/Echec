@@ -21,9 +21,12 @@ feature -- Attributs
 			-- `line' : between -1 and 1. Represente one deplacement depending on the `piece' position.
 			-- `column' : between -1 and 1. Represente one deplacement depending on the `piece' position.
 			-- `max_range' : between 1 and 8. Number for deplacement possible.
-		once ("PROCESS")
-			create {ARRAYED_LIST[TUPLE[line, column, max_range:INTEGER]]} Result.make(4)
-			Result.extend([1, 0, 1])
+		do
+			if is_first_move then
+				Result := first_move
+			else
+				Result := not_first_move
+			end
 		end
 
 feature -- Methods
@@ -33,6 +36,20 @@ feature -- Methods
 			do
 				io.put_string ("Pawn %N")
 			end
+
+	first_move: LIST[TUPLE[line, column, max_range: INTEGER]]
+			-- set the max_range from `move' to 2.
+		once("PROCESS")
+			create {ARRAYED_LIST[TUPLE[line, column, max_range:INTEGER]]} Result.make(1)
+			Result.extend([1, 0, 2])
+		end
+
+	not_first_move: LIST[TUPLE[line, column, max_range: INTEGER]]
+			-- Set the max_range from `move' to 1.
+		do
+			create {ARRAYED_LIST[TUPLE[line, column, max_range:INTEGER]]} Result.make(1)
+			Result.extend([1, 0, 1])
+		end
 
 note
 	copyright: "Copyright (c) 2016, Alexandre Caron"

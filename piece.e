@@ -24,7 +24,7 @@ feature {NONE} -- Initialization
 
 feature -- Attributs
 
-	first_move: BOOLEAN
+	is_first_move: BOOLEAN
 			-- If it is the first time this piece move.
 	is_white: BOOLEAN
 			-- Team
@@ -47,7 +47,7 @@ feature -- Methods
 
 	first_move_done
 		do
-			first_move := False
+			is_first_move := False
 		end
 
 	on_click
@@ -77,7 +77,7 @@ feature -- Methods
 	set_first_move
 			-- Set `first_move' at True.
 		do
-			first_move:=True
+			is_first_move:=True
 		end
 
 	set_team(a_white_team:BOOLEAN)
