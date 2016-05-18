@@ -87,6 +87,53 @@ feature -- Methods
 			end
 		end
 
+	reverse
+			-- exchange the position of white and black.
+		local
+			l_pieces:LINKED_LIST[PIECE]
+		do
+			create l_pieces.make
+			across grid as la_line loop
+					across la_line.item as la_column loop
+						if attached {PIECE} la_column.item as la_piece then
+							if attached la_piece.position as la_position then
+								la_piece.set_grid_position (8 - la_position.line + 1, la_position.column)
+								l_pieces.extend (la_piece)
+							end
+						end
+					end
+				end
+			refresh(l_pieces)
+		end
+
+	refresh (a_pieces: LIST[PIECE])
+			-- Reset the position of all {PIECE}
+		local
+			i: INTEGER
+			j: INTEGER
+		do
+			from
+				i := 1
+			until
+				i > 8
+			loop
+				from
+					j := 1
+				until
+					j > 8
+				loop
+					grid.at (i).at (j) := void
+					j := j + 1
+				end
+				i := i + 1
+			end
+			across a_pieces as la_piece loop
+				if attached la_piece.item.position as la_position then
+					grid.at (la_position.line).at (la_position.column) := la_piece.item
+				end
+			end
+		end
+
 	update (a_factory:RESSOURCES_FACTORY)
 			-- Reset texture of all the pieces in the {GRID}.
 		do

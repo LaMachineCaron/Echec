@@ -9,7 +9,6 @@ class
 inherit
 	GAME_ENGINE_NON_LOCAL
 		redefine
-			draw_piece,
 			normal_deplacement,
 			kill_deplacement,
 			start,
@@ -27,6 +26,9 @@ feature{NONE} -- Initialization
 			do
 				socket := a_socket
 				make_multiplayer(a_window, a_factory, a_is_white)
+--				if is_player_white then
+--					grid.reverse
+--				end
 				create game_thread.make (socket, grid)
 			end
 
@@ -36,7 +38,6 @@ feature -- Public Attributs
 			-- The `Socket' used to communication with the other player.
 	game_thread: GAME_THREAD
 			-- The `Thread' that will use the `Socket'.
-
 
 feature {NONE} -- Private Methods
 
@@ -48,29 +49,7 @@ feature {NONE} -- Private Methods
 			print("Grid envoyé %N")
 		end
 
-	draw_piece
-			-- Draw every pieces contained in the grid.
-		local
-			l_position: TUPLE[x,y: INTEGER]
-			l_reverse_position: TUPLE[line, column:INTEGER]
-		do
-			if is_player_white then
-				across grid.grid as la_line loop
-					across la_line.item as la_column loop
-						if attached {PIECE} la_column.item as la_piece then
-							if attached la_piece.position as la_position then
-								l_reverse_position := [8 - la_position.line + 1, la_position.column]
-								l_position := convert_grid_to_coord (la_position)
-								la_piece.set_positions (l_position.x, l_position.y)
-								window.renderer.draw_texture (la_piece.texture, l_position.x, l_position.y)
-							end
-						end
-					end
-				end
-			else
-				Precursor
-			end
-		end
+
 
 	normal_deplacement (l_position: TUPLE[line, column :INTEGER])
 			-- <Precusor>
@@ -99,11 +78,16 @@ feature {NONE} -- Private Methods
 	on_iteration(a_timestamp: NATURAL_32)
 			-- At every frames
 		do
+			socket.independent_store ("OK")
 			if game_thread.grid_received then
 				print("Grid received at: " + a_timestamp.out + "%N")
 				grid := game_thread.grid
 				game_thread.set_grid_received (false)
 				turn_is_done := false
+--				if is_player_white then
+--					print("reversing")
+--					grid.reverse
+--				end
 				grid.update (factory)
 				toggle_turn
 				draw_all
