@@ -18,9 +18,7 @@ create
 feature -- Attributs
 
 	move: LIST[TUPLE[line, column, max_range: INTEGER]]
-			-- `line' : between -1 and 1. Represente one deplacement depending on the `piece' position.
-			-- `column' : between -1 and 1. Represente one deplacement depending on the `piece' position.
-			-- `max_range' : between 1 and 8. Number for deplacement possible.
+			-- <Precursor>
 		once ("PROCESS")
 			create {ARRAYED_LIST[TUPLE[line, column, max_range:INTEGER]]} Result.make(4)
 			Result.extend([1, 0, 1])

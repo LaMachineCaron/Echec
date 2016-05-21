@@ -78,6 +78,7 @@ feature {NONE} -- Private Methods
 	on_iteration(a_timestamp: NATURAL_32)
 			-- At every frames
 		do
+			--socket.put_boolean (false) -- Otherwise, the thread crash after a certain amount of time
 			socket.independent_store ("OK")
 			if game_thread.grid_received then
 				print("Grid received at: " + a_timestamp.out + "%N")

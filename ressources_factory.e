@@ -24,33 +24,59 @@ feature -- Initialization
 feature -- Attributs
 
 	white_rook_texture:GAME_TEXTURE
+			-- `texture' for the white {rook}.
 	white_knight_texture:GAME_TEXTURE
+			-- `texture' for the white {knight}.
 	white_bishop_texture:GAME_TEXTURE
+			-- `texture' for the white {bishop}.
 	white_king_texture:GAME_TEXTURE
+			-- `texture' for the white {king}.
 	white_queen_texture:GAME_TEXTURE
+			-- `texture' for the white {queen}.
 	white_pawn_texture:GAME_TEXTURE
+			-- `texture' for the white {pawn}.
 	black_rook_texture:GAME_TEXTURE
+			-- `texture' for the black {rook}.
 	black_knight_texture:GAME_TEXTURE
+			-- `texture' for the black {knight}.
 	black_bishop_texture:GAME_TEXTURE
+			-- `texture' for the black {bishop}.
 	black_king_texture:GAME_TEXTURE
+			-- `texture' for the black {king}.
 	black_queen_texture:GAME_TEXTURE
+			-- `texture' for the black {queen}.
 	black_pawn_texture:GAME_TEXTURE
+			-- `texture' for the black {pawn}.
 	game_background:GAME_TEXTURE
+			-- `texture' for the in_game {background}.
 	possible_movement:GAME_TEXTURE
+			-- `texture' that let know the possible movement of a {piece}.
 	possible_kill:GAME_TEXTURE
+			-- `texture' that let know the possible kill of a {piece}.
 	solo_button:GAME_TEXTURE
+			-- `texture' for the solo {button}.
 	multiplayer_button:GAME_TEXTURE
+			-- `texture' for the multiplayer network {button}.
 	local_button: GAME_TEXTURE
+			-- `texture' for the mutltiplayer local {button}.
 	menu_background:GAME_TEXTURE
+			-- `texture' for the menu {background}.
 	return_button:GAME_TEXTURE
+			-- `texture' for the return {button}.
 	join_button:GAME_TEXTURE
+			-- `texture' for the join {button}.
 	host_button:GAME_TEXTURE
+			-- `texture' for the host {button}.
 	in_game_menu:GAME_TEXTURE
+			-- `texture' for the in game meun.
 	white_turn:GAME_TEXTURE
+			-- `texture' telling it's white turn.
 	black_turn:GAME_TEXTURE
+			-- `texture' telling it's black turn.
 	waiting_for_connection:GAME_TEXTURE
+			-- `texture' for the {backgorund} while waiting for a player connection.
 	loading:GAME_TEXTURE
-			-- Every texture in the game.
+			-- `texture' for a loading animation.
 
 	click_sound:AUDIO
 			-- Every sound in the game.

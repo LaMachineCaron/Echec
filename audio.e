@@ -16,11 +16,8 @@ feature{NONE} -- Initialize
 
 	make(a_sound_file:STRING)
 			-- Create a `sound' with the string passed in argument.
-		local
-			l_environment:EXECUTION_ENVIRONMENT
 		do
 			has_error := False
-			create l_environment
 			audio_library.sources_add
 			source:=audio_library.last_source_added
 			create sound.make(a_sound_file)
@@ -31,7 +28,7 @@ feature{NONE} -- Initialize
 				io.put_string ("Can't open the sound file " + a_sound_file + ".%N")
 			end
 		end
-		
+
 feature -- Attributs
 
 	has_error: BOOLEAN

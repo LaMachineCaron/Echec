@@ -1,8 +1,7 @@
 note
-	description: "Summary description for {GRID_UTILS}."
-	author: ""
-	date: "$Date$"
-	revision: "$Revision$"
+	description: "Utilities for the grid."
+	author: "Alexandre Caron"
+	date: "March 2016"
 
 deferred class
 	GRID_UTILS

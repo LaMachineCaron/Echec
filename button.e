@@ -27,7 +27,7 @@ feature -- Initialization
 feature -- Attributs
 
 	action: PROCEDURE[ANY, TUPLE]
-			--  The agent that the `Current' will launch.
+			--  The agent that the `Current' will launch when pressed.
 
 feature -- Methods
 

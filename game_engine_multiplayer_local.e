@@ -19,7 +19,7 @@ create
 feature{NONE} -- Initialization
 
 	make(a_window:GAME_WINDOW_RENDERED; a_factory: RESSOURCES_FACTORY)
-	-- Create an `Current'.
+		-- Create an `Current'.
 		do
 			factory := a_factory
 			window := a_window
@@ -189,6 +189,30 @@ feature {NONE} -- Private Methods
 				end
 			end
 			is_white_turn := not is_white_turn
+			if game_over then
+
+			end
+		end
+
+	game_over: BOOLEAN
+			-- Verify if the game is over.
+		local
+			l_white_king_alive: BOOLEAN
+			l_black_king_alive: BOOLEAN
+		do
+			across grid.grid as la_line loop
+				across la_line.item as la_column loop
+					if attached {KING} la_column.item as la_king then
+						if la_king.is_white then
+							l_white_king_alive := True
+						else
+							l_black_king_alive := True
+						end
+					end
+				end
+			end
+			result := not (l_white_king_alive and l_black_king_alive)
+			print(result.out)
 		end
 
 	draw_piece

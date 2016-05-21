@@ -8,7 +8,6 @@ class
 
 inherit
 	GAME_LIBRARY_SHARED
-	IMG_LIBRARY_SHARED
 
 create
 	make
@@ -66,49 +65,70 @@ feature {NONE} -- Initialization
 feature -- Methods
 
 	start
-			-- Start the program with the current engine.
-		local
-			l_multiplayer_game: GAME_ENGINE_MULTIPLAYER_NETWORK
+			-- Start the program with the current engine.			
 		do
 
 			current_engine.start
 			if attached {MENU_ENGINE} current_engine as la_menu then
-				if la_menu.is_next_single then
+				currently_menu_engine (la_menu)
+			elseif attached {MULTIPLAYER_MENU_ENGINE} current_engine as la_menu then
+				currently_multiplayer_menu_engine (la_menu)
+			elseif attached {CONNECTION_ENGINE} current_engine as la_menu then
+				currently_connection_engine (la_menu)
+			end
+		end
+
+feature{NONE} -- Private Methods
+
+	currently_menu_engine (a_menu: MENU_ENGINE)
+			-- Manage the next engine for {menu_engine}.
+		do
+			if a_menu.is_next_single then
 					last_engine := current_engine
 					current_engine := singleplayer
-				elseif la_menu.is_next_multiplayer then
+				elseif a_menu.is_next_multiplayer then
 					last_engine := current_engine
 					current_engine := multiplayer_menu_engine
-				elseif la_menu.is_next_local then
+				elseif a_menu.is_next_local then
 					last_engine := current_engine
 					current_engine := multiplayer_local
 				end
-			elseif attached {MULTIPLAYER_MENU_ENGINE} current_engine as la_menu then
-				if la_menu.is_return then
-					if attached last_engine as la_last_engine then
-						current_engine := menu_engine
-						last_engine := Void
-					end
-				elseif la_menu.is_host then
+		end
+
+	currently_multiplayer_menu_engine (a_menu: MULTIPLAYER_MENU_ENGINE)
+			-- Manage the next engine for {multiplayer_menu_engine}
+		local
+			l_multiplayer_game: GAME_ENGINE_MULTIPLAYER_NETWORK
+		do
+			if a_menu.is_return then
+				if attached last_engine as la_last_engine then
+					current_engine := menu_engine
+					last_engine := Void
+				end
+				elseif a_menu.is_host then
 					last_engine := current_engine
 					current_engine := waiting_connection
-				elseif la_menu.is_join then
-					if attached la_menu.socket as la_socket then
-						create l_multiplayer_game.make_multiplayer_network (window, factory, la_socket, False)
-						current_engine := l_multiplayer_game
-					end
+				elseif a_menu.is_join then
+				if attached a_menu.socket as la_socket then
+					create l_multiplayer_game.make_multiplayer_network (window, factory, la_socket, False)
+					current_engine := l_multiplayer_game
 				end
+			end
+		end
 
-			elseif attached {CONNECTION_ENGINE} current_engine as la_menu then
-				if la_menu.is_return then
-					if attached last_engine as la_last_engine then
-						current_engine := la_last_engine
-					end
-				elseif la_menu.is_play then
-					if attached la_menu.socket as la_socket then
-						create l_multiplayer_game.make_multiplayer_network (window, factory, la_socket, True)
-						current_engine := l_multiplayer_game
-					end
+	currently_connection_engine (a_menu: CONNECTION_ENGINE)
+			-- Manage the next engine for {connection_engine}
+		local
+			l_multiplayer_game: GAME_ENGINE_MULTIPLAYER_NETWORK
+		do
+			if a_menu.is_return then
+				if attached last_engine as la_last_engine then
+					current_engine := la_last_engine
+				end
+			elseif a_menu.is_play then
+				if attached a_menu.socket as la_socket then
+					create l_multiplayer_game.make_multiplayer_network (window, factory, la_socket, True)
+					current_engine := l_multiplayer_game
 				end
 			end
 		end

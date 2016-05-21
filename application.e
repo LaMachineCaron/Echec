@@ -9,7 +9,6 @@ class
 inherit
 	AUDIO_LIBRARY_SHARED
 	GAME_LIBRARY_SHARED
-	IMG_LIBRARY_SHARED
 	TEXT_LIBRARY_SHARED
 
 create
@@ -23,16 +22,16 @@ feature {NONE} -- Initialization
 			l_master: detachable ENGINE_MASTER
 
 		do
-			game_library.enable_video -- Enable video functinalities
+			game_library.enable_video
 			text_library.enable_text
 			audio_library.enable_sound
 			audio_library.launch_in_thread
 
-			create l_master.make -- Launch the main loop
+			create l_master.make
 			l_master := Void
 
 			game_library.clear_all_events
-			game_library.quit_library -- Clear the library before quiting
+			game_library.quit_library
 			text_library.quit_library
 			audio_library.stop_thread
 			audio_library.quit_library

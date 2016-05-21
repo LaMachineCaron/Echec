@@ -46,7 +46,7 @@ feature -- Methods
 
 	not_first_move: LIST[TUPLE[line, column, max_range: INTEGER]]
 			-- Set the max_range from `move' to 1.
-		do
+		once("PROCESS")
 			create {ARRAYED_LIST[TUPLE[line, column, max_range:INTEGER]]} Result.make(1)
 			Result.extend([1, 0, 1])
 		end

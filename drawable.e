@@ -9,14 +9,14 @@ deferred class
 feature {NONE} -- Initialization
 
 	make(a_texture:GAME_TEXTURE)
-			-- Create a drawable object using a texture and dimensions.
+			-- Create a drawable object using `a_texture'.
 		do
 			set_positions (0,0)
 			texture := a_texture
 		end
 
 	make_with_position(a_texture: GAME_TEXTURE; a_x, a_y: INTEGER)
-			-- Create the `Current' using his position.
+			-- Create `Current' using `a_texture' and `a_x' and `a_y' as position.
 		require
 			valid_a_x: a_x >= 0
 			valid_a_y: a_y >= 0
@@ -56,13 +56,13 @@ feature -- Methods
 		end
 
 	width: INTEGER
-			-- Return the `width' of the texture.
+			-- Return the `width' of the `texture'.
 		do
 			Result := texture.width
 		end
 
 	height: INTEGER
-			-- Return the `height' of the texture.
+			-- Return the `height' of the `texture'.
 		do
 			Result := texture.height
 		end
