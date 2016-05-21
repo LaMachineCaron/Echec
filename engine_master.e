@@ -75,22 +75,35 @@ feature -- Methods
 				currently_multiplayer_menu_engine (la_menu)
 			elseif attached {CONNECTION_ENGINE} current_engine as la_menu then
 				currently_connection_engine (la_menu)
+			elseif attached {GAME_ENGINE_MULTIPLAYER_LOCAL} current_engine as la_menu then
+				currently_game_engine (la_menu)
 			end
 		end
 
 feature{NONE} -- Private Methods
+
+	currently_game_engine (a_menu: GAME_ENGINE_MULTIPLAYER_LOCAL)
+			-- Manage the next engine for {game_engine_multiplayer_local}
+		do
+			if a_menu.is_quitting then
+				last_engine := Void
+				current_engine := menu_engine
+			end
+		end
 
 	currently_menu_engine (a_menu: MENU_ENGINE)
 			-- Manage the next engine for {menu_engine}.
 		do
 			if a_menu.is_next_single then
 					last_engine := current_engine
+					create singleplayer.make (window, factory)
 					current_engine := singleplayer
 				elseif a_menu.is_next_multiplayer then
 					last_engine := current_engine
 					current_engine := multiplayer_menu_engine
 				elseif a_menu.is_next_local then
 					last_engine := current_engine
+					create multiplayer_local.make (window, factory)
 					current_engine := multiplayer_local
 				end
 		end

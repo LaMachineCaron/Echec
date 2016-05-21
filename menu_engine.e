@@ -68,21 +68,10 @@ feature{NONE} -- Private Methods
 		do
 			click_sound.play_once
 			across textures as la_texture loop
-				if cursor_hover_sprite(a_mouse_state, la_texture.item) then
+				if cursor_hover_texture(a_mouse_state, la_texture.item) then
 					if attached {BUTTON} la_texture.item as la_bouton then
 						la_bouton.on_click
 					end
-				end
-			end
-		end
-
-	cursor_hover_sprite(a_mouse_stat: GAME_MOUSE_BUTTON_PRESSED_STATE; a_sprite:DRAWABLE):BOOLEAN
-			-- Tells if the cursor is hover a button.
-		do
-			Result := False
-			if (a_mouse_stat.x > a_sprite.x) and (a_mouse_stat.x < a_sprite.x + a_sprite.width) then
-				if (a_mouse_stat.y > a_sprite.y) and (a_mouse_stat.y < a_sprite.y + a_sprite.height) then
-					Result := True
 				end
 			end
 		end

@@ -26,6 +26,7 @@ feature{NONE} -- Initialization
 			create grid.make(window.renderer, factory)
 			is_white_turn := True
 			is_multiplayer := False
+			game_is_over := False
 			init_ressources
 		end
 
@@ -43,6 +44,10 @@ feature -- Attributs
 			-- The grid containing every `piece' and there position.
 	is_white_turn: BOOLEAN
 			-- True when it is white turn, False if black turn.
+	game_is_over: BOOLEAN
+			-- True if the game is over.
+	is_quitting: BOOLEAN
+			-- True if the player wants tp quit the game.
 
 feature {NONE} -- Private Methods
 
@@ -118,28 +123,38 @@ feature {NONE} -- Private Methods
 			l_position:TUPLE[line, column:INTEGER]
 		do
 			click_sound.play_once
-			l_position := convert_coord_to_grid([a_mouse_state.x, a_mouse_state.y])
-			if l_position.line /= 0 and l_position.column /= 0 then
-				if selected_piece /= void then -- Piece already selected
-					if attached selected_piece as la_selected_piece and attached valid_movements as la_valid_movements and attached valid_kills as la_valid_kills then
-						-- Normal Deplacement
-						normal_deplacement (l_position)
-						-- Kill
-						kill_deplacement (l_position)
-					end
-					unselect
-				else -- Selecting a piece
-					if attached {PIECE} grid.grid.at(l_position.line).at(l_position.column) as la_piece then
-						if (la_piece.is_white and is_white_turn) or (la_piece.is_black and not is_white_turn) then
-							la_piece.on_click -- Used for testing.
-							selected_piece:=la_piece
-							calcul_valid_movement
+			if game_is_over then
+				across textures as la_texture loop
+					if cursor_hover_texture (a_mouse_state, la_texture.item) then
+						if attached {BUTTON} la_texture.item as la_button then
+							la_button.on_click
 						end
-					else
-						unselect
 					end
 				end
-				draw_all -- Redraw no matter what.
+			else
+				l_position := convert_coord_to_grid([a_mouse_state.x, a_mouse_state.y])
+				if l_position.line /= 0 and l_position.column /= 0 then
+					if selected_piece /= void then -- Piece already selected
+						if attached selected_piece as la_selected_piece and attached valid_movements as la_valid_movements and attached valid_kills as la_valid_kills then
+							-- Normal Deplacement
+							normal_deplacement (l_position)
+							-- Kill
+							kill_deplacement (l_position)
+						end
+						unselect
+					else -- Selecting a piece
+						if attached {PIECE} grid.grid.at(l_position.line).at(l_position.column) as la_piece then
+							if (la_piece.is_white and is_white_turn) or (la_piece.is_black and not is_white_turn) then
+								la_piece.on_click -- Used for testing.
+								selected_piece:=la_piece
+								calcul_valid_movement
+							end
+						else
+							unselect
+						end
+					end
+					draw_all -- Redraw no matter what.
+				end
 			end
 		end
 
@@ -189,13 +204,36 @@ feature {NONE} -- Private Methods
 				end
 			end
 			is_white_turn := not is_white_turn
-			if game_over then
-
+			if is_game_over then
+				game_is_over := True
+				game_over
 			end
 		end
 
-	game_over: BOOLEAN
-			-- Verify if the game is over.
+	game_over
+			-- When the game is over.
+		local
+			l_game_over: BACKGROUND
+			l_quit: BUTTON
+		do
+			create l_game_over.make(factory.game_over)
+			create l_quit.make (factory.quit_button, 633, 400, agent quit_game)
+			textures.extend (l_game_over)
+			textures.extend (l_quit)
+
+		end
+
+	quit_game
+			-- When the quit `Button' is clicked.
+		do
+			game_library.clear_all_events
+			window.renderer.clear
+			game_library.stop
+			is_quitting := True
+		end
+
+	is_game_over: BOOLEAN
+			-- Verify if the game is over. Return True is so, False otherwise.
 		local
 			l_white_king_alive: BOOLEAN
 			l_black_king_alive: BOOLEAN

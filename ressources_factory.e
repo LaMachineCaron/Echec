@@ -77,6 +77,10 @@ feature -- Attributs
 			-- `texture' for the {backgorund} while waiting for a player connection.
 	loading:GAME_TEXTURE
 			-- `texture' for a loading animation.
+	game_over:GAME_TEXTURE
+			-- `texture' telling players that the game is over.
+	quit_button:GAME_TEXTURE
+			-- `texture' for the quit {button}.
 
 	click_sound:AUDIO
 			-- Every sound in the game.
@@ -123,6 +127,8 @@ feature{NONE} -- Private Methods
 			black_turn := set_texture(a_renderer, "./Ressources/black_turn.png")
 			waiting_for_connection := set_texture(a_renderer, "./Ressources/waiting_for_connection_background.png")
 			loading := set_texture(a_renderer, "./Ressources/loading.png")
+			game_over := set_texture(a_renderer, "./Ressources/game_over.png")
+			quit_button := set_texture(a_renderer, "./Ressources/button_quit.png")
 		end
 
 	create_sounds

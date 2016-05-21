@@ -57,6 +57,20 @@ feature -- Methods
 			game_library.stop
 		end
 
+	cursor_hover_texture(a_mouse_stat: GAME_MOUSE_BUTTON_PRESSED_STATE; a_texture:DRAWABLE):BOOLEAN
+			-- Tells if the cursor is hover a texture.
+		local
+			l_hover:BOOLEAN
+		do
+			l_hover:= False
+			if (a_mouse_stat.x > a_texture.x) and (a_mouse_stat.x < a_texture.x + a_texture.width) then
+				if (a_mouse_stat.y > a_texture.y) and (a_mouse_stat.y < a_texture.y + a_texture.height) then
+					l_hover := True
+				end
+			end
+			Result := l_hover
+		end
+
 invariant
 	valid_background_position: background.x = 0 and background.y = 0
 
