@@ -71,7 +71,9 @@ feature {NONE} -- Private Methods
 	on_iteration(a_timestamp: NATURAL_32)
 			-- At every frames
 		do
-			socket.independent_store ("OK")
+			if not game_thread.job_done then
+				socket.independent_store ("OK")
+			end
 			if game_thread.grid_received then
 				grid := game_thread.grid
 				game_thread.set_grid_received (false)
@@ -107,8 +109,9 @@ feature {NONE} -- Private Methods
 	quit(a_timestamp: NATURAL_32)
 			-- <Precursor>
 		do
-			game_thread.stop_thread
+			game_thread.main_socket.independent_store ("QUITTING")
 			game_thread.main_socket.close
+			game_thread.stop_thread
 			Precursor (a_timestamp)
 		end
 
@@ -116,8 +119,9 @@ feature {NONE} -- Private Methods
 			-- <Precursor>
 		do
 			Precursor
+			game_thread.main_socket.independent_store (grid)
+			game_thread.main_socket.independent_store ("QUITTING")
 			game_thread.stop_thread
-			game_thread.main_socket.close
 		end
 
 note

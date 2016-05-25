@@ -116,6 +116,17 @@ feature {NONE} -- Private Methods
 				window.renderer.draw_texture (a_texture, l_coord.x, l_coord.y)
 			end
 		end
+	mouse_pressed_when_game_over (a_timestamp: NATURAL_32; a_mouse_state: GAME_MOUSE_BUTTON_PRESSED_STATE; a_nb_clicks: NATURAL_8)
+			-- Manage the mouse pressed when the game is over.
+		do
+			across textures as la_texture loop
+				if cursor_hover_texture (a_mouse_state, la_texture.item) then
+					if attached {BUTTON} la_texture.item as la_button then
+						la_button.on_click
+					end
+				end
+			end
+		end
 
 	mouse_pressed (a_timestamp: NATURAL_32; a_mouse_state: GAME_MOUSE_BUTTON_PRESSED_STATE; a_nb_clicks: NATURAL_8)
 			-- Manage when mouse is pressed.
@@ -124,13 +135,7 @@ feature {NONE} -- Private Methods
 		do
 			click_sound.play_once
 			if game_is_over then
-				across textures as la_texture loop
-					if cursor_hover_texture (a_mouse_state, la_texture.item) then
-						if attached {BUTTON} la_texture.item as la_button then
-							la_button.on_click
-						end
-					end
-				end
+				mouse_pressed_when_game_over (a_timestamp, a_mouse_state, a_nb_clicks)
 			else
 				l_position := convert_coord_to_grid([a_mouse_state.x, a_mouse_state.y])
 				if l_position.line /= 0 and l_position.column /= 0 then

@@ -1,8 +1,7 @@
 note
-	description: "Summary description for {GAME_THREAD}."
-	author: ""
-	date: "$Date$"
-	revision: "$Revision$"
+	description: "Thread that manage network during a game."
+	author: "Alexandre Caron"
+	date: "26 April 2016"
 
 class
 	GAME_THREAD
@@ -48,17 +47,22 @@ feature {NONE} -- Private Methods
 
 	execute
 			-- What the thread will be executing.
+		local
+			l_reception: detachable ANY
 		do
 			from
 				job_done := false
 			until
 				job_done = true
 			loop
-				print("Waiting for a grid %N")
-				if attached {GRID} main_socket.retrieved as la_grid then
-					io.put_string(" A grid as been received %N")
+				l_reception := main_socket.retrieved
+				if attached {GRID} l_reception as la_grid then
 					grid := la_grid
 					grid_received := true
+				elseif attached {STRING} l_reception as la_string then
+					if la_string ~ "QUITTING" then
+						job_done := True
+					end
 				end
 			end
 		end

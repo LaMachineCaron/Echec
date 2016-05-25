@@ -53,13 +53,10 @@ feature{NONE}	-- Private Methods
 	on_iteration(a_timestamp: NATURAL_32)
 			-- At every frames
 		do
-			if (a_timestamp \\ 80) = 0 then
-				redraw (a_timestamp)
-			end
+			redraw (a_timestamp)
 			if attached thread as la_thread then
 					if la_thread.job_done then
 					la_thread.join
-					print("Connection exectuée!%N")
 					start_game
 				end
 			end
@@ -138,7 +135,7 @@ feature	-- Public Methods
 			l_part: INTEGER
 		do
 			draw_all
-			l_part := (a_timestamp.to_integer_32 \\ 8)
+			l_part := (a_timestamp.to_integer_32 // 100) \\ 8
 			window.renderer.draw_sub_texture (factory.loading, l_part * 50, 0, 50, factory.loading.height, (background.width // 2) - 25, 425)
 			window.renderer.present
 		end

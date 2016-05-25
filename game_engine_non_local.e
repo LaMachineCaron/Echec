@@ -35,9 +35,14 @@ feature {NONE} -- Private Methods
 	mouse_pressed (a_timestamp: NATURAL_32; a_mouse_state: GAME_MOUSE_BUTTON_PRESSED_STATE; a_nb_clicks: NATURAL_8)
 			-- <Precursor>
 		do
-			if is_white_turn = is_player_white then
-				Precursor(a_timestamp, a_mouse_state,a_nb_clicks)
+			if game_is_over then
+				mouse_pressed_when_game_over (a_timestamp, a_mouse_state, a_nb_clicks)
+			else
+				if is_white_turn = is_player_white then
+					Precursor(a_timestamp, a_mouse_state,a_nb_clicks)
+				end
 			end
+
 		end
 
 	other_player_turn

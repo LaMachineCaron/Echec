@@ -35,7 +35,6 @@ feature {NONE} -- Private Methods
 			l_retry:BOOLEAN
 		do
 			if not l_retry then
-				print("Thread")
 				main_socket.listen (1)
 				main_socket.accept
 				if attached main_socket.accepted as la_socket then

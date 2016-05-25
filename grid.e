@@ -46,24 +46,14 @@ feature -- Methods
 			grid.at (1).at (6) := create {BISHOP}.make (a_factory.white_bishop_texture, True)
 			grid.at (1).at (7) := create {KNIGHT}.make (a_factory.white_knight_texture, True)
 			grid.at (1).at (8) := create {ROOK}.make (a_factory.white_rook_texture, True)
-			grid.at (2).at (1) := create {PAWN}.make (a_factory.white_pawn_texture, True)
-			grid.at (2).at (2) := create {PAWN}.make (a_factory.white_pawn_texture, True)
-			grid.at (2).at (3) := create {PAWN}.make (a_factory.white_pawn_texture, True)
-			grid.at (2).at (4) := create {PAWN}.make (a_factory.white_pawn_texture, True)
-			grid.at (2).at (5) := create {PAWN}.make (a_factory.white_pawn_texture, True)
-			grid.at (2).at (6) := create {PAWN}.make (a_factory.white_pawn_texture, True)
-			grid.at (2).at (7) := create {PAWN}.make (a_factory.white_pawn_texture, True)
-			grid.at (2).at (8) := create {PAWN}.make (a_factory.white_pawn_texture, True)
+			across 1 |..| 8 as la_index loop
+				grid.at (2).at (la_index.item) := create {PAWN}.make (a_factory.white_pawn_texture, True)
+			end
 
 			--Black Team
-			grid.at (7).at (1) := create {PAWN}.make (a_factory.black_pawn_texture, False)
-			grid.at (7).at (2) := create {PAWN}.make (a_factory.black_pawn_texture, False)
-			grid.at (7).at (3) := create {PAWN}.make (a_factory.black_pawn_texture, False)
-			grid.at (7).at (4) := create {PAWN}.make (a_factory.black_pawn_texture, False)
-			grid.at (7).at (5) := create {PAWN}.make (a_factory.black_pawn_texture, False)
-			grid.at (7).at (6) := create {PAWN}.make (a_factory.black_pawn_texture, False)
-			grid.at (7).at (7) := create {PAWN}.make (a_factory.black_pawn_texture, False)
-			grid.at (7).at (8) := create {PAWN}.make (a_factory.black_pawn_texture, False)
+			across 1 |..| 8 as la_index loop
+				grid.at (7).at (la_index.item) := create {PAWN}.make (a_factory.black_pawn_texture, False)
+			end
 			grid.at (8).at (1) := create {ROOK}.make (a_factory.black_rook_texture, False)
 			grid.at (8).at (2) := create {KNIGHT}.make (a_factory.black_knight_texture, False)
 			grid.at (8).at (3) := create {BISHOP}.make (a_factory.black_bishop_texture, False)
