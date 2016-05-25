@@ -1,8 +1,7 @@
 note
-	description: "Summary description for {GAME_ENGINE_NON_LOCAL}."
-	author: ""
-	date: "$Date$"
-	revision: "$Revision$"
+	description: "Abstract class for game_engine with 2 players."
+	author: "Alexandre Caron"
+	date: "26 April 2016"
 
 deferred class
 	GAME_ENGINE_NON_LOCAL

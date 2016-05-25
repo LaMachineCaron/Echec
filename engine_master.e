@@ -49,7 +49,7 @@ feature {NONE} -- Initialization
 			create factory.make(window.renderer)
 			create menu_engine.make (window, factory)
 			create multiplayer_menu_engine.make(window, factory)
-			create singleplayer.make(window, factory)
+			create singleplayer.make_multiplayer(window, factory, True)
 			create multiplayer_local.make(window, factory)
 			create waiting_connection.make(window, factory)
 			must_quit := False
@@ -96,7 +96,7 @@ feature{NONE} -- Private Methods
 		do
 			if a_menu.is_next_single then
 					last_engine := current_engine
-					create singleplayer.make (window, factory)
+					create singleplayer.make_multiplayer (window, factory, True)
 					current_engine := singleplayer
 				elseif a_menu.is_next_multiplayer then
 					last_engine := current_engine

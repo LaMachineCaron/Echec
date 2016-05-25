@@ -150,7 +150,6 @@ feature {NONE} -- Private Methods
 					else -- Selecting a piece
 						if attached {PIECE} grid.grid.at(l_position.line).at(l_position.column) as la_piece then
 							if (la_piece.is_white and is_white_turn) or (la_piece.is_black and not is_white_turn) then
-								la_piece.on_click -- Used for testing.
 								selected_piece:=la_piece
 								calcul_valid_movement
 							end
